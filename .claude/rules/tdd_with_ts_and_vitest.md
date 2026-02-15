@@ -1,0 +1,59 @@
+# TDD with TypeScript and Vitest
+
+## Test File Creation
+1. **Create specification file** with `.spec.ts` extension
+2. **Import with explicit extensions** for local modules
+3. **Use Vitest testing functions** (`describe`, `it`, `expect`)
+4. **Follow TDD red-green-refactor** cycle
+5. **Leverage TypeScript's type checking** during development
+
+## Running Tests - CRITICAL REQUIREMENTS
+
+**🚨 ALWAYS use pnpm with npm scripts defined in `app/package.json`**
+
+### ✅ CORRECT - Use pnpm with npm scripts:
+```bash
+pnpm test                  # Run all tests (unit + storybook)
+pnpm test:unit            # Run all unit tests (basic + msw)
+pnpm test:unit:basic      # Run basic unit tests only
+pnpm test:unit:msw        # Run MSW unit tests only
+pnpm test:watch           # Run tests in watch mode
+pnpm run build            # Build the project
+```
+
+### ❌ WRONG - DO NOT use these:
+```bash
+npm test                          # Wrong package manager
+npx vitest                        # Don't call vitest directly
+vitest --run SomeFile.spec.tsx    # Don't call vitest directly
+npx vitest SomeFile.spec.tsx      # Don't use npx
+npm run test                      # Wrong package manager
+```
+
+### Why This Matters
+- **npm scripts orchestrate multiple steps** (e.g., `test:unit` runs TypeScript compilation first)
+- **Configuration is managed centrally** in package.json
+- **Consistency across development and CI** environments
+- **pnpm is the project's package manager** - using npm or npx causes inconsistencies
+
+### Test Script Overview (from app/package.json)
+- `test` - Runs full test suite (unit tests + Storybook tests)
+- `test:unit` - Runs TypeScript compilation, then basic and MSW unit tests
+- `test:unit:basic` - Runs Vitest with `vitest.config.unit.ts`
+- `test:unit:msw` - Runs Vitest with `vitest.config.msw.ts`
+- `test:watch` - Runs Vitest in watch mode with `vitest.config.watch.ts`
+
+**IMPORTANT**: When TDD agents run tests, they MUST use `pnpm run test` or the specific `pnpm test:*` commands, never call test files directly.
+
+## Example Test Template
+```typescript
+// calculator.spec.ts
+import { describe, it, expect } from "vitest";
+import { calculate } from "./calculator.js";
+
+describe("Calculator", () => {
+  it.todo("should handle basic operations");
+  it.todo("should validate input types");
+  it.todo("should handle edge cases");
+});
+```
