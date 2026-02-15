@@ -22,13 +22,58 @@ Ferdi Ade & Marco Emrich
 
 ## Setup
 
-### Prerequisites
+There are two ways to set up the project: using the **Dev Container** (recommended) or a **local installation**.
 
-- Node.js
+### Option A: Dev Container (recommended)
+
+The repo includes a Dev Container configuration with Node.js, Claude Code, and a restrictive firewall pre-installed.
+
+#### Prerequisites
+
+- [Docker](https://www.docker.com/)
+- [VS Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- Claude Code API key or Portkey configuration (see below)
+
+#### API Key Configuration
+
+**Option 1: Direct API key** -- set the environment variable on your host before opening the container:
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+```
+
+**Option 2: Portkey proxy** -- configure in `~/.claude/settings.json` on your host:
+
+```json
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.portkey.ai",
+    "ANTHROPIC_AUTH_TOKEN": "dummy",
+    "ANTHROPIC_CUSTOM_HEADERS": "x-portkey-api-key: <your-key>"
+  }
+}
+```
+
+The container automatically mounts `~/.claude/` from your host, so your settings are available inside the container.
+
+#### Starting the Dev Container
+
+1. Open the project folder in VS Code (**File -> Open Folder**, not as workspace)
+2. VS Code will prompt: "Reopen in Container" -- click it
+3. Or manually: `Ctrl+Shift+P` -> **"Dev Containers: Reopen in Container"**
+4. Wait for the container to build (first time takes a few minutes)
+
+After startup, run `npm install` in the terminal, then verify with the checks below.
+
+### Option B: Local Installation
+
+#### Prerequisites
+
+- Node.js (v20 or higher)
 - npm
 - Claude Code (`npm install -g @anthropic-ai/claude-code`)
 
-### Installation
+#### Installation
 
 ```bash
 npm install
@@ -48,7 +93,7 @@ npm run test:watch
 
 ## Verify Your Setup
 
-Run the following checks to make sure everything is working.
+Run the following checks to make sure everything is working (both local and Dev Container).
 
 **1. Node.js installed?**
 

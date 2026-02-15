@@ -1,0 +1,45 @@
+{
+  "name": "AI Sandbox",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {}
+  },
+  "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
+  "customizations": {
+    "vscode": {
+      "extensions": [],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+          }
+        },
+        "terminal.integrated.shellIntegration.enabled": true,
+        "terminal.integrated.shellIntegration.decorationsEnabled": "never",
+        "terminal.integrated.shellIntegration.history": 100,
+        "terminal.integrated.detectLocale": "off",
+        "terminal.integrated.inheritEnv": false,
+        "terminal.integrated.allowChords": false,
+        "terminal.integrated.commandsToSkipShell": [],
+        "terminal.integrated.sendKeybindingsToShell": false
+      }
+    }
+  },
+  "remoteUser": "node",
+  "initializeCommand": "mkdir -p ${localEnv:HOME}/.claude",
+  "mounts": [
+    "source=${localEnv:HOME}/.claude,target=/home/node/.claude,type=bind,consistency=cached"
+  ],
+  "containerEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}",
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "TERM": "xterm-256color",
+    "SHELL": "/bin/bash",
+    "VSCODE_SHELL_INTEGRATION": "1"
+  },
+  "postStartCommand": "/workspace/.devcontainer/setup-claude-env.sh && sudo /workspace/.devcontainer/secure-network.sh",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+  "workspaceFolder": "/workspace"
+}
