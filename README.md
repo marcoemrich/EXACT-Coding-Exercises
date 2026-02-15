@@ -46,6 +46,44 @@ npm test
 npm run test:watch
 ```
 
+## Verify Your Setup
+
+Run the following checks to make sure everything is working.
+
+**1. Node.js installed?**
+
+```bash
+node --version
+# Expected: v20 or higher (e.g. v24.9.0)
+```
+
+**2. Claude Code installed and API key configured?**
+
+```bash
+claude -p "respond with: setup ok"
+# Expected: "setup ok" (or similar short response)
+```
+
+If this hangs or returns an authentication error, your API key is not configured correctly. See the [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code) for setup instructions.
+
+**3. Dependencies installed and tests passing?**
+
+```bash
+npm install
+npm test
+```
+
+Expected test output:
+
+```
+ ✓ src/example.spec.ts (1 test)
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+```
+
+If all checks pass, you're ready for the workshop!
+
 ## Claude Code Configuration
 
 This repo ships with a preconfigured `.claude/` directory that enforces the EXACT Coding workflow when using Claude Code. The configuration consists of **Rules**, **Agents**, and **Commands**.
