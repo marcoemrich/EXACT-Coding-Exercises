@@ -1,0 +1,86 @@
+---
+description: Human-in-the-loop checkpoints during TDD phases
+alwaysApply: true
+---
+
+# Human-in-the-Loop TDD Rules
+
+Ensure the human stays engaged and can provide guidance at critical decision points during Test-Driven Development. Pause and explicitly ask for user feedback in these specific situations.
+
+## Rule 1: End-of-Phase Confirmation
+
+### When to Apply
+At the **end of every TDD phase** (Red, Green, or Refactor), before proceeding to the next phase or test.
+
+### What to Do
+1. **Stop after completing the current phase**
+2. **Summarize what was just completed**:
+
+   **After Red Phase**: Which test was activated, prediction made and whether correct, type of failure achieved
+
+   **After Green Phase**: Implementation approach taken, confirmation that test passes, trade-offs or decisions made
+
+   **After Refactor Phase**: Refactorings attempted/completed (naming, mass calculations, structural improvements, rejected opportunities and why)
+
+3. **Explicitly ask for permission to continue**:
+   - **After Red**: "Red phase complete. Should I proceed to Green phase?"
+   - **After Green**: "Green phase complete. Should I proceed to Refactor phase?"
+   - **After Refactor**: "Refactor phase complete. Should I proceed to the next test?"
+
+### Examples
+```
+Red Phase Complete:
+Test Activated: "should return sum for two numbers"
+Prediction: Runtime assertion error (Expected: 3, Received: 1) - Correct
+Result: Test fails as expected with assertion error
+
+Red phase complete. Should I proceed to Green phase?
+```
+
+```
+Green Phase Complete:
+Implementation: Added split/map/reduce logic for comma-separated numbers
+Result: All tests now pass
+Approach: Minimal implementation using built-in array methods
+
+Green phase complete. Should I proceed to Refactor phase?
+```
+
+```
+Refactor Phase Complete:
+Refactoring:
+- Evaluated naming: kept `sumCommaSeparatedNumbers` (already clear)
+- Mass calculation: remains at 38 (no improvements found)
+- Considered helper functions but would increase complexity
+
+Refactor phase complete. Should I proceed to the next test?
+```
+
+## Rule 2: Failed Prediction Recovery
+
+### When to Apply
+When the **"Guessing Game" prediction fails** - the actual test result differs significantly from what was predicted.
+
+### What to Do
+1. **Stop the TDD cycle immediately**
+2. **Explain**: What was predicted, what actually happened, why the prediction was wrong
+3. **Assess**: Does this indicate a misunderstanding? Are there issues with the test or implementation?
+4. **Explicitly ask**: "My prediction was incorrect. Should I continue with the TDD process, or would you like me to investigate this discrepancy further?"
+
+## Core Principle: Never Proceed Without Permission
+
+- **Stop after every single phase** (Red, Green, Refactor)
+- **Implement only what the current phase requires**
+- **No lookahead or anticipatory coding**
+- **No additional features without explicit human approval**
+- **Each phase must be approved before continuing to next phase**
+
+### When to ALWAYS Stop
+- After every TDD phase (Red, Green, Refactor) - MANDATORY
+- Before proceeding to next phase - Human must approve
+- Before writing any additional code
+
+### When to IMMEDIATELY Stop
+- Significant prediction failures
+- Unexpected test results
+- Unanticipated compilation errors

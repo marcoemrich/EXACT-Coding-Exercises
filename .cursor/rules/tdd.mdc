@@ -1,0 +1,110 @@
+---
+description: Core TDD workflow rules - Red-Green-Refactor cycle with specialized agents
+alwaysApply: true
+---
+
+# Test-Driven Development (TDD) Rules
+
+## CRITICAL: Agent Usage is MANDATORY
+
+**YOU MUST USE THE SPECIALIZED TDD AGENTS FOR EVERY TDD TASK.**
+
+Do NOT perform TDD phases manually. The agents enforce discipline and prevent common mistakes.
+
+### Before Starting Any TDD Work - Complete This Checklist:
+
+- [ ] Have I been asked to implement something using TDD?
+- [ ] Am I about to write tests or implementation code?
+- [ ] **STOP** - Use the Task tool to launch the appropriate TDD agent
+- [ ] NEVER write tests or code directly - ALWAYS use agents
+
+### Which Agent to Use:
+
+| Phase | Agent Name | Use Task Tool With |
+|-------|-----------|-------------------|
+| Test List | `test-list` | `subagent_type: "test-list"` |
+| Red Phase | `red` | `subagent_type: "red"` |
+| Green Phase | `green` | `subagent_type: "green"` |
+| Refactor Phase | `refactor` | `subagent_type: "refactor"` |
+
+**If you find yourself writing test code or implementation code without launching an agent first, you are doing it WRONG.**
+
+## TDD Workflow
+
+**MANDATORY: Use the specialized TDD agents for each phase of the cycle:**
+
+### 1. Test List Phase
+**LAUNCH AGENT**: Use `Task` tool with `subagent_type: "test-list"`
+
+The agent will create a comprehensive test list using `it.todo()` for BASE FUNCTIONALITY ONLY:
+- Focus on core behavior, not advanced features
+- Order tests from simple to complex
+- No implementation yet
+
+### 2. Red Phase
+**LAUNCH AGENT**: Use `Task` tool with `subagent_type: "red"`
+
+The agent will activate exactly ONE test and make it fail:
+- Convert one `it.todo()` to executable test
+- Make explicit predictions (Guessing Game)
+- Verify compilation error, then runtime error
+- **Stop and wait for approval** before Green phase
+
+### 3. Green Phase
+**LAUNCH AGENT**: Use `Task` tool with `subagent_type: "green"`
+
+The agent will implement minimal code to make the test pass:
+- Use the simplest possible solution
+- Hardcoded returns are acceptable early on
+- No features for future tests
+- **Stop and wait for approval** before Refactor phase
+
+### 4. Refactor Phase
+**LAUNCH AGENT**: Use `Task` tool with `subagent_type: "refactor"`
+
+The agent will improve code while keeping tests green:
+- **MUST attempt at least one refactoring**
+- Evaluate naming FIRST
+- Apply Four Rules of Simple Design (priority order)
+- Calculate APP (Absolute Priority Premise) mass
+- **Stop and wait for approval** before next test
+
+### 5. Repeat
+Return to step 2 (Red phase) for the next test in the list.
+
+## Core TDD Principles
+
+### TDD Mindset
+- **Hardcoded returns feel "too simple"** - This is correct!
+- **The urge to implement ahead is strong** - Resist this
+- **Minimal steps feel inefficient** - They actually accelerate development
+- **Predictions feel unnecessary** - They build crucial understanding
+- **Push through discomfort** - These feelings indicate you're following the discipline correctly
+
+### Common TDD Failure Modes
+- **NOT USING TDD AGENTS** - The most critical failure mode!
+- Planning beyond base functionality
+- Multiple active tests at once
+- Implementing beyond what tests demand
+- Skipping predictions
+- Avoiding refactoring
+- Premature abstraction
+
+## Running Tests - CRITICAL
+
+**ALWAYS use pnpm with npm scripts from `app/package.json`**
+
+- `pnpm test` - Run all tests
+- `pnpm test:unit` - Run unit tests
+- `pnpm test:unit:basic` - Run basic unit tests
+- `pnpm run build` - Build project
+
+**NEVER use**: `npm test`, `npx vitest`, or direct vitest calls.
+
+## Self-Check Before Proceeding
+
+1. **Am I doing TDD right now?** → Have I launched the appropriate agent?
+2. **Am I about to write a test or implementation?** → Which phase am I in? Have I launched that agent?
+3. **Did the user ask me to use TDD?** → Launch test-list agent to start
+
+**When in doubt, use the agents.**
