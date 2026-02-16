@@ -1,4 +1,4 @@
-\#!/bin/bash
+#!/bin/bash
 # Network Security Configuration Script
 # Implements restrictive firewall rules for development container
 
