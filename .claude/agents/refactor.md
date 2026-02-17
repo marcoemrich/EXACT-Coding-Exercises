@@ -1,7 +1,6 @@
 ---
 name: refactor
 description: "TDD Refactor Phase specialist - applies Simple Design Rules and Absolute Priority Premise to improve code. Use this agent after Green phase to refactor while keeping tests green.\\n\\nExamples:\\n\\n<example>\\nContext: User completed Green phase with passing tests.\\nuser: \"Let's refactor the code\"\\nassistant: \"I'll use the Task tool to launch the refactor agent to improve the code.\"\\n<commentary>After Green phase, use the refactor agent to apply Simple Design Rules and APP.</commentary>\\n</example>\\n\\n<example>\\nContext: User approved Green phase completion.\\nuser: \"Yes, proceed to Refactor phase\"\\nassistant: \"I'll launch the refactor agent to improve code quality while keeping tests green.\"\\n<commentary>User approved continuation, so proceed with Refactor phase agent.</commentary>\\n</example>"
-model: sonnet
 color: blue
 ---
 

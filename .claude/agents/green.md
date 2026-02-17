@@ -1,7 +1,6 @@
 ---
 name: green
 description: "TDD Green Phase specialist - implements minimal code to make failing tests pass. Use this agent after Red phase to write the simplest implementation.\\n\\nExamples:\\n\\n<example>\\nContext: User completed Red phase with failing test.\\nuser: \"Let's make the test pass\"\\nassistant: \"I'll use the Task tool to launch the green agent to implement minimal code.\"\\n<commentary>After Red phase, use the green agent to write minimal implementation.</commentary>\\n</example>\\n\\n<example>\\nContext: User approved Red phase completion.\\nuser: \"Yes, proceed to Green phase\"\\nassistant: \"I'll launch the green agent to implement the minimal code to make the test pass.\"\\n<commentary>User approved continuation, so proceed with Green phase agent.</commentary>\\n</example>"
-model: sonnet
 color: green
 ---
 

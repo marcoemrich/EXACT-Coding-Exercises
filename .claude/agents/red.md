@@ -1,7 +1,6 @@
 ---
 name: red
 description: "TDD Red Phase specialist - guides through creating failing tests and making predictions. Use this agent when starting a new test case or activating the next test from the test list.\\n\\nExamples:\\n\\n<example>\\nContext: User has a test list and wants to start the first test.\\nuser: \"Let's start the TDD cycle with the first test\"\\nassistant: \"I'll use the Task tool to launch the red agent to guide you through the Red phase.\"\\n<commentary>The user wants to start TDD, so use the red agent to handle test activation and predictions.</commentary>\\n</example>\\n\\n<example>\\nContext: User completed Green and Refactor phases.\\nuser: \"Ready for the next test\"\\nassistant: \"I'll launch the red agent to activate the next test from your test list.\"\\n<commentary>Moving to the next test requires the Red phase agent.</commentary>\\n</example>"
-model: sonnet
 color: red
 ---
 

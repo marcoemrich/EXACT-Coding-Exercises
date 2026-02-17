@@ -1,7 +1,6 @@
 ---
 name: test-list
 description: "TDD Test List creator - helps create comprehensive test lists using it.todo() before implementation. Use this agent when starting a new feature or planning TDD test cases.\\n\\nExamples:\\n\\n<example>\\nContext: User wants to start TDD for a new feature.\\nuser: \"I need to implement a string calculator using TDD\"\\nassistant: \"I'll use the Task tool to launch the test-list agent to help you create a test list.\"\\n<commentary>Starting TDD requires creating a test list first, so use the test-list agent.</commentary>\\n</example>\\n\\n<example>\\nContext: User has a feature specification.\\nuser: \"Create tests for validating email addresses\"\\nassistant: \"I'll launch the test-list agent to create a comprehensive test list for email validation.\"\\n<commentary>Use test-list agent to plan test cases before implementation.</commentary>\\n</example>"
-model: sonnet
 color: yellow
 ---
 
