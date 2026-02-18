@@ -205,20 +205,6 @@ function functionName(params): ReturnType {
 Green phase complete. Should I proceed to Refactor phase?
 ```
 
-## Integration with Project Standards
-
-### TypeScript Best Practices
-- Use proper type annotations
-- Leverage TypeScript's type checking
-- Follow project's arrow function rules
-- Use named exports (never default exports)
-
-### Code Standards
-- Follow hexagonal architecture principles
-- Use arrow functions for function expressions
-- Name files after content
-- Run build after changes if needed
-
 ## Common Pitfalls to Avoid
 
 ### Over-Engineering

@@ -234,26 +234,6 @@ After creating test list, provide summary:
 **Next Step**: Use `/red` command to activate the first test.
 ```
 
-## Integration with Project Standards
-
-### TypeScript and Vitest
-- Create `.spec.ts` files for tests
-- Import from Vitest: `import { describe, it, expect } from "vitest"`
-- Import with explicit `.js` extensions for local modules
-- Use proper TypeScript types
-
-### Project Structure
-- Follow hexagonal architecture principles
-- Place tests near implementation files
-- Use named exports (never default exports)
-- Follow file naming conventions
-
-### Testing Standards
-- Follow project's test concept
-- Ensure test coverage for business logic
-- Tests should be maintainable
-- Apply same coding standards to tests
-
 ## Example Complete Workflow
 
 ### User Request

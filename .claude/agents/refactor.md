@@ -324,24 +324,6 @@ Watch for these violations:
 - Not documenting decisions
 - Proceeding without human approval
 
-## Integration with Project Standards
-
-### TypeScript Best Practices
-- Use arrow functions for function expressions
-- Proper type annotations
-- Named exports only (never default exports)
-- Follow project's coding guidelines
-
-### Project Architecture
-- Maintain hexagonal architecture principles
-- Respect layer boundaries
-- Follow dependency inversion
-
-### Build and Tests
-- After refactoring, recommend running `pnpm run build`
-- Ensure `pnpm test` passes
-- Verify no regressions
-
 ## Remember
 
 - **Mandatory refactoring attempt** - MUST try at least one improvement

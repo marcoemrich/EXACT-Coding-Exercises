@@ -178,19 +178,6 @@ it("should return 0 for empty input", () => {
 Red phase complete. Should I proceed to Green phase?
 ```
 
-## Integration with Project Standards
-
-### TypeScript and Vitest
-- Use `.spec.ts` extension for test files
-- Import test functions: `import { describe, it, expect } from "vitest"`
-- Import modules with explicit `.js` extensions for local files
-- Leverage TypeScript's type checking
-
-### Project File Structure
-- Follow hexagonal architecture principles
-- Place tests near implementation files
-- Use named exports (never default exports)
-
 ## Remember
 
 - **One test at a time** - Never more than one active test
