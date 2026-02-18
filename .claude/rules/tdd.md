@@ -210,21 +210,18 @@ See `@.claude/rules/tdd_with_ts_and_vitest.md` for TypeScript and Vitest configu
 
 ## Running Tests - CRITICAL
 
-**🚨 TDD agents MUST use pnpm with npm scripts from `app/package.json`**
+**🚨 TDD agents MUST use npm scripts from `package.json`**
 
 ### Correct Test Execution:
-- ✅ `pnpm test` - Run all tests
-- ✅ `pnpm test:unit` - Run unit tests
-- ✅ `pnpm test:unit:basic` - Run basic unit tests
-- ✅ `pnpm run build` - Build project
+- ✅ `npm test` - Run all tests
+- ✅ `npm run test:watch` - Run tests in watch mode
 
 ### NEVER use:
-- ❌ `npm test` - Wrong package manager
 - ❌ `npx vitest` - Don't call vitest directly
-- ❌ `vitest --run SomeFile.spec.tsx` - Don't call test files directly
+- ❌ `vitest --run SomeFile.spec.ts` - Don't call test files directly
 - ❌ Individual test file execution - Always use npm scripts
 
-**Why**: npm scripts orchestrate TypeScript compilation, configuration, and test execution. Direct tool calls skip critical setup steps.
+**Why**: npm scripts provide a consistent interface. Direct vitest calls skip the centralized configuration.
 
 See `@.claude/rules/tdd_with_ts_and_vitest.md` for complete details.
 

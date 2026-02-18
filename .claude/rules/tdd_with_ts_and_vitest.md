@@ -9,41 +9,31 @@
 
 ## Running Tests - CRITICAL REQUIREMENTS
 
-**🚨 ALWAYS use pnpm with npm scripts defined in `app/package.json`**
+**🚨 ALWAYS use npm scripts defined in `package.json`**
 
-### ✅ CORRECT - Use pnpm with npm scripts:
+### ✅ CORRECT - Use npm scripts:
 ```bash
-pnpm test                  # Run all tests (unit + storybook)
-pnpm test:unit            # Run all unit tests (basic + msw)
-pnpm test:unit:basic      # Run basic unit tests only
-pnpm test:unit:msw        # Run MSW unit tests only
-pnpm test:watch           # Run tests in watch mode
-pnpm run build            # Build the project
+npm test                   # Run all tests (vitest run)
+npm run test:watch         # Run tests in watch mode
 ```
 
 ### ❌ WRONG - DO NOT use these:
 ```bash
-npm test                          # Wrong package manager
 npx vitest                        # Don't call vitest directly
-vitest --run SomeFile.spec.tsx    # Don't call vitest directly
-npx vitest SomeFile.spec.tsx      # Don't use npx
-npm run test                      # Wrong package manager
+vitest --run SomeFile.spec.ts     # Don't call vitest directly
+npx vitest SomeFile.spec.ts       # Don't use npx
 ```
 
 ### Why This Matters
-- **npm scripts orchestrate multiple steps** (e.g., `test:unit` runs TypeScript compilation first)
+- **npm scripts provide a consistent interface** for running tests
 - **Configuration is managed centrally** in package.json
 - **Consistency across development and CI** environments
-- **pnpm is the project's package manager** - using npm or npx causes inconsistencies
 
-### Test Script Overview (from app/package.json)
-- `test` - Runs full test suite (unit tests + Storybook tests)
-- `test:unit` - Runs TypeScript compilation, then basic and MSW unit tests
-- `test:unit:basic` - Runs Vitest with `vitest.config.unit.ts`
-- `test:unit:msw` - Runs Vitest with `vitest.config.msw.ts`
-- `test:watch` - Runs Vitest in watch mode with `vitest.config.watch.ts`
+### Test Script Overview (from package.json)
+- `test` - Runs full test suite (`vitest run`)
+- `test:watch` - Runs Vitest in watch mode
 
-**IMPORTANT**: When TDD agents run tests, they MUST use `pnpm run test` or the specific `pnpm test:*` commands, never call test files directly.
+**IMPORTANT**: When TDD agents run tests, they MUST use `npm test`, never call vitest directly.
 
 ## Example Test Template
 ```typescript
