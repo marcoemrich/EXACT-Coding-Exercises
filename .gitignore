@@ -5,3 +5,4 @@ dist
 *.swp
 .DS_Store
 game_pdfs/
+.playwright-mcp/
