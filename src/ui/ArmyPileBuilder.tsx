@@ -42,12 +42,21 @@ export function ArmyPileBuilder({ randomCardGenerator }: ArmyPileBuilderProps) {
       {/* Pile Display */}
       <div className="rounded-xl border border-gray-700 bg-gray-800/60 p-6 shadow-lg">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-300">Your Army Pile</h2>
+          <h2 className="text-lg font-semibold text-gray-300">
+            Your Army Pile
+          </h2>
           <div className="flex gap-4 text-sm">
-            <span data-testid="pile-count" className="rounded-full bg-gray-700 px-3 py-1">
-              Cards: <span className="font-bold text-amber-400">{pile.length}</span>
+            <span
+              data-testid="pile-count"
+              className="rounded-full bg-gray-700 px-3 py-1"
+            >
+              Cards:{" "}
+              <span className="font-bold text-amber-400">{pile.length}</span>
             </span>
-            <span data-testid="score" className="rounded-full bg-gray-700 px-3 py-1">
+            <span
+              data-testid="score"
+              className="rounded-full bg-gray-700 px-3 py-1"
+            >
               Score: <span className="font-bold text-emerald-400">{score}</span>
             </span>
           </div>
@@ -82,15 +91,22 @@ export function ArmyPileBuilder({ randomCardGenerator }: ArmyPileBuilderProps) {
 
       {/* Game Status & Card Selection */}
       {isGameOver ? (
-        <div className="rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-900/30 to-yellow-900/30 p-8 text-center shadow-lg">
+        <div className="rounded-xl border border-amber-500/40 bg-linear-to-r from-amber-900/30 to-yellow-900/30 p-8 text-center shadow-lg">
           <h2 className="mb-2 text-2xl font-bold text-amber-400">Game Over</h2>
-          <p data-testid="total-score" className="text-4xl font-extrabold text-emerald-400">{score} Points</p>
+          <p
+            data-testid="total-score"
+            className="text-4xl font-extrabold text-emerald-400"
+          >
+            {score} Points
+          </p>
         </div>
       ) : (
         <div className="rounded-xl border border-gray-700 bg-gray-800/60 p-6 shadow-lg">
           <div className="mb-4 text-center">
             <span data-testid="round-info" className="text-sm text-gray-400">
-              Round <span className="font-bold text-gray-200">{currentRound}</span> of {MAX_ROUNDS}
+              Round{" "}
+              <span className="font-bold text-gray-200">{currentRound}</span> of{" "}
+              {MAX_ROUNDS}
             </span>
             <div className="mx-auto mt-2 flex max-w-xs justify-center gap-1">
               {Array.from({ length: MAX_ROUNDS }, (_, i) => (
@@ -107,7 +123,10 @@ export function ArmyPileBuilder({ randomCardGenerator }: ArmyPileBuilderProps) {
           <h2 className="mb-3 text-center text-sm font-semibold text-gray-400 uppercase tracking-wider">
             Choose a card
           </h2>
-          <div data-testid="card-selection" className="flex flex-wrap justify-center gap-3">
+          <div
+            data-testid="card-selection"
+            className="flex flex-wrap justify-center gap-3"
+          >
             {cards.map((card, index) => (
               <button
                 key={index}
