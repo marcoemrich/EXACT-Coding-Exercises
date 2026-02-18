@@ -14,12 +14,22 @@ describe("Army Pile Scores", () => {
   it("should return 12 points for three chimera cards (set of 3)", () => {
     expect(scoreArmyPile(["chimera", "chimera", "chimera"])).toBe(12);
   });
-  it("should return 12 points for a complete undead warrior set (undead-warrior-1, undead-warrior-2, undead-warrior-3)", () => {
+  it("should return 12 points for a complete undead warrior set", () => {
     expect(
       scoreArmyPile(["undead-warrior-1", "undead-warrior-2", "undead-warrior-3"])
     ).toBe(12);
   });
-  it("should return sum of individual type scores for a mixed pile (e.g. 2 zombies + 1 cyclops = 4 + 6 = 10)", () => {
+  it("should sum individual card type scores for a mixed pile", () => {
     expect(scoreArmyPile(["zombie", "zombie", "cyclops"])).toBe(10);
+  });
+  it("should correctly score a pile with all card types", () => {
+    expect(
+      scoreArmyPile([
+        "zombie", "zombie",
+        "cyclops",
+        "chimera", "chimera", "chimera",
+        "undead-warrior-1", "undead-warrior-2", "undead-warrior-3",
+      ])
+    ).toBe(4 + 6 + 12 + 12);
   });
 });

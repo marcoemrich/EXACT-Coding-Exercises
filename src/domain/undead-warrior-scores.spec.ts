@@ -20,7 +20,7 @@ describe("Score Card: Undead Warrior", () => {
   it("should give bonus only for complete sets when there are leftover cards", () => {
     expect(scoreUndeadWarriorCards([1, 2, 2, 2, 3])).toBe(16);
   });
-  it("should return 42 points for maximum cards (3x1 + 6x2 + 3x3)", () => {
+  it("should return 42 points for a full hand of 12 cards with 3 complete sets", () => {
     expect(scoreUndeadWarriorCards([1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3])).toBe(42);
   });
 });

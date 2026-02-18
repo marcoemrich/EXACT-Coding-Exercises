@@ -2,6 +2,10 @@ import { describe, it, expect } from "vitest";
 import { scoreZombieCards } from "./zombie-scores.js";
 
 describe("Score Card: Zombie", () => {
+  it("should return 0 points for negative card counts", () => {
+    expect(scoreZombieCards(-1)).toBe(0);
+    expect(scoreZombieCards(-5)).toBe(0);
+  });
   it("should return 0 points for 0 Zombies", () => {
     expect(scoreZombieCards(0)).toBe(0);
   });

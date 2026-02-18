@@ -2,6 +2,10 @@ import { describe, it, expect } from "vitest";
 import { scoreChimeraCards } from "./chimera-scores.js";
 
 describe("Score Card: Chimera", () => {
+  it("should return 0 points for negative card counts", () => {
+    expect(scoreChimeraCards(-1)).toBe(0);
+    expect(scoreChimeraCards(-5)).toBe(0);
+  });
   it("should return 0 points for 0 Chimeras", () => {
     expect(scoreChimeraCards(0)).toBe(0);
   });
