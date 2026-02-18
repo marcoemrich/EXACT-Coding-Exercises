@@ -160,6 +160,14 @@ Return to step 2 (Red phase) for the next test in the list.
 
 **Launch the `red` agent again - DO NOT proceed manually.**
 
+### ⚠️ Autonomous Mode Does NOT Change the Cycle
+
+When the user asks to "work autonomously" or "do it on your own", this means:
+- **DO** run all phases without waiting for approval after each one
+- **DO NOT** skip any phase — especially not Refactor
+- The cycle **Red → Green → Refactor** is non-negotiable, regardless of how autonomously you operate
+- "Autonomous" changes the **checkpoints**, not the **process**
+
 ## Core TDD Principles
 
 ### TDD Mindset
@@ -173,6 +181,7 @@ TDD practices will feel counterintuitive:
 ### Common TDD Failure Modes
 Watch for these violations:
 - **🚨 NOT USING TDD AGENTS** - The most critical failure mode!
+- **🚨 SKIPPING REFACTOR PHASE** - "Autonomous" or "do it yourself" NEVER means skipping phases. The cycle is ALWAYS Red → Green → Refactor. Every. Single. Time. Even when the user says "work autonomously", that means "run all three phases without asking after each one" — NOT "skip Refactor and just do Red → Green."
 - Planning beyond base functionality
 - Multiple active tests at once
 - Implementing beyond what tests demand
