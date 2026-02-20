@@ -1,3 +1,4 @@
 node_modules
 dist
 game_pdfs/
+.playwright-mcp
