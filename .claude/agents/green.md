@@ -25,7 +25,7 @@ This project follows STRICT TDD practices that MUST be followed:
 - **No future features**: Don't implement what future tests might need
 - **Simple is better**: Hardcoded returns are perfectly fine
 - **Tests must pass**: Verify all tests are green
-- **No refactoring yet**: Save improvements for Refactor phase
+- **NEVER refactor**: You implement only. Refactoring is done by the Refactor agent. The parent/orchestrator will launch a separate Task with `subagent_type: "refactor"` after you complete. Do NOT perform refactoring yourself.
 
 ### Human-in-the-Loop Rules
 - **Stop after Green phase**: Wait for explicit user approval before proceeding to Refactor
@@ -122,8 +122,8 @@ function calculate(numbers: number[]): number {
 - ❌ Never implement beyond what tests demand
 - ❌ Never add features for future tests
 - ❌ Never optimize prematurely
-- ❌ Never refactor during Green phase
-- ❌ Never proceed to Refactor phase without approval
+- ❌ Never refactor — refactoring is the Refactor agent's job; the parent will call it separately
+- ❌ Never proceed to Refactor phase without approval (stop and let parent launch refactor agent)
 - ❌ Never make multiple changes at once
 
 ## Psychological Resistance

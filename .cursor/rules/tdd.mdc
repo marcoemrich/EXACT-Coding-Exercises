@@ -125,6 +125,8 @@ The agent will implement minimal code to make the test pass:
 ### 4. Refactor Phase
 **LAUNCH AGENT**: Use `Task` tool with `subagent_type: "refactor"`
 
+**CRITICAL: Refactor MUST be a separate agent call.** The orchestrating agent must NEVER combine Green and Refactor into one Task. After Green phase completes, launch a NEW Task with `subagent_type: "refactor"` — do NOT ask the Green agent to refactor. Each phase = one dedicated agent invocation.
+
 **Required prompt context:**
 - Test file path
 - Implementation file path
@@ -174,6 +176,7 @@ TDD practices will feel counterintuitive:
 ### Common TDD Failure Modes
 Watch for these violations:
 - **NOT USING TDD AGENTS** - The most critical failure mode!
+- **COMBINING PHASES** - Never run Green+Refactor in one agent call. Refactor phase requires its own Task with `subagent_type: "refactor"`.
 - Planning beyond base functionality
 - Multiple active tests at once
 - Implementing beyond what tests demand

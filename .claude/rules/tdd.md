@@ -124,6 +124,8 @@ The agent will implement minimal code to make the test pass:
 ### 4. Refactor Phase
 **🚨 LAUNCH AGENT**: Use `Task` tool with `subagent_type: "refactor"`
 
+**CRITICAL: Refactor MUST be a separate agent call.** The orchestrating agent must NEVER combine Green and Refactor into one Task. After Green phase completes, launch a NEW Task with `subagent_type: "refactor"` — do NOT ask the Green agent to refactor. Each phase = one dedicated agent invocation.
+
 **Required prompt context:**
 - Test file path
 - Implementation file path
@@ -165,6 +167,7 @@ Return to step 2 (Red phase) for the next test in the list.
 When the user asks to "work autonomously" or "do it on your own", this means:
 - **DO** run all phases without waiting for approval after each one
 - **DO NOT** skip any phase — especially not Refactor
+- **DO** call each phase agent separately: Task(red) → Task(green) → Task(refactor) — three distinct agent invocations per test
 - The cycle **Red → Green → Refactor** is non-negotiable, regardless of how autonomously you operate
 - "Autonomous" changes the **checkpoints**, not the **process**
 
@@ -182,6 +185,7 @@ TDD practices will feel counterintuitive:
 Watch for these violations:
 - **🚨 NOT USING TDD AGENTS** - The most critical failure mode!
 - **🚨 SKIPPING REFACTOR PHASE** - "Autonomous" or "do it yourself" NEVER means skipping phases. The cycle is ALWAYS Red → Green → Refactor. Every. Single. Time. Even when the user says "work autonomously", that means "run all three phases without asking after each one" — NOT "skip Refactor and just do Red → Green."
+- **🚨 COMBINING PHASES** - Refactor phase requires its OWN Task call with `subagent_type: "refactor"`. Never combine Green+Refactor into one agent invocation. The orchestrator must call the Refactor agent explicitly after each Green phase.
 - Planning beyond base functionality
 - Multiple active tests at once
 - Implementing beyond what tests demand
