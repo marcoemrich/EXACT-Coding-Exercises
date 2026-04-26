@@ -14,6 +14,12 @@ describe("Army Pile Scores", () => {
   it("should return 12 points for three chimera cards (set of 3)", () => {
     expect(scoreArmyPile(["chimera", "chimera", "chimera"])).toBe(12);
   });
+  it("should return 3 points for a single hydra card", () => {
+    expect(scoreArmyPile(["hydra"])).toBe(3);
+  });
+  it("should return 7 points for two orthrus cards (set of 2)", () => {
+    expect(scoreArmyPile(["orthrus", "orthrus"])).toBe(7);
+  });
   it("should return 12 points for a complete undead warrior set", () => {
     expect(
       scoreArmyPile(["undead-warrior-1", "undead-warrior-2", "undead-warrior-3"])
@@ -28,8 +34,10 @@ describe("Army Pile Scores", () => {
         "zombie", "zombie",
         "cyclops",
         "chimera", "chimera", "chimera",
+        "hydra",
+        "orthrus", "orthrus",
         "undead-warrior-1", "undead-warrior-2", "undead-warrior-3",
       ])
-    ).toBe(4 + 6 + 12 + 12);
+    ).toBe(4 + 6 + 12 + 3 + 7 + 12);
   });
 });
