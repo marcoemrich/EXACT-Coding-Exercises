@@ -21,7 +21,7 @@ These stories describe a **simplified singleplayer variant** of the Overlords Ca
   - Turn 4 → 4 cards
   - Turn 5 → 3 cards
   - Turn 6 → 2 cards
-  - Turn 7 → 1 card (recruited automatically)
+  - Turn 7 → 1 card
 - **Reshuffle**: After each recruit, all non-recruited cards from the hand are returned to the remaining draw pile and the whole pile is **reshuffled completely**
 - **Army pile**: Only the top card is visible; the score is calculated live with `scoreArmyPile()`
 - **End of game**: After turn 7, the final score is shown
@@ -126,19 +126,7 @@ These stories describe a **simplified singleplayer variant** of the Overlords Ca
 
 ---
 
-### Story G5: Last turn is automatic
-
-> As a player, I want the 7th turn to happen automatically, since only one card is left.
-
-**Rules:**
-
-- On turn 7, the last card is automatically added to the army pile without a click
-- The card is briefly displayed visually before being placed on the pile
-- After turn 7, the game ends automatically
-
----
-
-### Story G6: End of game & final score
+### Story G5: End of game & final score
 
 > As a player, I want to see my final score and the composition of my army at the end of the game, so that I can understand my result.
 
