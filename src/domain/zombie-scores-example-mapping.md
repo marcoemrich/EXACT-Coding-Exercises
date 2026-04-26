@@ -1,55 +1,55 @@
 # Example Mapping: Score Card Zombie
 
-## Story (gelb)
+## Story (yellow)
 
-Als Spieler will ich wissen, wie viele Punkte meine Zombie-Karten wert sind,
-damit ich meinen Gesamtscore berechnen kann.
+As a player, I want to know how many points my Zombie cards are worth,
+so that I can calculate my total score.
 
-## Rules (blau)
+## Rules (blue)
 
-### Regel 1: Punkte folgen einer festen Tabelle
+### Rule 1: Points follow a fixed table
 
-Die Punktzahl richtet sich nach der Anzahl der Zombie-Karten und ist als
-Lookup-Tabelle auf der Karte angegeben:
+The score depends on the number of Zombie cards and is given as a
+lookup table on the card:
 
-| Anzahl Zombies | Punkte |
-|----------------|--------|
-| 1              | 1      |
-| 2              | 4      |
-| 3              | 9      |
-| 4              | 12     |
-| 5              | 18     |
-| 6              | 24     |
+| Zombie count | Points |
+|--------------|--------|
+| 1            | 1      |
+| 2            | 4      |
+| 3            | 9      |
+| 4            | 12     |
+| 5            | 18     |
+| 6            | 24     |
 
-### Regel 2: Keine Karten = Keine Punkte
+### Rule 2: No cards = no points
 
-0 Zombie-Karten ergeben 0 Punkte.
+0 Zombie cards yield 0 points.
 
-### Regel 3: Score ist bei 6 Karten gedeckelt
+### Rule 3: Score is capped at 6 cards
 
-Es gibt 12 Zombie-Karten im Spiel, aber der maximale Score liegt bei 24 Punkten
-(entspricht 6 Karten). Mehr als 6 Zombie-Karten bringen keine zusaetzlichen Punkte.
+There are 12 Zombie cards in the game, but the maximum score is 24 points
+(equivalent to 6 cards). More than 6 Zombie cards do not grant additional points.
 
-## Examples (gruen)
+## Examples (green)
 
-### Zu Regel 1: Lookup-Tabelle
+### For Rule 1: Lookup table
 
-- 1 Zombie -> 1 Punkt
-- 2 Zombies -> 4 Punkte
-- 3 Zombies -> 9 Punkte
-- 4 Zombies -> 12 Punkte
-- 5 Zombies -> 18 Punkte
-- 6 Zombies -> 24 Punkte
+- 1 Zombie -> 1 point
+- 2 Zombies -> 4 points
+- 3 Zombies -> 9 points
+- 4 Zombies -> 12 points
+- 5 Zombies -> 18 points
+- 6 Zombies -> 24 points
 
-### Zu Regel 2: Keine Karten
+### For Rule 2: No cards
 
-- 0 Zombies -> 0 Punkte
+- 0 Zombies -> 0 points
 
-### Zu Regel 3: Deckelung bei 6
+### For Rule 3: Cap at 6
 
-- 7 Zombies -> 24 Punkte
-- 12 Zombies -> 24 Punkte
+- 7 Zombies -> 24 points
+- 12 Zombies -> 24 points
 
-## Questions (rot)
+## Questions (red)
 
-Keine offenen Fragen - alle Unklarheiten wurden geklaert.
+No open questions — all uncertainties have been resolved.

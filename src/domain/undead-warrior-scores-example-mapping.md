@@ -1,57 +1,57 @@
 # Example Mapping: Score Card Undead Warrior
 
-## Story (gelb)
+## Story (yellow)
 
-Als Spieler will ich wissen, wie viele Punkte meine Undead Warrior-Karten wert sind,
-damit ich meinen Gesamtscore berechnen kann.
+As a player, I want to know how many points my Undead Warrior cards are worth,
+so that I can calculate my total score.
 
-## Rules (blau)
+## Rules (blue)
 
-### Regel 1: Grundpunkte = Summe der Kartenwerte
+### Rule 1: Base points = sum of card values
 
-Jede Undead Warrior Karte hat einen aufgedruckten Wert (1, 2 oder 3).
-Die Grundpunkte ergeben sich aus der Summe aller Kartenwerte.
+Every Undead Warrior card has a printed value (1, 2 or 3).
+The base points are the sum of all card values.
 
-### Regel 2: Set-Bonus
+### Rule 2: Set bonus
 
-Ein vollstaendiges Set aus je einer 1, einer 2 und einer 3 gibt +6 Bonuspunkte
-zusaetzlich zur Grundwertung.
+A complete set of one 1, one 2 and one 3 grants +6 bonus points
+on top of the base score.
 
-### Regel 3: Mehrere Sets moeglich
+### Rule 3: Multiple sets possible
 
-Jedes vollstaendige 1-2-3 Tripel gibt den Bonus. Mehrere Sets = mehrfacher Bonus.
+Each complete 1-2-3 triple grants the bonus. Multiple sets = multiple bonuses.
 
-### Regel 4: Keine Karten = Keine Punkte
+### Rule 4: No cards = no points
 
-0 Undead Warrior Karten ergeben 0 Punkte.
+0 Undead Warrior cards yield 0 points.
 
-### Regel 5: Kein explizites Score-Cap
+### Rule 5: No explicit score cap
 
-Das Maximum ergibt sich aus den verfuegbaren Karten im Spiel:
-3x die 1, 6x die 2, 3x die 3 (12 Karten total).
+The maximum follows from the available cards in the game:
+3× the 1, 6× the 2, 3× the 3 (12 cards total).
 
-### Regel 6: Unabhaengige Wertung
+### Rule 6: Independent scoring
 
-Die Undead Warrior Wertung ist unabhaengig von anderen Kartentypen.
+Undead Warrior scoring is independent of other card types.
 
-## Examples (gruen)
+## Examples (green)
 
-### Zu Regel 1: Grundpunkte
+### For Rule 1: Base points
 
-- 0 Karten -> 0 Punkte
-- 1x 2er -> 2 Punkte
-- 1x1 + 1x2 -> 3 Punkte (kein Set, kein Bonus)
+- 0 cards -> 0 points
+- 1× 2 -> 2 points
+- 1×1 + 1×2 -> 3 points (no set, no bonus)
 
-### Zu Regel 2 + 3: Set-Bonus
+### For Rules 2 + 3: Set bonus
 
-- 1x1 + 1x2 + 1x3 -> 12 Punkte (6 Grundwert + 6 Bonus)
-- 2x1 + 2x2 + 2x3 -> 24 Punkte (12 Grundwert + 12 Bonus)
-- 1x1 + 3x2 + 1x3 -> 16 Punkte (10 Grundwert + 6 Bonus, nur 1 Set moeglich)
+- 1×1 + 1×2 + 1×3 -> 12 points (6 base + 6 bonus)
+- 2×1 + 2×2 + 2×3 -> 24 points (12 base + 12 bonus)
+- 1×1 + 3×2 + 1×3 -> 16 points (10 base + 6 bonus, only 1 set possible)
 
-### Zu Regel 5: Maximum
+### For Rule 5: Maximum
 
-- 3x1 + 6x2 + 3x3 -> 42 Punkte (24 Grundwert + 18 Bonus, 3 Sets)
+- 3×1 + 6×2 + 3×3 -> 42 points (24 base + 18 bonus, 3 sets)
 
-## Questions (rot)
+## Questions (red)
 
-Keine offenen Fragen - alle Unklarheiten wurden geklaert.
+No open questions — all uncertainties have been resolved.

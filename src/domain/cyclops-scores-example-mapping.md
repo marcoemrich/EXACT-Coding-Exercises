@@ -1,39 +1,39 @@
 # Example Mapping: Cyclops Scores
 
-## Story (gelb)
+## Story (yellow)
 
-Als Spieler möchte ich die Punkte meiner Cyclops-Karten im Army Pile berechnen, damit mein Gesamtscore korrekt ermittelt wird.
+As a player, I want to calculate the points of my Cyclops cards in the army pile, so that my total score is determined correctly.
 
-## Rules (blau)
+## Rules (blue)
 
-### Regel 1: Keine Cyclops
-0 Karten im Army Pile ergeben 0 Punkte.
+### Rule 1: No Cyclops
+0 cards in the army pile yield 0 points.
 
-### Regel 2: Genau ein Cyclops (Bonus)
-Genau 1 Cyclops im Army Pile ergibt 6 Punkte.
+### Rule 2: Exactly one Cyclops (bonus)
+Exactly 1 Cyclops in the army pile yields 6 points.
 
-### Regel 3: Mehrere Cyclops
-Mehr als 1 Cyclops im Army Pile ergibt je 2 Punkte pro Karte.
+### Rule 3: Multiple Cyclops
+More than 1 Cyclops in the army pile yields 2 points per card.
 
-## Examples (gruen)
+## Examples (green)
 
-### Zu Regel 1: Keine Cyclops
-- 0 Cyclops -> 0 Punkte
+### For Rule 1: No Cyclops
+- 0 Cyclops -> 0 points
 
-### Zu Regel 2: Genau ein Cyclops (Bonus)
-- 1 Cyclops -> 6 Punkte
+### For Rule 2: Exactly one Cyclops (bonus)
+- 1 Cyclops -> 6 points
 
-### Zu Regel 3: Mehrere Cyclops
-- 2 Cyclops -> 4 Punkte
-- 3 Cyclops -> 6 Punkte
-- 5 Cyclops -> 10 Punkte
+### For Rule 3: Multiple Cyclops
+- 2 Cyclops -> 4 points
+- 3 Cyclops -> 6 points
+- 5 Cyclops -> 10 points
 
-## Questions (rot)
+## Questions (red)
 
-Keine offenen Fragen - alle Unklarheiten wurden geklaert.
+No open questions — all uncertainties have been resolved.
 
-## Zusatzinfos
+## Additional info
 
-- Funktion bekommt nur die Anzahl der Cyclops-Karten (nicht den ganzen Army Pile)
-- Keine Interaktionen mit anderen Kartentypen
-- Im Spiel existieren maximal 5 Cyclops-Karten
+- The function only receives the number of Cyclops cards (not the whole army pile)
+- No interactions with other card types
+- A maximum of 5 Cyclops cards exist in the game

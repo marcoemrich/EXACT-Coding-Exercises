@@ -1,58 +1,58 @@
 # Example Mapping: Army Pile Scores
 
-## Story (gelb)
+## Story (yellow)
 
-Als Spieler moechte ich den Gesamtpunktwert meiner Army Pile berechnen,
-indem alle Karten nach ihren jeweiligen Typ-Regeln gewertet und aufsummiert werden.
+As a player, I want to calculate the total score of my army pile,
+where all cards are scored according to their respective type rules and summed up.
 
-## Rules (blau)
+## Rules (blue)
 
-### Regel 1: Input ist ein Array von Karten-Strings
+### Rule 1: Input is an array of card strings
 
-Die Funktion erhaelt ein Array von String-Werten. Der Union Type ist abschliessend:
+The function receives an array of string values. The union type is exhaustive:
 `"zombie" | "cyclops" | "chimera" | "undead-warrior-1" | "undead-warrior-2" | "undead-warrior-3"`
 
-### Regel 2: Jeder Kartentyp wird nach seinen eigenen Regeln gewertet
+### Rule 2: Each card type is scored by its own rules
 
-- Zombies: Lookup-Tabelle nach Anzahl (scoreZombieCards)
-- Cyclops: Solo-Bonus bei 1, sonst 2 pro Karte (scoreCyclopsCards)
-- Chimera: 2 pro Karte + 6 Bonus pro 3er-Set (scoreChimeraCards)
-- Undead Warriors: Summe der Kartenwerte + 6 Bonus pro vollstaendiges 1-2-3 Set (scoreUndeadWarriorCards)
+- Zombies: Lookup table by count (scoreZombieCards)
+- Cyclops: Solo bonus at 1, otherwise 2 per card (scoreCyclopsCards)
+- Chimera: 2 per card + 6 bonus per set of 3 (scoreChimeraCards)
+- Undead Warriors: Sum of card values + 6 bonus per complete 1-2-3 set (scoreUndeadWarriorCards)
 
-### Regel 3: Gesamtscore = Summe aller Einzelwertungen
+### Rule 3: Total score = sum of all individual scores
 
-Keine Interaktionen oder Boni zwischen verschiedenen Kartentypen.
-Der Gesamtscore ergibt sich aus der einfachen Addition aller Typ-Scores.
+No interactions or bonuses between different card types.
+The total score is the simple sum of all type scores.
 
-### Regel 4: Leere Pile = 0 Punkte
+### Rule 4: Empty pile = 0 points
 
-Ein leeres Array ergibt 0 Punkte.
+An empty array yields 0 points.
 
-### Regel 5: Bestehende Scoring-Funktionen werden wiederverwendet
+### Rule 5: Existing scoring functions are reused
 
-Die Army Pile Funktion ruft die bestehenden Funktionen auf:
+The army pile function calls the existing functions:
 - `scoreZombieCards(count: number)`
 - `scoreCyclopsCards(count: number)`
 - `scoreChimeraCards(count: number)`
 - `scoreUndeadWarriorCards(cards: number[])`
 
-## Examples (gruen)
+## Examples (green)
 
-### Zu Regel 4: Leere Pile
+### For Rule 4: Empty pile
 
-- [] -> 0 Punkte
+- [] -> 0 points
 
-### Zu Regel 2+3: Einzelne Kartentypen
+### For Rules 2+3: Single card types
 
-- ["zombie"] -> 1 Punkt (1 Zombie = 1)
-- ["cyclops"] -> 6 Punkte (1 Cyclops = Solo-Bonus 6)
-- ["chimera", "chimera", "chimera"] -> 12 Punkte (3er-Set Chimera)
-- ["undead-warrior-1", "undead-warrior-2", "undead-warrior-3"] -> 12 Punkte (Grundwert 6 + Set-Bonus 6)
+- ["zombie"] -> 1 point (1 Zombie = 1)
+- ["cyclops"] -> 6 points (1 Cyclops = solo bonus 6)
+- ["chimera", "chimera", "chimera"] -> 12 points (set of 3 Chimera)
+- ["undead-warrior-1", "undead-warrior-2", "undead-warrior-3"] -> 12 points (base value 6 + set bonus 6)
 
-### Zu Regel 3: Gemischte Pile (Summe der Einzelwertungen)
+### For Rule 3: Mixed pile (sum of individual scores)
 
-- ["zombie", "zombie", "cyclops"] -> 10 Punkte (2 Zombies=4 + 1 Cyclops=6)
+- ["zombie", "zombie", "cyclops"] -> 10 points (2 Zombies=4 + 1 Cyclops=6)
 
-## Questions (rot)
+## Questions (red)
 
-Keine offenen Fragen - alle Unklarheiten wurden geklaert.
+No open questions — all uncertainties have been resolved.
