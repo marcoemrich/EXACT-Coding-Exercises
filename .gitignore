@@ -6,3 +6,6 @@ dist
 .DS_Store
 game_pdfs/
 .playwright-mcp/
+
+*storybook.log
+storybook-static
