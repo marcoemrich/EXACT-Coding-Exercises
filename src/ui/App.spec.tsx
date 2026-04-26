@@ -7,7 +7,7 @@ describe("App", () => {
   it("should render the heading", () => {
     render(<App />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Overlords Card Game"
+      "Hello Overlords"
     );
   });
 });
