@@ -20,6 +20,12 @@ This hands-on workshop introduces EXACT Coding -- a pragmatic workflow for AI-as
 
 Ferdi Ade & Marco Emrich
 
+## Exercise
+
+The current exercise builds a singleplayer UI for the Overlords card
+game on top of the existing scoring domain. Stories with rules are in
+[`stories-singleplayer.md`](./stories-singleplayer.md).
+
 ## Setup
 
 There are two ways to set up the project: using the **Dev Container** (recommended) or a **local installation**.
@@ -91,6 +97,27 @@ npm test
 npm run test:watch
 ```
 
+### Dev Server
+
+```bash
+npm run dev
+```
+
+Opens the app at <http://localhost:5173>.
+
+### Storybook
+
+Widgets developed during the UI exercise can be previewed and documented
+in Storybook:
+
+```bash
+npm run storybook
+```
+
+Opens Storybook at <http://localhost:6006>. A `Button` example story is
+included as a starting point; new stories live next to their component as
+`*.stories.tsx`.
+
 ## Verify Your Setup
 
 Run the following checks to make sure everything is working (both local and Dev Container).
@@ -118,13 +145,11 @@ npm install
 npm test
 ```
 
-Expected test output:
+Expected test output (numbers may differ):
 
 ```
- ✓ src/example.spec.ts (1 test)
-
- Test Files  1 passed (1)
-      Tests  1 passed (1)
+ Test Files  9 passed (9)
+      Tests  56 passed (56)
 ```
 
 If all checks pass, you're ready for the workshop!
