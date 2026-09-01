@@ -1,6 +1,10 @@
-
+.git
+.gitignore
+README.md
+.env
+.nyc_output
+coverage
+target
+.cache
 .idea
 node_modules
-dist
-game_pdfs/
-.playwright-mcp

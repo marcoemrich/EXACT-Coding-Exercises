@@ -13,7 +13,7 @@ This hands-on workshop introduces EXACT Coding -- a pragmatic workflow for AI-as
 - Test-Driven Development (TDD)
 - Example Mapping
 - Mob/Ensemble Programming
-- AI Tools (Claude Code and Cursor)
+- AI Tools (Github Copilot)
 - EXACT Coding Workflow
 
 ### Trainers
@@ -22,109 +22,51 @@ Ferdi Ade & Marco Emrich
 
 ## Setup
 
-There are two ways to set up the project: using the **Dev Container** (recommended) or a **local installation**.
-
-### Option A: Dev Container (recommended)
-
-The repo includes a Dev Container configuration with Node.js, Claude Code, and a restrictive firewall pre-installed.
-
 #### Prerequisites
 
-- [Docker](https://www.docker.com/)
-- [VS Code](https://code.visualstudio.com/) with the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-- Claude Code API key or Portkey configuration (see below)
-
-#### API Key Configuration
-
-**Option 1: Direct API key** -- set the environment variable on your host before opening the container:
-
-```bash
-export ANTHROPIC_API_KEY="sk-ant-..."
-```
-
-**Option 2: Portkey proxy** -- configure in `~/.claude/settings.json` on your host:
-
-```json
-{
-  "env": {
-    "ANTHROPIC_BASE_URL": "https://api.portkey.ai",
-    "ANTHROPIC_AUTH_TOKEN": "dummy",
-    "ANTHROPIC_CUSTOM_HEADERS": "x-portkey-api-key: <your-key>"
-  }
-}
-```
-
-The container automatically mounts `~/.claude/` from your host, so your settings are available inside the container.
-
-#### Starting the Dev Container
-
-1. Open the project folder in VS Code (**File -> Open Folder**, not as workspace)
-2. VS Code will prompt: "Reopen in Container" -- click it
-3. Or manually: `Ctrl+Shift+P` -> **"Dev Containers: Reopen in Container"**
-4. Wait for the container to build (first time takes a few minutes)
-
-After startup, run `npm install` in the terminal, then verify with the checks below.
-
-### Option B: Local Installation
-
-#### Prerequisites
-
-- Node.js (v20 or higher)
-- npm
-- Claude Code (`npm install -g @anthropic-ai/claude-code`)
+- Java 17 or higher
+- Maven
 
 #### Installation
 
 ```bash
-npm install
+mvn test
 ```
 
 ### Running Tests
 
 ```bash
-npm test
+mvn test
 ```
 
 ### Watch Mode
 
 ```bash
-npm run test:watch
+mvn test -DskipTests=false
 ```
 
 ## Verify Your Setup
 
-Run the following checks to make sure everything is working (both local and Dev Container).
+Run the following checks to make sure everything is working.
 
-**1. Node.js installed?**
+**1. Java installed?**
 
 ```bash
-node --version
-# Expected: v20 or higher (e.g. v24.9.0)
+java --version
+# Expected: version 17 or higher
 ```
 
-**2. Claude Code installed and API key configured?**
+**2. Maven installed and tests passing?**
 
 ```bash
-claude -p "respond with: setup ok"
-# Expected: "setup ok" (or similar short response)
-```
-
-If this hangs or returns an authentication error, your API key is not configured correctly. See the [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code) for setup instructions.
-
-**3. Dependencies installed and tests passing?**
-
-```bash
-npm install
-npm test
+mvn test
 ```
 
 Expected test output:
 
 ```
- ✓ src/example.spec.ts (1 test)
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
 
- Test Files  1 passed (1)
-      Tests  1 passed (1)
 ```
 
 (If you have already worked through exercises, you will see more files and tests
@@ -141,16 +83,17 @@ agents**. They are equivalent — use whichever you have. Version **2026-08-12**
 **Claude Code is the default and lives on `main`.** Every other agent has its
 own branch, carrying exactly one configuration:
 
-| Agent | Branch | Directory | Start a TDD session with |
-|-------|--------|-----------|--------------------------|
-| Claude Code | `main` | `.claude/` | Ask for TDD in plain language ("let's TDD this kata") |
-| GitHub Copilot | `harness/copilot` | `.github/` | `/tdd`, or ask for TDD in plain language |
-| Cursor | `harness/cursor` | `.cursor/` | Ask for TDD in plain language |
-| OpenCode | `harness/opencode` | `.opencode/` | The `tdd` command |
-| pi | `harness/pi` | `.pi/` | `/skill:tdd`, or ask for TDD in plain language |
+| Agent | Branch                 | Directory | Start a TDD session with |
+|-------|------------------------|-----------|--------------------------|
+| Claude Code | `main`                 | `.claude/` | Ask for TDD in plain language ("let's TDD this kata") |
+| GitHub Copilot | `harness/copilot`      | `.github/` | `/tdd`, or ask for TDD in plain language |
+| GitHub Copilot | `harness/copilot-java` | `.github/` | `/tdd`, or ask for TDD in plain language |
+| Cursor | `harness/cursor`       | `.cursor/` | Ask for TDD in plain language |
+| OpenCode | `harness/opencode`     | `.opencode/` | The `tdd` command |
+| pi | `harness/pi`           | `.pi/` | `/skill:tdd`, or ask for TDD in plain language |
 
 ```bash
-git checkout harness/copilot   # or: cursor, opencode, pi
+git checkout harness/copilot-java   # or: cursor, opencode, pi
 ```
 
 **Why one branch per agent.** Two reasons. Copilot reads `.claude/skills/` and
