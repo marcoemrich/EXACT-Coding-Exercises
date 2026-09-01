@@ -15,7 +15,7 @@ infrastructure — it stays when the workflow is exported.
    - **Green Phase** → Invoke `/green` skill (main context)
    - **Refactor Phase** → Delegate to the `refactor` agent (isolated context)
 3. **Continue** until all tests are implemented and passing
-4. **End-Refactor Phase** → Delegate ONCE to the `end-refactor` agent (isolated context), over the whole `src/main/java/`
+4. **End-Refactor Phase** → Delegate ONCE to the `end-refactor` agent (isolated context), over the whole `src/main/kotlin/`
 
 ## Required Prompt Context for the Refactor Subagent (per cycle)
 
@@ -34,12 +34,12 @@ next Red phase.
 The end-refactor subagent refactors the **whole production tree**. Pass:
 
 ```
-Implementation files: src/main/java/
-Test files: src/test/java/
+Implementation files: src/main/kotlin/
+Test files: src/test/kotlin/
 Passing tests: [count]
 
-Run the final metric-driven refactoring pass over the whole src/main/java/.
-Iterate ONE change at a time with pre/post measurement (PMD, cognitive,
+Run the final metric-driven refactoring pass over the whole src/main/kotlin/.
+Iterate ONE change at a time with pre/post measurement (Detekt, cognitive,
 APP, McCabe). Stop when no metric improves further or no improvement is
 possible.
 ```

@@ -118,8 +118,8 @@ fine for early tests.
 The agent has no memory of red/green. Give it everything it needs:
 
 ```
-Test file: src/test/java/<Feature>Test.java
-Implementation file: src/main/java/<Feature>.java
+Test file: src/test/kotlin/oli/bitsandbobs/stellarmerchant/<Feature>Test.kt
+Implementation file: src/main/kotlin/oli/bitsandbobs/stellarmerchant/<Feature>.kt
 Passing tests: <count>
 Recent Green phase: <one-line summary of what was just added>
 
@@ -149,22 +149,22 @@ Return to step 2 (Red phase) for the next test. **Invoke `/red` again.**
 **DELEGATE TO THE `end-refactor` AGENT** (isolated context).
 
 After the last per-cycle refactor returns and all tests pass, launch it exactly
-once. It refactors the **whole production tree** (`src/main/java/`)
-using deterministic pre/post measurements: PMD smells and cognitive
+once. It refactors the **whole production tree** (`src/main/kotlin/`)
+using deterministic pre/post measurements: Detekt smells and cognitive
 complexity, plus APP mass and McCabe cyclomatic complexity. It iterates one
 change at a time until no metric improves further.
 
 ```
-Implementation files: src/main/java/
-Test files: src/test/java/
+Implementation files: src/main/kotlin/
+Test files: src/test/kotlin/
 Passing tests: <count>
 
-Run the final metric-driven refactoring pass over the whole src/main/java/.
-Iterate ONE change at a time with pre/post measurement (PMD, cognitive,
+Run the final metric-driven refactoring pass over the whole src/main/kotlin/.
+Iterate ONE change at a time with pre/post measurement (Detekt, cognitive,
 APP, McCabe). Stop when no metric improves further.
 ```
 
-**DO NOT** refactor the whole `src/main/java/` yourself -- delegate it.
+**DO NOT** refactor the whole `src/main/kotlin/` yourself -- delegate it.
 
 **Verify the marker.** The report must start with
 `## End-Refactor (agent: end-refactor)`. Same rule as above if it is missing.
@@ -197,8 +197,8 @@ For unattended batch runs, set the level to `autonomous` to disable all stops.
 
 ## Technical Setup
 
-See `.github/rules/tdd-with-junit-and-maven.md` for Java and JUnit conventions. Run
-tests with `mvn test`.
+See `.github/rules/tdd-with-junit.md` for Kotlin and JUnit conventions. Run
+tests with `gradlew.bat test` on Windows or `./gradlew test` on Unix-like systems.
 
 ## Workflow Sequence
 
@@ -208,7 +208,7 @@ tests with `mvn test`.
    - **Green Phase** -> `/green`
    - **Refactor Phase** -> delegate to the `refactor` agent
 3. **Continue** until all tests are implemented and passing
-4. **End-Refactor** -> delegate to the `end-refactor` agent, once, over `src/main/java/`
+4. **End-Refactor** -> delegate to the `end-refactor` agent, once, over `src/main/kotlin/`
 
 What to pass each subagent is specified in `.github/rules/subagent-prompts.md`.
 

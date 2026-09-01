@@ -18,29 +18,34 @@ You are now in the **Red Phase** of TDD. Follow these instructions to activate O
 
 ## Red Phase Rules
 
-- **One test at a time**: Convert exactly ONE `it.todo()` to executable test
-- **All other tests remain as `it.todo()`**: Never have more than one failing test
-- **Two-stage failure**: First compilation error, then runtime/assertion error
-- **Make predictions**: Explicitly state expected failures before running tests
-- **No implementation**: Don't write code to make test pass yet
+- **One test at a time**: Remove `@Disabled` from exactly ONE test.
+- **All other tests remain disabled**: Never have more than one failing test.
+- **Two-stage failure**: First compilation error, then runtime/assertion error.
+- **Make predictions**: Explicitly state expected failures before running tests.
+- **No implementation**: Don't write code to make test pass yet.
 
 ## Process
 
 ### Step 1: Activate One Test
 
-Identify the next `it.todo()` and convert it to executable test code:
+Identify the next disabled test and make it executable:
 
-```typescript
+```java
 // Convert from:
-it.todo("should return 0 for empty input");
+@Disabled("TODO: implement returns zero for empty input")
+@Test
+void returnsZeroForEmptyInput() {
+    // Add assertion in this phase.
+}
 
 // To:
-it("should return 0 for empty input", () => {
-  expect(calculate("")).toBe(0);
-});
+@Test
+void returnsZeroForEmptyInput() {
+    assertEquals(0, Calculator.calculate(""));
+}
 ```
 
-Leave all other tests as `it.todo()`.
+Leave all other tests disabled.
 
 ### Step 2: Predict Compilation Error
 
@@ -48,26 +53,28 @@ Before running the test, state your prediction:
 
 ```
 Red Phase - Compilation Error Prediction:
-- Test: "should return 0 for empty input"
+- Test: "returnsZeroForEmptyInput"
 - Expected: Compilation error
-- Reason: Function `calculate` doesn't exist yet
-- Error: "Cannot find name 'calculate'"
+- Reason: Class `Calculator` doesn't exist yet
+- Error: "cannot find symbol: class Calculator"
 ```
 
 ### Step 3: Run Test - Verify Compilation Error
 
-Run `npm test` and verify:
+Run `mvn test` and verify:
 - Compilation error as predicted, OR
 - Prediction wrong -> follow the Prediction Failure Protocol below
 
 ### Step 4: Create Empty Function
 
-Create minimal function stub (no logic):
+Create minimal method stub (no logic):
 
-```typescript
-export const calculate = (input: string): number => {
-  return undefined as unknown as number; // Intentionally wrong
-};
+```java
+public class Calculator {
+    public static int calculate(String input) {
+        throw new UnsupportedOperationException(); // Intentionally wrong
+    }
+}
 ```
 
 ### Step 5: Predict Runtime Error
@@ -76,18 +83,15 @@ Before running again, state your prediction:
 
 ```
 Red Phase - Runtime Error Prediction:
-- Test: "should return 0 for empty input"
+- Test: "returnsZeroForEmptyInput"
 - Expected: Runtime assertion error
 - Expected value: 0
-- Actual value: undefined
-- Diff:
-  Expected: 0
-  Received: undefined
+- Actual value: UnsupportedOperationException thrown
 ```
 
 ### Step 6: Run Test - Verify Runtime Error
 
-Run `npm test` and verify:
+Run `mvn test` and verify:
 - Assertion error as predicted, OR
 - Prediction wrong -> follow the Prediction Failure Protocol below
 
@@ -107,9 +111,9 @@ playing: it keeps the prediction quality visible to you and any future reader.
 
 ```
 Red Phase Complete:
-**Test Activated**: "should return 0 for empty input"
-**Compilation Prediction**: Cannot find name 'calculate' Correct
-**Runtime Prediction**: Expected 0, received undefined Correct
+**Test Activated**: "returnsZeroForEmptyInput"
+**Compilation Prediction**: cannot find symbol: class Calculator Correct
+**Runtime Prediction**: Expected 0, got UnsupportedOperationException Correct
 **Result**: Test fails as expected with assertion error
 
 Proceeding to Green phase.
@@ -128,7 +132,7 @@ proceed directly to Green phase.
 - Activate exactly ONE test at a time
 - Make explicit predictions before running tests
 - Verify test fails for the right reason
-- Keep all other tests as `it.todo()`
+- Keep all other tests disabled
 
 ### DON'T
 - Activate multiple tests

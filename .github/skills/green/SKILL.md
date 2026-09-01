@@ -47,30 +47,30 @@ Understand what the test expects:
 
 Implement **only what's needed** to make the current test pass:
 
-```typescript
-// For first test "should return 0 for empty input":
-export const calculate = (input: string): number => {
-  return 0; // Minimal - just make the test pass
-};
+```java
+// For first test "returns 0 for empty input":
+public static int calculate(String input) {
+    return 0; // Minimal - just make the test pass
+}
 
-// For second test "should return number for single input":
-export const calculate = (input: string): number => {
-  if (input === "") return 0;
-  return parseInt(input); // Still simple
-};
+// For second test "returns number for single input":
+public static int calculate(String input) {
+    if (input.isEmpty()) return 0;
+    return Integer.parseInt(input); // Still simple
+}
 
-// For third test "should add two numbers":
-export const calculate = (input: string): number => {
-  if (input === "") return 0;
-  const numbers = input.split(",");
-  if (numbers.length === 1) return parseInt(numbers[0]);
-  return parseInt(numbers[0]) + parseInt(numbers[1]); // Only now add logic
-};
+// For third test "adds two numbers":
+public static int calculate(String input) {
+    if (input.isEmpty()) return 0;
+    String[] numbers = input.split(",");
+    if (numbers.length == 1) return Integer.parseInt(numbers[0]);
+    return Integer.parseInt(numbers[0]) + Integer.parseInt(numbers[1]); // Only now add logic
+}
 ```
 
 ### Step 3: Run Tests
 
-Run `npm test` and verify:
+Run `mvn test` and verify:
 - Current test now passes
 - All previous tests still pass
 
@@ -96,22 +96,24 @@ Proceeding to Refactor phase.
 ## Minimal Implementation Strategies
 
 ### Hardcoded Returns (Preferred for Early Tests)
-```typescript
+```java
 // Test: "should return 0 for empty input"
 return 0; // Perfect - minimal
 ```
 
 ### Simple Conditionals (When Multiple Tests)
-```typescript
+```java
 // Test: "should return number for single input"
-if (input === "") return 0;
-return parseInt(input); // Still simple
+if (input.isEmpty()) return 0;
+return Integer.parseInt(input); // Still simple
 ```
 
 ### Generalization (Only When Forced)
-```typescript
+```java
 // Test: "should add multiple numbers" - NOW generalize
-return input.split(",").reduce((sum, n) => sum + parseInt(n), 0);
+return Arrays.stream(input.split(","))
+    .mapToInt(Integer::parseInt)
+    .sum();
 ```
 
 ## Important Guidelines

@@ -9,11 +9,11 @@ You are now in the **Test List Phase** of TDD. Follow these instructions to crea
 
 ## Your Mission
 
-Create a test list using `it.todo()` that covers **every rule and every example** from the specification:
+Create a test list using `@Disabled` JUnit tests that covers **every rule and every example** from the specification:
 1. Read the specification (`prompt.md`) thoroughly -- every rule, every example, every clarifying question (?)
-2. Turn each example into at least one `it.todo()` test case
+2. Turn each example into at least one `@Disabled` JUnit test case
 3. Order tests from simplest to most complex
-4. Use `it.todo()` only -- NO executable tests yet
+4. Use `@Disabled` tests only -- NO executable tests yet
 
 ## Context: $ARGUMENTS
 
@@ -42,17 +42,26 @@ Arrange tests in increasing complexity:
 5. Multi-step scenarios (e.g., operations that reference earlier results)
 
 ### Step 4: Write Test File
-Create the test file with `it.todo()` entries:
+Create the test file with `@Disabled` entries:
 
-```typescript
-import { describe, it, expect } from "vitest";
-import { functionName } from "./implementation.js";
+```java
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
-describe("Feature Name", () => {
-  it.todo("should [behavior] -- [expected value from spec]");
-  it.todo("should [next behavior] -- [expected value from spec]");
-  // ... ordered simple -> complex, covering ALL spec examples
-});
+class FeatureNameTest {
+    @Disabled("TODO: implement [behavior] -- [expected value from spec]")
+    @Test
+    void shouldBehavior() {
+        // Add the assertion when this test enters the Red phase.
+    }
+
+    @Disabled("TODO: implement [next behavior] -- [expected value from spec]")
+    @Test
+    void shouldNextBehavior() {
+        // Add the assertion when this test enters the Red phase.
+    }
+    // ... ordered simple -> complex, covering ALL spec examples
+}
 ```
 
 ### Step 5: Provide Summary
@@ -62,7 +71,7 @@ After creating the test list, output:
 ```
 Test List Created:
 **Feature**: [feature name]
-**Test File**: [filename].spec.ts
+**Test File**: [filename]Test.java
 **Tests**: [count]
 
 **Test Cases** (ordered simple -> complex):
@@ -88,13 +97,13 @@ If the level does not stop after Test-List, proceed directly to Red.
 - Cover **every operation** described in the spec
 - Give **every clarifying question (?)** a corresponding test
 - Order tests **simple -> complex**
-- Use `it.todo()` for all tests
+- Use `@Disabled` for all tests
 - Include **expected values** in descriptions
 - Keep tests **independent**
 - One behavior per test
 
 ### DON'T
-- Write executable tests (use `it.todo()`)
+- Write executable tests (use `@Disabled`)
 - Think about implementation instead of behavior
 - Miss an entire operation described in the spec
 - Order randomly

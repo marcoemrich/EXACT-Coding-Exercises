@@ -1,6 +1,6 @@
 ---
 name: end-refactor
-description: Final metric-driven refactoring pass over the whole production tree. Runs ONCE after the last green cycle. Uses PMD smells, cognitive complexity, McCabe cyclomatic complexity and APP mass to drive one measured change at a time while keeping all tests green.
+description: Final metric-driven refactoring pass over the whole production tree. Runs ONCE after the last green cycle. Uses Detekt smells, cognitive complexity, McCabe cyclomatic complexity and APP mass to drive one measured change at a time while keeping all tests green.
 agents: []
 ---
 
@@ -12,7 +12,7 @@ This pass is built on a single hypothesis: **once the design has stabilised, mea
 
 Run a final, metric-driven refactoring pass over the whole production code:
 
-1. **Measure the current state** of the entire `src/main/java/` with PMD (smells + cognitive complexity)
+1. **Measure the current state** of the entire `src/main/kotlin/` with Detekt (smells + cognitive complexity)
 2. **Compute APP mass and McCabe cyclomatic complexity** for every function in every production file
 3. **Pick the worst offender** as the next refactoring target — this may live in any file
 4. **Apply ONE improvement** while keeping all tests green
@@ -23,11 +23,11 @@ Run a final, metric-driven refactoring pass over the whole production code:
 
 ## Refactoring Rules
 
-- **Scope is the whole `src/main/java/`**: all production Java files. Multi-file katas (e.g. `Cli.java` + `Domain.java`) are refactored together.
+- **Scope is the whole `src/main/kotlin/`**: all production Kotlin files. Multi-file changes are refactored together.
 - **Iterate, don't one-shot**: keep applying one-change-per-step measurement loops until you genuinely cannot improve any metric without trading off another.
-- **Tests must stay green**: Never break passing tests. Run `mvn test` after every single change.
+- **Tests must stay green**: Never break passing tests. Run `gradlew.bat test` after every single change on Windows, or `./gradlew test` on Unix-like systems.
 - **Apply Simple Design Rules**: In priority order (1 → 2 → 3 → 4)
-- **Measure pre and post**: Smells, cognitive complexity, APP mass, McCabe — all four, every iteration
+- **Measure pre and post**: Detekt smells, cognitive complexity, APP mass, McCabe — all four, every iteration
 - **One change at a time**: So the post-measurement attributes the delta to that change
 - **Naming is first priority**: Evaluate if function names still fit purpose now that all tests are in
 - **If a measurement got worse**: revert the change and try a different angle
@@ -73,8 +73,8 @@ Total Mass = (constants × 1) + (bindings × 1) + (invocations × 2) +
 #### Component Values
 - **Constant** (Mass: 1): Literal values (`5`, `"hello"`, `true`)
 - **Binding/Scalar** (Mass: 1): Variables, parameters (`amount`, `result`)
-- **Invocation** (Mass: 2): Function calls (`calculate()`, `Math.max()`)
-- **Conditional** (Mass: 4): Control flow (`if`, `switch`, `?:`)
+- **Invocation** (Mass: 2): Function calls (`calculate()`, `maxOf()`)
+- **Conditional** (Mass: 4): Control flow (`if`, `when`, `?:`)
 - **Loop** (Mass: 5): Iteration (`for`, `forEach`, `map`)
 - **Assignment** (Mass: 6): Mutations (`x = 5`, `count++`)
 
@@ -94,11 +94,12 @@ Start each function at **1**. Then add **+1** for every:
 
 - `if` branch
 - `else if` branch
-- `case` in a `switch`
+- branch in a `when`
 - `&&` and `||` in boolean expressions
-- ternary `condition ? a : b`
+- elvis operator `a ?: b`
 - `for`, `while`, `do-while` loop
 - `catch` clause
+- safe call used as a branch (`obj?.member`)
 
 A function with no branches has McCabe = 1. Each decision point pushes it up by one.
 
@@ -108,25 +109,25 @@ A high McCabe score means many independent paths through one function — each p
 
 - **Guard clauses** at the top to flatten nested `if`s
 - **Extract function** to move a branch into its own named operation
-- **Polymorphism / lookup table** to replace `switch`/`if-else` chains
+- **Polymorphism / lookup table** to replace `when`/`if-else` chains
 - **Composition over conditionals** to replace conditional dispatch with function composition
 
-When the pre-measurement shows one function with a much higher McCabe than the rest — anywhere in `src/main/java/` — that function is your next refactoring target.
+When the pre-measurement shows one function with a much higher McCabe than the rest — anywhere in `src/main/kotlin/` — that function is your next refactoring target.
 
 ## Refactoring Process
 
 ### Step 0: Whole-src Pre-Measurement (Smells + Cognitive Complexity)
 
-Run PMD over the entire production tree:
+Run Detekt over the entire production tree:
 
 ```bash
-mvn pmd:check
+gradlew.bat detekt
 ```
 
-Review the PMD report for all production Java files. Note:
-- **Smells**: rule name, file, line, and message for every reported violation
-- **Cognitive complexity per function**: from PMD's `CognitiveComplexity` findings — the score is in the message text
-- **Other smells**: ExcessiveMethodLength, ExcessiveParameterList, NPathComplexity, CyclomaticComplexity, and similar PMD findings.
+Review the Detekt report for all production Kotlin files. Note:
+- **Smells**: rule ID, file, line, and message for every reported violation
+- **Cognitive complexity per function**: from Detekt's `CognitiveComplexMethod` findings
+- **Other smells**: LongMethod, LongParameterList, NestedBlockDepth, and similar Detekt findings.
 
 Record this as the **PRE** baseline for this iteration.
 
@@ -135,12 +136,12 @@ Record this as the **PRE** baseline for this iteration.
 Now that ALL tests are passing, walk every function in every production file:
 
 ```
-**Naming Evaluation** (file `src/main/java/Cli.java`):
+**Naming Evaluation** (file `src/main/kotlin/.../CommandService.kt`):
 - Function: `process`
-- Purpose based on the complete test suite: "parses stdin JSON, dispatches to quote or claim, prints result"
+- Purpose based on the complete test suite: "validates and dispatches a command"
 - Question: Does "process" clearly reveal this intent?
 - Assessment: Too generic — does not signal CLI entry / dispatch role
-- Recommendation: Rename to `runCli` or `dispatchCommand`
+- Recommendation: Rename to `dispatchCommand`
 
 Decision: [Rename to X] or [Keep current name because Y]
 ```
@@ -150,12 +151,12 @@ Decision: [Rename to X] or [Keep current name because Y]
 For every function in every production file, count components and compute mass. Keep a table:
 
 ```
-| File                          | Function       | APP Mass |
-|-------------------------------|----------------|----------|
-| src/main/java/Cli.java        | runCli         | 47       |
-| src/main/java/Cli.java        | parseInput     | 18       |
-| src/main/java/Domain.java     | quote          | 22       |
-| src/main/java/Domain.java     | claim          | 64       |
+| File                         | Function       | APP Mass |
+|------------------------------|----------------|----------|
+| .../CommandService.kt        | dispatchCommand| 47       |
+| .../CommandService.kt        | parseCommand   | 18       |
+| .../TradeService.kt          | quote          | 22       |
+| .../TradeService.kt          | claim          | 64       |
 ```
 
 ### Step 3: Pre-Measurement (McCabe Cyclomatic Complexity) — All Functions
@@ -163,19 +164,19 @@ For every function in every production file, count components and compute mass. 
 Apply the calculation rule above to every function in every file. Extend the table:
 
 ```
-| File                          | Function       | APP Mass | McCabe |
-|-------------------------------|----------------|----------|--------|
-| src/main/java/Cli.java        | runCli         | 47       | 3      |
-| src/main/java/Cli.java        | parseInput     | 18       | 2      |
-| src/main/java/Domain.java     | quote          | 22       | 4      |
-| src/main/java/Domain.java     | claim          | 64       | 9      | ← worst offender
+| File                         | Function       | APP Mass | McCabe |
+|------------------------------|----------------|----------|--------|
+| .../CommandService.kt        | dispatchCommand| 47       | 3      |
+| .../CommandService.kt        | parseCommand   | 18       | 2      |
+| .../TradeService.kt          | quote          | 22       | 4      |
+| .../TradeService.kt          | claim          | 64       | 9      | <- worst offender
 ```
 
-**Identify the worst-case function across the whole `src/main/java/`** — highest McCabe, ties broken by highest APP mass, ties broken by most PMD smells touching that function. That function is the strongest candidate for this iteration.
+**Identify the worst-case function across the whole `src/main/kotlin/`** — highest McCabe, ties broken by highest APP mass, ties broken by most Detekt findings touching that function. That function is the strongest candidate for this iteration.
 
 Look for minimization angles:
 - Can early `return` flatten nested conditionals?
-- Can a `switch` become a lookup table or polymorphism?
+- Can a `when` become a lookup table or polymorphism?
 - Can a decision move to the call site so this function stops branching?
 - Can two branches be collapsed because they do the same thing?
 - Can duplicate logic across files be extracted to a shared helper?
@@ -185,15 +186,15 @@ Look for minimization angles:
 Based on PRE-measurements (smells + cognitive + APP + McCabe + naming), pick the single change with the highest expected impact:
 
 - Make ONE improvement at a time
-- Run tests after the change (`mvn test`)
+- Run `gradlew.bat test` after the change on Windows, or `./gradlew test` on Unix-like systems.
 - If tests fail, revert and try a different angle
 
 ### Step 5: Post-Measurement (Smells + Cognitive)
 
-Re-run PMD over the whole `src/main/java/` and compare to PRE:
+Re-run Detekt over the whole `src/main/kotlin/` and compare to PRE:
 
 ```bash
-mvn pmd:check
+gradlew.bat detekt
 ```
 
 Compute the deltas:
@@ -209,8 +210,8 @@ Recompute APP mass and McCabe for the refactored function(s) — and for any cal
 ```
 **Iteration N — Refactoring Applied**: Replaced if-else chain in `claim` with handler lookup table
 
-**Pre/Post Deltas (function `claim`, file `src/main/java/Domain.java`)**:
-- PMD smells (whole src/main/java/): 7 → 4 (removed NPathComplexity and ExcessiveMethodLength)
+**Pre/Post Deltas (function `claim`, file `.../TradeService.kt`)**:
+- Detekt findings (whole src/main/kotlin/): 7 -> 4
 - Cognitive complexity (`claim`): 18 → 6
 - APP mass (`claim`): 64 → 38
 - McCabe cyclomatic (`claim`): 9 → 3
@@ -231,7 +232,7 @@ Trying alternative: inlining the conditional instead.
 **If No Further Improvement Possible — terminate the loop:**
 ```
 **Iteration N — No Further Improvement**:
-- PMD smells (whole src/main/java/): 0
+- Detekt findings (whole src/main/kotlin/): 0
 - Max cognitive complexity across all functions: 3 (well below the configured threshold)
 - Max APP mass: 22 (minimal for the behaviour expressed)
 - Max McCabe cyclomatic: 2
@@ -278,12 +279,12 @@ report.
 ## Important Guidelines
 
 ### What to DO
-- ✅ Operate over the whole production `src/main/java/`, not a single file
-- ✅ Run PMD as the first action of every iteration (Step 0)
+- ✅ Operate over the whole production `src/main/kotlin/`, not a single file
+- ✅ Run Detekt as the first action of every iteration (Step 0)
 - ✅ Compute APP mass AND McCabe for every function in every file (Steps 2–3)
 - ✅ Evaluate naming as a refactoring lever — you see the full test suite
-- ✅ Pick the worst-McCabe function (across the whole `src/main/java/`) as the iteration target
-- ✅ Run PMD again after every change (Step 5)
+- ✅ Pick the worst-McCabe function (across the whole `src/main/kotlin/`) as the iteration target
+- ✅ Run Detekt again after every change (Step 5)
 - ✅ Recompute APP and McCabe after every change (Step 6)
 - ✅ Document every PRE/POST delta for every iteration
 - ✅ Revert if any measurement got worse and try a different angle
@@ -292,7 +293,7 @@ report.
 
 ### What NOT to do
 - ❌ Never refactor a single file in isolation — this pass exists to catch cross-file issues
-- ❌ Never return without running PMD pre and post per iteration
+- ❌ Never return without running Detekt pre and post per iteration
 - ❌ Never describe code without numbers — the whole point of this pass is that measurement replaces description
 - ❌ Never refactor multiple things at once in one iteration (deltas become unattributable)
 - ❌ Never break tests during refactoring
@@ -303,7 +304,7 @@ report.
 
 Watch for these violations of the measurement discipline:
 
-- Skipping the PMD call (Step 0 or Step 5) in any iteration
+- Skipping the Detekt call (Step 0 or Step 5) in any iteration
 - Computing APP without McCabe or vice versa
 - Refactoring without showing a PRE → POST number
 - Justifying a kept change with prose when the POST measurement got worse

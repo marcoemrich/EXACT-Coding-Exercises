@@ -14,7 +14,7 @@ from one tree. Version: see `VERSION`.
 | `agents/end-refactor.agent.md` | Final metric-driven pass over `src/`, once |
 | `rules/human-in-the-loop.md` | Autonomy Level -- the single stop-behaviour source |
 | `rules/subagent-prompts.md` | What to pass each isolated agent |
-| `rules/tdd-with-ts-and-vitest.md` | TypeScript and Vitest conventions |
+| `rules/tdd-with-junit-and-maven.md` | Java and JUnit 5 conventions |
 
 Copilot discovers `skills/` and `agents/` under `.github/` automatically.
 `rules/` is not a Copilot mechanism -- those files are read on demand because

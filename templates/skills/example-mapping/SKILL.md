@@ -185,7 +185,7 @@ You MUST ask the user at least these categories of questions:
 
 ## Output Format
 
-Write the result to a markdown file at the location the user specifies (or default to `src/<feature-name>-example-mapping.md`).
+Write the result to a markdown file at the location the user specifies (or default to `spec/<feature-name>-example-mapping.md`).
 
 Use this structure:
 

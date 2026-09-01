@@ -1,13 +1,14 @@
 # Human-in-the-Loop (HITL)
 
 This file is the **single source of truth** for when the TDD workflow stops and
-asks the human for approval. It is referenced from `tdd.md`, `red.md`,
-`green.md`, `refactor.md`, `test-list.md`, and `tdd-execution-mode.md`. To
-change HITL behavior, edit only this file.
+asks the human for approval. It is referenced from `skills/tdd/SKILL.md`,
+`skills/red/SKILL.md`, `skills/green/SKILL.md`, `skills/test-list/SKILL.md`,
+`agents/refactor.agent.md`, and `agents/end-refactor.agent.md`. To change HITL
+behavior, edit only this file.
 
 ## Autonomy Level
 
-**Current setting:** `full-hitl`
+**Current setting:** `every-n-tests 3`
 
 To change behavior, edit the line above. Supported values:
 
