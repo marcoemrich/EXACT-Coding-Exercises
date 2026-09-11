@@ -13,7 +13,7 @@ This hands-on workshop introduces EXACT Coding -- a pragmatic workflow for AI-as
 - Test-Driven Development (TDD)
 - Example Mapping
 - Mob/Ensemble Programming
-- AI Tools (Github Copilot)
+- AI Tools (GitHub Copilot)
 - EXACT Coding Workflow
 
 ### Trainers
@@ -29,8 +29,10 @@ Ferdi Ade & Marco Emrich
 
 #### Installation
 
+Maven downloads the dependencies on the first build:
+
 ```bash
-mvn test
+mvn test-compile
 ```
 
 ### Running Tests
@@ -39,11 +41,8 @@ mvn test
 mvn test
 ```
 
-### Watch Mode
-
-```bash
-mvn test -DskipTests=false
-```
+Your IDE's test runner (IntelliJ IDEA, or VS Code with the Java extensions)
+works as well.
 
 ## Verify Your Setup
 
@@ -65,8 +64,8 @@ mvn test
 Expected test output:
 
 ```
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
-
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
 ```
 
 (If you have already worked through exercises, you will see more files and tests
@@ -86,14 +85,14 @@ own branch, carrying exactly one configuration:
 | Agent | Branch                 | Directory | Start a TDD session with |
 |-------|------------------------|-----------|--------------------------|
 | Claude Code | `main`                 | `.claude/` | Ask for TDD in plain language ("let's TDD this kata") |
-| GitHub Copilot | `harness/copilot`      | `.github/` | `/tdd`, or ask for TDD in plain language |
-| GitHub Copilot | `harness/copilot-java` | `.github/` | `/tdd`, or ask for TDD in plain language |
+| GitHub Copilot (TypeScript) | `harness/copilot`      | `.github/` | `/tdd`, or ask for TDD in plain language |
+| GitHub Copilot (Java) | `harness/copilot-java` | `.github/` | `/tdd`, or ask for TDD in plain language |
 | Cursor | `harness/cursor`       | `.cursor/` | Ask for TDD in plain language |
 | OpenCode | `harness/opencode`     | `.opencode/` | The `tdd` command |
 | pi | `harness/pi`           | `.pi/` | `/skill:tdd`, or ask for TDD in plain language |
 
 ```bash
-git checkout harness/copilot-java   # or: cursor, opencode, pi
+git checkout harness/copilot-java   # or: copilot, cursor, opencode, pi
 ```
 
 **Why one branch per agent.** Two reasons. Copilot reads `.claude/skills/` and
@@ -117,11 +116,11 @@ End-Refactor pass over everything at the end.
 
 | Phase | Runs in | What happens |
 |-------|---------|--------------|
-| Test List | Main context | Turns the spec into `it.todo()` entries, ordered simple to complex |
+| Test List | Main context | Turns the spec into `@Disabled` JUnit tests, ordered simple to complex |
 | Red | Main context | Activates ONE test, predicts the failure (the Guessing Game), verifies it fails for the right reason |
 | Green | Main context | Writes the minimal code to pass — hardcoded returns are fine |
 | Refactor | **Isolated subagent** | Four Rules of Simple Design, naming first, APP mass before/after |
-| End-Refactor | **Isolated subagent** | Runs once at the end over the whole `src/`, measuring ESLint smells, cognitive complexity, APP mass and McCabe complexity around each change |
+| End-Refactor | **Isolated subagent** | Runs once at the end over the whole `src/main/java/`, measuring PMD smells, cognitive complexity, APP mass and McCabe complexity around each change |
 
 Test-List, Red and Green share one context on purpose — the predictions, error
 messages, and minimal implementations only make sense together. Both refactor
@@ -185,7 +184,8 @@ The other four agents have subagents natively and need nothing extra.
 ### Copilot: CLI and VS Code
 
 The `harness/copilot` branch runs in both **Copilot CLI** and **VS Code agent
-mode** from the same `.github/` tree. Skills live in `.github/skills/`, the two
+mode** from the same `.github/` tree. `harness/copilot-java` is the same tree
+ported to Java, JUnit 5 and Maven. Skills live in `.github/skills/`, the two
 refactor agents in `.github/agents/`. In the CLI you can force a phase with
 `/red`, `/green` and so on, and delegate explicitly with `/agent refactor`; in
 VS Code the same skills appear under `/` and the agents are invoked as
