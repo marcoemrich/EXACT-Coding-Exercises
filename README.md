@@ -20,6 +20,11 @@ This hands-on workshop introduces EXACT Coding -- a pragmatic workflow for AI-as
 
 Ferdi Ade & Marco Emrich
 
+### Contributors
+
+- Oliver Roth -- Java, JUnit and Maven port of the Copilot harness (`harness/copilot-java`)
+- Dennis Effing -- fixes to the OpenCode agent definitions and config
+
 ## Setup
 
 #### Prerequisites
