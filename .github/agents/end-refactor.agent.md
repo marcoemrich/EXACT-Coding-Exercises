@@ -123,10 +123,11 @@ Run PMD over the entire production tree:
 mvn pmd:check
 ```
 
-Review the PMD report for all production Java files. Note:
-- **Smells**: rule name, file, line, and message for every reported violation
-- **Cognitive complexity per function**: from PMD's `CognitiveComplexity` findings — the score is in the message text
-- **Other smells**: ExcessiveMethodLength, ExcessiveParameterList, NPathComplexity, CyclomaticComplexity, and similar PMD findings.
+The rules live in `pmd-ruleset.xml`. Violations are printed to the build output
+and do not fail the build. Review them for all production Java files. Note:
+- **Smells**: rule name, file, line, and message for every reported violation except `CognitiveComplexity`
+- **Cognitive complexity per function**: from PMD's `CognitiveComplexity` findings — the score is in the message text. The ruleset reports every method with a score of 1 or more, so these findings are measurements, not smells; a method without a finding scores 0
+- **Other smells**: CyclomaticComplexity, NPathComplexity, NcssCount, ExcessiveParameterList, AvoidDeeplyNestedIfStmts, AvoidDuplicateLiterals, and the other rules in `pmd-ruleset.xml`.
 
 Record this as the **PRE** baseline for this iteration.
 
@@ -210,7 +211,7 @@ Recompute APP mass and McCabe for the refactored function(s) — and for any cal
 **Iteration N — Refactoring Applied**: Replaced if-else chain in `claim` with handler lookup table
 
 **Pre/Post Deltas (function `claim`, file `src/main/java/Domain.java`)**:
-- PMD smells (whole src/main/java/): 7 → 4 (removed NPathComplexity and ExcessiveMethodLength)
+- PMD smells (whole src/main/java/): 7 → 4 (removed NPathComplexity and NcssCount)
 - Cognitive complexity (`claim`): 18 → 6
 - APP mass (`claim`): 64 → 38
 - McCabe cyclomatic (`claim`): 9 → 3

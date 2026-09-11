@@ -20,8 +20,25 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+      </plugin>
+      <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.2</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.28.0</version>
+        <configuration>
+          <rulesets>
+            <ruleset>${project.basedir}/pmd-ruleset.xml</ruleset>
+          </rulesets>
+          <targetJdk>17</targetJdk>
+          <linkXRef>false</linkXRef>
+          <failOnViolation>false</failOnViolation>
+          <printFailingErrors>true</printFailingErrors>
+        </configuration>
       </plugin>
     </plugins>
   </build>
