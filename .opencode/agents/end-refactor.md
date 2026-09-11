@@ -131,9 +131,9 @@ npx eslint src/ --format json
 ```
 
 Parse the JSON output across **all** non-spec files. Note:
-- **Smells**: rule ID, file, line, message for every reported violation
-- **Cognitive complexity per function**: from `sonarjs/cognitive-complexity` messages — the score is in the message text
-- **Other smells**: max-depth, max-lines-per-function, max-params, no-duplicate-string, no-collapsible-if, etc.
+- **Smells**: rule ID, file, line, message for every reported violation except `sonarjs/cognitive-complexity`
+- **Cognitive complexity per function**: from `sonarjs/cognitive-complexity` messages — the score is in the message text. `eslint.config.js` sets the threshold to 0, so every branching function reports its score; these findings are measurements, not smells, and a function without one scores 0
+- **Other smells**: complexity, max-depth, max-lines-per-function, max-params, no-duplicate-string, no-collapsible-if, etc.
 
 Record this as the **PRE** baseline for this iteration.
 
