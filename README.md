@@ -16,10 +16,6 @@ This hands-on workshop introduces EXACT Coding -- a pragmatic workflow for AI-as
 - AI Tools (GitHub Copilot)
 - EXACT Coding Workflow
 
-### Trainers
-
-Ferdi Ade & Marco Emrich
-
 ### Contributors
 
 - Oliver Roth -- Java, JUnit and Maven port of the Copilot harness (`harness/copilot-java`)
