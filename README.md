@@ -149,13 +149,14 @@ own branch, carrying exactly one configuration:
 | Agent | Branch | Directory | Start a TDD session with |
 |-------|--------|-----------|--------------------------|
 | Claude Code | `main` | `.claude/` | Ask for TDD in plain language ("let's TDD this kata") |
-| GitHub Copilot | `harness/copilot` | `.github/` | `/tdd`, or ask for TDD in plain language |
+| GitHub Copilot (TypeScript) | `harness/copilot` | `.github/` | `/tdd`, or ask for TDD in plain language |
+| GitHub Copilot (Java) | `harness/copilot-java` | `.github/` | `/tdd`, or ask for TDD in plain language |
 | Cursor | `harness/cursor` | `.cursor/` | Ask for TDD in plain language |
 | OpenCode | `harness/opencode` | `.opencode/` | The `tdd` command |
 | pi | `harness/pi` | `.pi/` | `/skill:tdd`, or ask for TDD in plain language |
 
 ```bash
-git checkout harness/copilot   # or: cursor, opencode, pi
+git checkout harness/copilot   # or: copilot-java, cursor, opencode, pi
 ```
 
 **Why one branch per agent.** Two reasons. Copilot reads `.claude/skills/` and
@@ -247,7 +248,8 @@ The other four agents have subagents natively and need nothing extra.
 ### Copilot: CLI and VS Code
 
 The `harness/copilot` branch runs in both **Copilot CLI** and **VS Code agent
-mode** from the same `.github/` tree. Skills live in `.github/skills/`, the two
+mode** from the same `.github/` tree. `harness/copilot-java` is the same tree
+ported to Java, JUnit 5 and Maven. Skills live in `.github/skills/`, the two
 refactor agents in `.github/agents/`. In the CLI you can force a phase with
 `/red`, `/green` and so on, and delegate explicitly with `/agent refactor`; in
 VS Code the same skills appear under `/` and the agents are invoked as
