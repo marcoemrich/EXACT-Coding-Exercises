@@ -84,7 +84,7 @@ Before anything else, evaluate the naming:
 ```
 **Naming Evaluation**:
 - Current name: `calculate`
-- Function purpose: "adds numbers from an array"
+- Function purpose: "adds numbers from a list"
 - Question: Does "calculate" clearly reveal this intent?
 - Assessment: Too generic - "calculate" could mean anything
 - Recommendation: Rename to `sumNumbers` or keep if name fits
@@ -96,19 +96,19 @@ Decision: [Rename to X] or [Keep current name because Y]
 Before making changes, calculate current code mass:
 ```
 **Current Code Mass**:
-function calculate(numbers: number[]): number {
-  return numbers.reduce((sum, num) => sum + num, 0);
+public static int calculate(List<Integer> numbers) {
+    return numbers.stream().reduce(0, (sum, num) -> sum + num);
 }
 
 Component Count:
 - Constants: 1 (literal 0) = 1
 - Bindings: 3 (numbers, sum, num) = 3
-- Invocations: 2 (reduce, +) = 4
+- Invocations: 3 (stream, reduce, +) = 6
 - Conditionals: 0 = 0
 - Loops: 1 (reduce is iteration) = 5
 - Assignments: 0 = 0
 
-Total Mass: 13
+Total Mass: 15
 ```
 
 ### Step 3: Apply Simple Design Rules (in order)
@@ -175,7 +175,7 @@ Explain the refactoring outcome:
 ```
 **Refactoring Applied**:
 - Naming: Renamed `calculate` to `sumNumbers` (better reveals intent)
-- Mass: Reduced from 13 to 11 (removed conditional)
+- Mass: Reduced from 15 to 11 (removed conditional)
 - Rule 2: Improved clarity with explaining variable
 
 Benefits:
@@ -189,7 +189,7 @@ Benefits:
 **Refactoring Evaluation**:
 - Naming: `calculate` already clearly describes purpose
 - Duplication: No duplicated code found
-- Mass: Current implementation already minimal (mass: 13)
+- Mass: Current implementation already minimal (mass: 15)
 - Simplification: No unnecessary complexity
 
 Reasoning:
