@@ -83,14 +83,14 @@ agents**. They are equivalent — use whichever you have. Version **2026-08-12**
 **Claude Code is the default and lives on `main`.** Every other agent has its
 own branch, carrying exactly one configuration:
 
-| Agent | Branch                 | Directory | Start a TDD session with |
-|-------|------------------------|-----------|--------------------------|
-| Claude Code | `main`                 | `.claude/` | Ask for TDD in plain language ("let's TDD this kata") |
-| GitHub Copilot (TypeScript) | `harness/copilot`      | `.github/` | `/tdd`, or ask for TDD in plain language |
+| Agent | Branch | Directory | Start a TDD session with |
+|-------|--------|-----------|--------------------------|
+| Claude Code | `main` | `.claude/` | `/tdd`, or ask for TDD in plain language |
+| GitHub Copilot (TypeScript) | `harness/copilot` | `.github/` | `/tdd`, or ask for TDD in plain language |
 | GitHub Copilot (Java) | `harness/copilot-java` | `.github/` | `/tdd`, or ask for TDD in plain language |
-| Cursor | `harness/cursor`       | `.cursor/` | Ask for TDD in plain language |
-| OpenCode | `harness/opencode`     | `.opencode/` | The `tdd` command |
-| pi | `harness/pi`           | `.pi/` | `/skill:tdd`, or ask for TDD in plain language |
+| Cursor | `harness/cursor` | `.cursor/` | `/tdd`, or ask for TDD in plain language |
+| OpenCode | `harness/opencode` | `.opencode/` | `/tdd` |
+| pi | `harness/pi` | `.pi/` | `/skill:tdd`, or ask for TDD in plain language |
 
 ```bash
 git checkout harness/copilot-java   # or: copilot, cursor, opencode, pi
