@@ -1,185 +1,53 @@
 ---
 name: tdd
-description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
+description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
 ---
 
-# TDD Rules — Hybrid (v6, exact-coding baseline)
+# EXACT Coding — SOL / Predictive TDD
 
-## ⚠️ CRITICAL: Skill + Subagent Usage is MANDATORY
+This is the consumer form of the SOL-originated EXACT Coding line. It runs in
+one shared context: Test List once, then one-test Red-Green-Refactor cycles.
+Refactoring uses the Four Rules of Simple Design inline; this line deliberately
+has no APP calculation, metric-driven end pass, or refactor subagent.
 
-This workflow is a **hybrid** of v4 and v5:
+## Preparation
 
-- **`/test-list`, `/red`, `/green`** run as **Skills in the main context** (like v5) — they share state, so the model keeps test list, last error, and current implementation in working memory.
-- **Refactor** runs as a **Task subagent with isolated context** (like v4) — the refactor agent sees only the current source/tests, not the full red/green history. Hypothesis: refactoring benefits most from a fresh perspective free of implementation bias.
+1. Read `.claude/skills/test-list/SKILL.md`.
+2. Read `.claude/skills/predictive-tdd/SKILL.md`.
+3. Determine the project's language and test framework. Read the matching file
+   under `.claude/skills/predictive-tdd/stacks/` before changing code.
+4. Read the complete specification and establish the applicable baseline gates.
 
-Do NOT perform TDD phases without invoking the appropriate skill or agent.
+Do not assume TypeScript or Vitest from this orchestration file. Concrete
+inactive-test syntax, examples, paths, commands, compiler behavior, and quality
+tools belong only to the selected stack profile.
 
-### Before Starting Any TDD Work — Complete This Checklist:
+## Sequence
 
-- [ ] Have I been asked to implement something using TDD?
-- [ ] Am I about to write tests or implementation code?
-- [ ] **STOP** — Use the Skill tool (test-list/red/green) or the Task tool (refactor)
-- [ ] NEVER write tests, code, or refactorings directly — ALWAYS delegate
+1. Create the complete ordered test list with every future behavior inactive.
+2. Apply the Test-List checkpoint from `.claude/skills/tdd/human-in-the-loop.md`.
+3. For exactly one behavior at a time, follow the Predictive TDD skill:
+   - activate one behavior and reach behavioral Red,
+   - state falsifiable predictions before deterministic checks and compare them
+     explicitly with reality,
+   - apply the Red checkpoint,
+   - reach Green with the smallest production change,
+   - review and, where useful, refactor inline under the Four Rules,
+   - apply the Refactor checkpoint.
+4. Continue until every listed behavior is executable and all applicable gates
+   from the active stack profile pass.
 
-### Which Tool to Use:
+A test already satisfied by an earlier generalization is legitimate evidence.
+Confirm it and do not manufacture a failure or production change.
 
-| Phase | Mechanism | Invoke With |
-|-------|-----------|-------------|
-| Example Mapping (optional, before TDD) | **Skill** | `Skill({ skill: "example-mapping" })` |
-| Test List | **Skill** (main context) | `Skill({ skill: "test-list" })` |
-| Red Phase | **Skill** (main context) | `Skill({ skill: "red" })` |
-| Green Phase | **Skill** (main context) | `Skill({ skill: "green" })` |
-| Refactor Phase | **Task subagent** (isolated context) | `Task({ subagent_type: "refactor", prompt: ... })` |
-| Final quality pass (optional, manual) | **Skill** | `Skill({ skill: "end-refactor" })` |
+## Human-in-the-loop
 
-**If you find yourself writing test code, implementation code, or a refactoring without invoking the right tool first, you are doing it WRONG.**
+`.claude/skills/tdd/human-in-the-loop.md` is the single source of truth for checkpoints. Its default
+`full-hitl` level stops after Test List, Red, and Refactor, and whenever a
+prediction is wrong. Green has no default stop.
 
-## Overview
+## Provenance
 
-This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle. v6 keeps red and green in a shared context so the predictions, error messages, and minimal implementations stay coherent — and isolates refactoring so the model evaluates the resulting code on its own merits.
-
-This baseline supports **configurable human-in-the-loop checkpoints** between
-phases. See `@.claude/skills/tdd/human-in-the-loop.md` for the Autonomy Level
-setting and stop behavior.
-
-## TDD Workflow
-
-### 0. Example Mapping (optional, before the loop)
-
-When the requirements are not yet settled, run an Example Mapping session
-first: `Skill({ skill: "example-mapping" })`. It discovers business rules and
-concrete examples through conversation, and hands its examples to the Test
-List phase below. Skip it when the spec is already clear — the loop starts at
-step 1 either way.
-
-### 1. Test List Phase
-**🚨 INVOKE SKILL**: `Skill({ skill: "test-list" })`
-
-Provide: feature, test file path, implementation file path, requirements.
-
-The skill creates a comprehensive test list using `it.todo()` covering every rule and example from the specification.
-
-**DO NOT** write the test list yourself.
-
-### 2. Red Phase
-**🚨 INVOKE SKILL**: `Skill({ skill: "red" })`
-
-Provide: test file path, which `it.todo()` to activate, current passing-test count, implementation file path.
-
-The skill activates exactly ONE test, makes explicit predictions, and verifies failure.
-
-**DO NOT** write test code yourself.
-
-### 3. Green Phase
-**🚨 INVOKE SKILL**: `Skill({ skill: "green" })`
-
-Provide: test file path, failing test name, current error, implementation file path.
-
-The skill implements minimal code to make the test pass — hardcoded returns are fine for early tests.
-
-**DO NOT** write implementation code yourself.
-
-### 4. Refactor Phase
-**🚨 LAUNCH AGENT**: `Task({ subagent_type: "refactor", prompt: ... })`
-
-**Required prompt context** (the subagent has no memory of red/green — give it everything it needs):
-
-```
-Task({
-  subagent_type: "refactor",
-  prompt: `
-    Test file: src/<feature>.spec.ts
-    Implementation file: src/<feature>.ts
-    Passing tests: <count>
-    Recent Green phase: <one-line summary of what was just added>
-
-    Refactor the implementation while keeping all tests green.
-  `
-})
-```
-
-The agent will improve code while keeping tests green:
-- MUST attempt at least one refactoring (or document why none is possible)
-- Evaluate naming FIRST
-- Apply Four Rules of Simple Design (priority order)
-- Calculate APP (Absolute Priority Premise) mass before/after
-
-**DO NOT** refactor code yourself — let the agent do it. After it returns, read its summary, apply any test-runs needed for sanity, and proceed to the next Red phase.
-
-**Verify the marker.** The agent's report must start with `## Refactor (agent: refactor, cycle N)`. If it does not, the work did not come from the agent definition — either nothing was delegated, or a generic subagent improvised. Say so plainly instead of accepting the result, and retry with `Task({ subagent_type: "refactor", ... })`.
-
-### 5. Repeat
-Return to step 2 (Red phase) for the next test. **Invoke the `red` skill again.**
-
-### Optional: Final Quality Pass
-
-When all tests are implemented and passing, the work is done — the per-cycle
-refactor has already polished every step. If you additionally want a measured
-cleanup across the *whole* production tree, the `end-refactor` skill is
-available:
-
-```
-Skill({ skill: "end-refactor" })
-```
-
-It measures ESLint smells, cognitive complexity, McCabe and APP mass over all
-of `src/`, then applies one change at a time until no metric improves further.
-This is **opt-in and manual** — it is not a phase of the loop. It costs
-noticeably more time and tokens than a per-cycle refactor and pays off mainly
-on multi-file code, where cross-file duplication and complexity hot spots have
-had room to form. On a single small module the per-cycle refactor has usually
-already done the work.
-
-## Human-in-the-Loop
-
-Between phases, the workflow consults `@.claude/skills/tdd/human-in-the-loop.md`
-to decide whether to pause for human approval. The default Autonomy Level
-is `full-hitl`, which stops after Test-List, Red, and Refactor (not Green)
-and on prediction failures. Switch levels by editing the setting at the
-top of the HITL file — see that file for the full table.
-
-For unattended batch runs, set the level to `autonomous` to disable all
-stops.
-
-## Core TDD Principles
-
-### TDD Mindset
-TDD practices will feel counterintuitive:
-- **Hardcoded returns feel "too simple"** — This is correct!
-- **The urge to implement ahead is strong** — Resist this
-- **Minimal steps feel inefficient** — They actually accelerate development
-- **Predictions feel unnecessary** — They build crucial understanding
-
-### Common TDD Failure Modes
-- **🚨 NOT USING SKILLS / SUBAGENT** — The most critical failure mode
-- Multiple active tests at once
-- Implementing beyond what tests demand
-- Skipping predictions
-- Avoiding refactoring
-- Refactoring in the main context instead of via the subagent
-
-## Technical Setup
-
-See `@.claude/rules/tdd-with-ts-and-vitest.md` for TypeScript and Vitest configuration.
-
-## Rule Files
-
-| File | Contains |
-|------|----------|
-| `tdd.md` (this file) | The TDD workflow itself |
-| `@.claude/skills/tdd/subagent-prompts.md` | What to pass the isolated refactor subagent |
-| `@.claude/rules/tdd-with-ts-and-vitest.md` | TypeScript + Vitest setup |
-| `@.claude/skills/tdd/human-in-the-loop.md` | Autonomy Level and phase checkpoints |
-| `@.claude/skills/tdd/tdd-execution-mode.md` | How the workflow executes end to end |
-
-## Running Tests
-
-Run tests with `npm test`.
-
-## Remember
-
-- **🚨 ALWAYS USE SKILLS** for test-list/red/green; **ALWAYS USE THE SUBAGENT** for refactor
-- Never write tests, implementation, or refactorings directly
-- Refactor subagent runs in an isolated context — give it everything it needs in the prompt
-- Consult `@.claude/skills/tdd/human-in-the-loop.md` at every phase boundary
-- Trust the process — discomfort is a signal you're doing it right
+Exported from the promoted `exact-sol-v1.3-stack-profile-pi` workflow. The methodology was validated
+on GPT-5.6 SOL with pi. Other harness trees are
+mechanical ports of the same files, not claims of cross-harness validation.
