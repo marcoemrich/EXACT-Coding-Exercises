@@ -3,7 +3,7 @@ name: tdd
 description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Apply when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT apply for general coding tasks where the user has not asked for TDD.
 ---
 
-# TDD Rules -- Hybrid (v6.6, cursor, exact-coding baseline)
+# TDD Rules -- Hybrid (exact-hybrid-v2-testlist-fix, cursor, exact-coding baseline)
 
 ## CRITICAL: Mandatory Output Format
 
@@ -11,14 +11,14 @@ This workflow runs on **cursor-agent**. The `test-list`, `red` and `green`
 phases are skill documents you read rather than tools you call — read each
 SKILL.md once and then follow its instructions directly. Because those phases
 produce no tool call of their own, their boundaries are marked by **text
-markers** in the assistant output. Refactor and end-refactor are different:
-they run as **isolated subagents** via the Task tool, so the tool call itself
-marks the phase.
+markers** in the assistant output. Refactor is different: it runs as an
+**isolated subagent** via the Task tool, so the tool call itself marks the
+phase.
 
 ### Phase-Completion Markers Are MANDATORY
 
 Every TDD phase MUST produce its marker. The skill phases emit a text heading;
-the refactor phases are recognised by their subagent call. The markers are what
+the refactor phase is recognised by its subagent call. The markers are what
 make the phase structure legible — to you while you work, and to anyone reading
 the session afterwards. A missing marker makes that phase invisible.
 
@@ -29,7 +29,6 @@ the session afterwards. A missing marker makes that phase invisible.
 | Red       | `Red Phase Complete:` + prediction lines  | both predictions were made and scored |
 | Green     | `## Green` heading                        | a minimal implementation was added   |
 | Refactor  | Task call to the `refactor` subagent, whose report opens with `## Refactor (agent: refactor, cycle N)` | refactoring ran in an isolated context, under the agent definition |
-| End-Refactor | Task call to the `end-refactor` subagent, whose report opens with `## End-Refactor (agent: end-refactor)` | the final whole-src pass ran, under the agent definition |
 
 **IMPORTANT**: emit every text marker as **assistant output text**, not only
 inside private reasoning. A marker that appears only in a thinking/reasoning
@@ -82,14 +81,15 @@ Test List Created:
 ## Overview
 
 This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle.
-v6 keeps red and green in a shared context so the predictions, error messages, and minimal
-implementations stay coherent -- then evaluates the resulting code in a dedicated refactor pass.
+The hybrid keeps red and green in a shared context so the predictions, error messages, and minimal
+implementations stay coherent -- and isolates refactoring so the model evaluates the resulting
+code on its own merits.
 
 This baseline supports **configurable human-in-the-loop checkpoints** between
 phases. See `.cursor/rules/human-in-the-loop.mdc` for the Autonomy Level setting
 and stop behavior.
 
-## Architecture: Auto-loaded Skills + Isolated Subagents
+## Architecture: Auto-loaded Skills + Isolated Subagent
 
 This workflow is a **hybrid**, exactly like the cc and pi variants:
 
@@ -97,12 +97,12 @@ This workflow is a **hybrid**, exactly like the cc and pi variants:
   Read each SKILL.md **before the first use** of that phase, then follow its instructions
   directly in the main context. These three share state, so the test list, last error,
   and current implementation stay in working memory.
-- **`refactor` and `end-refactor`** -- Run as **Task subagents with isolated context**.
-  They live in `.cursor/agents/` and see only the current source and tests, not the
-  red/green history. Hypothesis: refactoring benefits most from a fresh perspective
+- **`refactor`** -- Runs as a **Task subagent with isolated context**. It lives in
+  `.cursor/agents/` and sees only the current source and tests, not the red/green
+  history. Hypothesis: refactoring benefits most from a fresh perspective
   free of implementation bias.
 
-**Delegate the refactor phases — do not perform them yourself.** If you refactor
+**Delegate the refactor phase — do not perform it yourself.** If you refactor
 in the main context instead of calling the subagent, the workflow loses the
 architectural separation that makes the hybrid work.
 
@@ -116,7 +116,6 @@ Do NOT skip reading the skill files. Do NOT skip the mandatory markers.
 | Red Phase     | **Skill document** (main context)      | Read `.cursor/skills/red/SKILL.md`, follow its steps        |
 | Green Phase   | **Skill document** (main context)      | Read `.cursor/skills/green/SKILL.md`, follow its steps      |
 | Refactor Phase| **Task subagent** (isolated context)   | Launch the `refactor` agent from `.cursor/agents/`           |
-| End-Refactor  | **Task subagent** (isolated context)   | Launch the `end-refactor` agent from `.cursor/agents/`       |
 
 ## TDD Workflow
 
@@ -175,29 +174,6 @@ read its report and proceed directly to the next Red phase.
 ### 5. Repeat
 Return to step 2 (Red phase) for the next test.
 
-### 6. End-Refactor (once, after the last green cycle)
-**LAUNCH SUBAGENT**: the `end-refactor` agent from `.cursor/agents/end-refactor.md`
-
-After the last per-cycle refactor returns and all tests pass, launch the
-`end-refactor` agent exactly once. It covers the **whole production tree**
-(`src/`, excluding `*.spec.ts`) using deterministic pre/post measurements:
-ESLint smells + SonarJS cognitive complexity, plus APP mass and McCabe
-cyclomatic complexity. It iterates one change at a time until no metric
-improves further.
-
-```
-Implementation files: src/<all non-spec *.ts>
-Test files: src/<*.spec.ts>
-Passing tests: <count>
-
-Run the final metric-driven refactoring pass over the whole src/.
-Iterate ONE change at a time with pre/post measurement (ESLint, cognitive,
-APP, McCabe). Stop when no metric improves further.
-```
-
-**DO NOT** refactor the whole `src/` yourself — delegate to the end-refactor
-subagent. After it returns, read its report.
-
 ## Core TDD Principles
 
 ### TDD Mindset
@@ -211,7 +187,7 @@ TDD practices will feel counterintuitive:
 - **MISSING OUTPUT MARKERS** -- The most critical failure mode.
   Every cycle MUST have `## Red` and `## Green` headings in visible output.
   Every Red cycle with a failing test MUST have `Red Phase Complete:` with prediction lines.
-- **NOT DELEGATING THE REFACTOR PHASES** -- equally critical. Refactoring in the
+- **NOT DELEGATING THE REFACTOR PHASE** -- equally critical. Refactoring in the
   main context loses the isolated-context architecture.
 - Multiple active tests at once
 - Implementing beyond what tests demand
@@ -268,14 +244,13 @@ describe("Some Feature", () => {
    - **Green Phase** -- Read skill, produce `## Green` marker
    - **Refactor Phase** -- Launch the `refactor` subagent, read its report
 3. **Continue** until all tests are implemented and passing
-4. **End-Refactor** -- Launch the `end-refactor` subagent once, over the whole `src/`
 
 ## Remember
 
-- **ALWAYS PRODUCE THE MANDATORY MARKERS** -- `Test List Created:`, `## Red`, `Red Phase Complete:`, `## Green` -- in visible assistant output, not only in reasoning. Refactor and end-refactor are counted by their subagent call, not by a heading.
-- **ALWAYS DELEGATE THE REFACTOR PHASES** -- launch the `refactor` / `end-refactor` agents from `.cursor/agents/`; never refactor in the main context.
-- **The refactor subagents have no memory of red/green** -- pass them everything they need in the prompt.
-- Follow skill content (test-list/red/green/refactor SKILL.md) for the actual work
+- **ALWAYS PRODUCE THE MANDATORY MARKERS** -- `Test List Created:`, `## Red`, `Red Phase Complete:`, `## Green` -- in visible assistant output, not only in reasoning. Refactor is recognised by its subagent call, not by a heading.
+- **ALWAYS DELEGATE THE REFACTOR PHASE** -- launch the `refactor` agent from `.cursor/agents/`; never refactor in the main context.
+- **The refactor subagent has no memory of red/green** -- pass it everything it needs in the prompt.
+- Follow skill content (test-list/red/green SKILL.md) for the actual work
 - Consult `.cursor/rules/human-in-the-loop.mdc` at every phase boundary
 - Trust the process -- discomfort is a signal you're doing it right
 
