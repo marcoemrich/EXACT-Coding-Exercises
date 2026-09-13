@@ -79,34 +79,36 @@ resulting code. Two tasks:
   so the model cannot know it. Its spec contains deliberate ambiguities.
   Correctness is checked by 15 acceptance scenarios the agent never sees.
 
-### Vibe coding vs. "just use TDD" vs. this workflow
+### "Just use TDD" vs. this workflow
 
-- **Vibe coding:** "here is the spec, implement it" (in one go, or step by step with a plan).
-- **"Just use TDD":** the same agent, told to use TDD, with no further structure.
+- **"Just use TDD":** the agent is told to use TDD, with no further structure.
 - **This workflow:** Test List, then Red → Green → Refactor with an isolated refactor step every cycle.
 
 **Model: Claude Opus 4.7**, 5–10 runs per cell. Lower is better.
 
-| What we measured | Vibe coding | "Just use TDD" | **This workflow** |
-|---|---:|---:|---:|
-| **Game of Life** (known task) | | | |
-| Complexity of the hardest function¹ | 16–19 | 22 | **6.5** |
-| Longest function (lines) | 32 | 33 | **14** |
-| Code smells found by the linter | 4–5 | 6 | **2.4** |
-| **Claim Office** (unknown task) | | | |
-| Complexity of the hardest function¹ | 11–12 | 20 | **5.7** |
-| Longest function (lines) | 40–41 | 52 | **18** |
-| Code smells found by the linter | 12–16 | 17 | **1.3** |
-| Tokens used | 2 M | 3 M | 35 M |
-| Time per task | 4 min | 5 min | 26 min |
+| What we measured | "Just use TDD" | **This workflow** |
+|---|---:|---:|
+| **Game of Life** (known task) | | |
+| Complexity of the hardest function¹ | 22 | **6.5** |
+| Longest function (lines) | 33 | **14** |
+| Code smells found by the linter | 6 | **2.4** |
+| Tokens used | 0.8 M | 6.9 M |
+| Time per task | 1 min | 8 min |
+| **Claim Office** (unknown task) | | |
+| Complexity of the hardest function¹ | 20 | **5.7** |
+| Longest function (lines) | 52 | **18** |
+| Code smells found by the linter | 17 | **1.3** |
+| Tokens used | 3.3 M | 35 M |
+| Time per task | 5 min | 26 min |
 
 ¹ *Cognitive complexity (SonarJS): roughly, how hard a function is to read.*
 
-- **"Just use TDD" is not enough.** Without structure, the agent writes the most
-  complex code of all three, worse than vibe coding.
+- **"Just use TDD" is not enough.** Without structure, the agent writes long,
+  deeply branched functions.
 - **The enforced refactor step makes the difference.** It cuts the most complex
   function to about a third and removes most linter findings.
-- **It costs tokens and time**, roughly 10× on the harder task.
+- **It costs tokens and time:** on Game of Life about 9× the tokens and 7× the
+  time, on Claim Office about 10× the tokens and 5× the time.
 
 ### Why refactor after every step, not once at the end?
 
@@ -129,21 +131,35 @@ refactoring after every step breaks functions apart while they are still small.
 ### On the newest model: the gap narrows, but it stays
 
 **Model: Claude Opus 5** (the model this version was validated on). 6 runs per
-cell, this workflow on Claim Office 18 runs. Vibe coding was not measured on
-this model.
+cell, this workflow on Claim Office 18 runs.
 
-| What we measured | Claim Office: "use TDD" | Claim Office: **this workflow** | Game of Life: "use TDD" | Game of Life: **this workflow** |
-|---|---:|---:|---:|---:|
-| Hidden acceptance scenarios passed | 100 % | 96 % | 100 % | 100 % |
-| Complexity of the hardest function¹ | 5.3 | **2.8** | 7.2 | **1.8** |
-| Average function length (lines) | 8.9 | **3.8** | 6.5 | **4.2** |
-| Longest function (lines) | 24 | **16** | 15 | **10** |
-| Time per task | 5 min | 44 min | 3 min | 10 min |
-| Tokens used | 4 M | 84 M | 2 M | 7 M |
+**Game of Life** (known task):
+
+| What we measured | "Just use TDD" | **This workflow** |
+|---|---:|---:|
+| Hidden acceptance scenarios passed | 100 % | 100 % |
+| Complexity of the hardest function¹ | 7.2 | **1.8** |
+| Average function length (lines) | 6.5 | **4.2** |
+| Longest function (lines) | 15 | **10** |
+| Tokens used | 2.1 M | 7.4 M |
+| Time per task | 3 min | 10 min |
+
+**Claim Office** (unknown task):
+
+| What we measured | "Just use TDD" | **This workflow** |
+|---|---:|---:|
+| Hidden acceptance scenarios passed | 100 % | 96 % |
+| Complexity of the hardest function¹ | 5.3 | **2.8** |
+| Average function length (lines) | 8.9 | **3.8** |
+| Longest function (lines) | 24 | **16** |
+| Tokens used | 4.5 M | 84 M |
+| Time per task | 5.5 min | 44 min |
 
 - **The newer model writes much cleaner code on its own**, even with plain "use TDD".
-- **This workflow still halves complexity and function length**, and the ranges
-  barely overlap, so this is not noise.
+- **This workflow still clearly lowers complexity and function length** on both
+  tasks, and the ranges barely overlap, so this is not noise.
+- **The cost depends heavily on the task:** on Game of Life about 3.5× the tokens
+  and 3.5× the time, on Claim Office about 19× the tokens and 8× the time.
 - **The 96 % comes from one scenario** that trips every structured workflow on
   this model. It is not a general correctness penalty.
 
