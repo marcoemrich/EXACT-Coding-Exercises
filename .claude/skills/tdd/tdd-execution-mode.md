@@ -1,8 +1,8 @@
 # TDD Execution Mode
 
 This workflow runs the TDD cycle as a sequence of Skill invocations
-(`/test-list`, `/red`, `/green`) and two Task subagents (`refactor` per cycle,
-`end-refactor` once at the end). Whether the cycle pauses for human approval
+(`/test-list`, `/red`, `/green`) and one Task subagent (`refactor`, once per
+cycle). Whether the cycle pauses for human approval
 between phases is controlled by `@.claude/skills/tdd/human-in-the-loop.md` (the
 Autonomy Level setting at the top of that file).
 
@@ -15,16 +15,14 @@ Autonomy Level setting at the top of that file).
    - **Refactor Phase** → Launch the `refactor` subagent via the Task tool
      (isolated context)
 3. **Continue** until all tests are implemented and passing
-4. **End-Refactor Phase** → Launch the `end-refactor` subagent via the Task
-   tool ONCE, over the whole `src/`
-5. At each phase boundary, consult
+4. At each phase boundary, consult
    `@.claude/skills/tdd/human-in-the-loop.md` to decide whether to stop or
    continue
 
 ## Subagent prompt contracts
 
-Both refactor phases run in isolated contexts with no memory of the
-test-list, red, or green phases. What to pass each of them is specified in
+The refactor phase runs in an isolated context with no memory of the
+test-list, red, or green phases. What to pass it is specified in
 `@.claude/skills/tdd/subagent-prompts.md`.
 
 After a subagent returns, read its summary, then consult HITL before
@@ -34,8 +32,8 @@ proceeding to the next phase.
 
 This workflow is meant to be run interactively and is free to pause at any
 phase boundary. It expects a human on the other end: the Autonomy Level
-decides where it stops, and the session simply ends after the final
-End-Refactor checkpoint. There is no completion marker to write and no
+decides where it stops, and the session simply ends once the last test
+passes and its refactor checkpoint is done. There is no completion marker to write and no
 requirement to finish the whole cycle in one uninterrupted turn.
 
 If you are driving this workflow from an automation harness that needs a

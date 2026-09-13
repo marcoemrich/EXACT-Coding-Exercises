@@ -3,14 +3,14 @@ name: tdd
 description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
 ---
 
-# TDD Rules — Hybrid (v6, exact-coding baseline)
+# TDD Rules — Hybrid (exact-hybrid-v2-testlist-fix, exact-coding baseline)
 
 ## ⚠️ CRITICAL: Skill + Subagent Usage is MANDATORY
 
-This workflow is a **hybrid** of v4 and v5:
+This workflow is a **hybrid** of subagents-v1 and single-context-v1:
 
-- **`/test-list`, `/red`, `/green`** run as **Skills in the main context** (like v5) — they share state, so the model keeps test list, last error, and current implementation in working memory.
-- **Refactor** runs as a **Task subagent with isolated context** (like v4) — the refactor agent sees only the current source/tests, not the full red/green history. Hypothesis: refactoring benefits most from a fresh perspective free of implementation bias.
+- **`/test-list`, `/red`, `/green`** run as **Skills in the main context** (like single-context-v1) — they share state, so the model keeps test list, last error, and current implementation in working memory.
+- **Refactor** runs as a **Task subagent with isolated context** (like subagents-v1) — the refactor agent sees only the current source/tests, not the full red/green history. Hypothesis: refactoring benefits most from a fresh perspective free of implementation bias.
 
 Do NOT perform TDD phases without invoking the appropriate skill or agent.
 
@@ -36,7 +36,7 @@ Do NOT perform TDD phases without invoking the appropriate skill or agent.
 
 ## Overview
 
-This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle. v6 keeps red and green in a shared context so the predictions, error messages, and minimal implementations stay coherent — and isolates refactoring so the model evaluates the resulting code on its own merits.
+This project follows strict Test-Driven Development practices using the Red-Green-Refactor cycle. The hybrid keeps red and green in a shared context so the predictions, error messages, and minimal implementations stay coherent — and isolates refactoring so the model evaluates the resulting code on its own merits.
 
 This baseline supports **configurable human-in-the-loop checkpoints** between
 phases. See `@.claude/skills/tdd/human-in-the-loop.md` for the Autonomy Level
