@@ -7,14 +7,6 @@ description: TDD Green Phase - Implement minimal code to make the failing test p
 
 You are now in the **Green Phase** of TDD. Follow these instructions to make the failing test pass with MINIMAL code.
 
-## Why minimality matters
-
-The Green Phase deliberately writes the smallest implementation that turns the active test green -- even hardcoded returns, even obviously-incomplete logic. This is not laziness or naivete:
-
-- It **exposes refactoring opportunities** in the next phase. When the implementation does exactly one thing, structural smells are visible. Over-implemented green code looks "already clean" and hides design problems.
-- It **prevents premature generalization**. The shape of the right abstraction emerges from the second and third test, not the first. Implementing for hypothetical future tests locks in a design before its constraints are known.
-- It **keeps the red-green-refactor cycle short**. Each cycle pays a cost in tokens and context; over-implementing in green collapses several future cycles into one large one and loses the per-test feedback loop.
-
 ## Your Mission
 
 1. Implement the **minimal code** necessary to make the failing test pass

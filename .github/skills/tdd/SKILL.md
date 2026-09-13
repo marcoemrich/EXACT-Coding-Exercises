@@ -3,7 +3,7 @@ name: tdd
 description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Invoke when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT invoke for general coding tasks where the user has not asked for TDD.
 ---
 
-# TDD Rules -- Hybrid (v6.6, GitHub Copilot, exact-coding baseline)
+# TDD Rules -- Hybrid (exact-hybrid-v2-testlist-fix, GitHub Copilot, exact-coding baseline)
 
 ## CRITICAL: Skill + Subagent Usage is MANDATORY
 
@@ -40,7 +40,7 @@ Do NOT perform TDD phases without invoking the appropriate skill or agent.
 | Red Phase | **Skill** (main context) | `/red` |
 | Green Phase | **Skill** (main context) | `/green` |
 | Refactor Phase | **Subagent** (isolated context) | the `refactor` agent |
-| End-Refactor (once, at the end) | **Subagent** (isolated context) | the `end-refactor` agent |
+| Final quality pass (optional, manual) | Skill | `/end-refactor` |
 
 **If you find yourself writing test code, implementation code, or a refactoring
 without invoking the right tool first, you are doing it WRONG.**
@@ -145,29 +145,14 @@ the CLI, or the agents dropdown in VS Code.
 ### 5. Repeat
 Return to step 2 (Red phase) for the next test. **Invoke `/red` again.**
 
-### 6. End-Refactor (once, after the last green cycle)
-**DELEGATE TO THE `end-refactor` AGENT** (isolated context).
+### Optional: Final Quality Pass
 
-After the last per-cycle refactor returns and all tests pass, launch it exactly
-once. It refactors the **whole production tree** (`src/main/java/`)
-using deterministic pre/post measurements: PMD smells and cognitive
-complexity, plus APP mass and McCabe cyclomatic complexity. It iterates one
-change at a time until no metric improves further.
-
-```
-Implementation files: src/main/java/
-Test files: src/test/java/
-Passing tests: <count>
-
-Run the final metric-driven refactoring pass over the whole src/main/java/.
-Iterate ONE change at a time with pre/post measurement (PMD, cognitive,
-APP, McCabe). Stop when no metric improves further.
-```
-
-**DO NOT** refactor the whole `src/main/java/` yourself -- delegate it.
-
-**Verify the marker.** The report must start with
-`## End-Refactor (agent: end-refactor)`. Same rule as above if it is missing.
+When all tests are implemented and passing, the work is done — the per-cycle
+refactor has already polished every step. If you additionally want a measured
+cleanup across the *whole* production tree, the `/end-refactor` skill is
+available. It is **opt-in and manual** — never start it on your own, only when
+the user asks for it. It costs noticeably more time and tokens than a per-cycle
+refactor and pays off mainly on multi-file code.
 
 ## Core TDD Principles
 
@@ -208,14 +193,13 @@ tests with `mvn test`.
    - **Green Phase** -> `/green`
    - **Refactor Phase** -> delegate to the `refactor` agent
 3. **Continue** until all tests are implemented and passing
-4. **End-Refactor** -> delegate to the `end-refactor` agent, once, over `src/main/java/`
 
-What to pass each subagent is specified in `.github/rules/subagent-prompts.md`.
+What to pass the refactor agent is specified in `.github/rules/subagent-prompts.md`.
 
 ## Remember
 
-- **ALWAYS USE SKILLS** for test-list/red/green; **ALWAYS DELEGATE** the refactor phases
+- **ALWAYS USE SKILLS** for test-list/red/green; **ALWAYS DELEGATE** the refactor phase
 - Never write tests, implementation, or refactorings directly
-- The refactor agents run in isolated contexts -- give them everything in the prompt
+- The refactor agent runs in an isolated context -- give it everything in the prompt
 - Consult `.github/rules/human-in-the-loop.md` at every phase boundary
 - Trust the process -- discomfort is a signal you're doing it right

@@ -10,8 +10,8 @@ from one tree. Version: see `VERSION`.
 | `skills/tdd/SKILL.md` | The orchestrator. Start here: `/tdd` |
 | `skills/{test-list,red,green}/SKILL.md` | The three main-context phases |
 | `skills/example-mapping/SKILL.md` | Requirements exploration, before TDD |
+| `skills/end-refactor/SKILL.md` | Manual extra: measured cleanup over the whole production code. You invoke it (`/end-refactor`); the workflow never does |
 | `agents/refactor.agent.md` | Per-cycle refactor, isolated context |
-| `agents/end-refactor.agent.md` | Final metric-driven pass over `src/`, once |
 | `rules/human-in-the-loop.md` | Autonomy Level -- the single stop-behaviour source |
 | `rules/subagent-prompts.md` | What to pass each isolated agent |
 | `rules/tdd-with-junit-and-maven.md` | Java and JUnit 5 conventions |
@@ -36,7 +36,7 @@ Everything is shared except how a subagent is started.
 | Delegate refactoring | `/agent` opens a picker; or name the agent in the prompt; or `copilot --agent=refactor` | agents dropdown in the Chat view, or the subagent tool (`#runSubagent`) naming `refactor` |
 | Tool permissions | `--allow-tool` and CLI config | VS Code approval prompts and terminal auto-approve settings |
 
-The agents declare no `tools:` list on purpose, so they inherit whatever the
+The refactor agent declares no `tools:` list on purpose, so they inherit whatever the
 surface grants. That keeps one file working in both places; the cost is that
 tool restriction is not enforced from the agent definition the way it is in the
 OpenCode and pi harnesses.
@@ -64,12 +64,11 @@ header carrying the model it runs on, e.g. `Refactor(bedrock/claude-opus-5@...)`
 its tool calls indented beneath it, and its own elapsed time. Main-context work
 is flush left with no model annotation.
 
-**In the transcript, afterwards.** Both agents must open their report with a
-marker line, even when they changed nothing:
+**In the transcript, afterwards.** The refactor agent must open its report with a
+marker line, even when it changed nothing:
 
 ```
 ## Refactor (agent: refactor, cycle N)
-## End-Refactor (agent: end-refactor)
 ```
 
 A generic subagent does not emit these. Over a batch of runs:

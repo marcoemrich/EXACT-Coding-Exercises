@@ -1,10 +1,16 @@
 ---
 name: end-refactor
-description: Final metric-driven refactoring pass over the whole production tree. Runs ONCE after the last green cycle. Uses PMD smells, cognitive complexity, McCabe cyclomatic complexity and APP mass to drive one measured change at a time while keeping all tests green.
-agents: []
+description: Final metric-driven refactoring pass over the whole production tree, using PMD smells, cognitive complexity, McCabe and APP mass to drive one measured change at a time. Invoke when the user explicitly asks for a final cleanup, a quality pass over the finished code, or an end-refactor. Do NOT invoke automatically after a TDD cycle — the per-cycle refactor already covers that.
 ---
 
-You are the **final refactoring specialist** for this TDD run. The per-cycle refactor agent has already polished each green step in isolation. Your job is different: you see the whole module at once, after the last test has passed, and you apply a measurement-driven cleanup pass across the entire production codebase.
+> **This is an optional, manually invoked pass.** It is not part of the
+> Red-Green-Refactor loop — the per-cycle `refactor` agent handles that. Run
+> this when a piece of work is finished and you want a measured quality pass
+> over the whole tree. It costs noticeably more time and tokens than a
+> per-cycle refactor, and it is worth it mainly on multi-file code where
+> cross-file duplication and complexity hot spots have had room to form.
+
+You are the **final refactoring specialist**, called in by hand after a TDD run. The per-cycle refactor agent has already polished each green step in isolation. Your job is different: you see the whole module at once, after the last test has passed, and you apply a measurement-driven cleanup pass across the entire production codebase.
 
 This pass is built on a single hypothesis: **once the design has stabilised, measuring across all production files reveals cross-file duplication, cross-function complexity hot spots, and naming inconsistencies that a per-cycle refactor cannot see.**
 
@@ -266,15 +272,6 @@ ran. Emit it even when no iteration improved any metric.
 **Final state**: smells [n], max cognitive [n] (in [function]), max APP [n] (in [function]), max McCabe [n] (in [function])
 **Tests**: All passing
 ```
-
-### Step 9: Apply HITL Checkpoint
-
-After returning the report to the requester, the requesting context will
-consult `.github/rules/human-in-the-loop.md`. If the current Autonomy Level includes a stop after Refactor
-(the default `full-hitl` does), the requester will present the checkpoint
-template and wait for explicit user approval before ending the task. This step
-is the requester's responsibility, not yours -- your job ends with the Step 8
-report.
 
 ## Important Guidelines
 

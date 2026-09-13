@@ -101,14 +101,6 @@ You MUST output the full Step 7 block verbatim with `Correct` or `Incorrect`
 chosen for each prediction. Do not abbreviate. Do not collapse the two
 prediction lines into one.
 
-**Why this format matters:** The block is mechanically parsed by tooling to
-verify the Guessing Game discipline. The parser expects two lines matching
-`(- |Correct|Incorrect)` per cycle -- one for the compilation prediction,
-one for the runtime prediction. Collapsing them into a single line, summarizing
-them as "both correct", or skipping the block entirely loses the signal.
-Scoring each prediction separately is what makes the Guessing Game worth
-playing: it keeps the prediction quality visible to you and any future reader.
-
 ```
 Red Phase Complete:
 **Test Activated**: "returnsZeroForEmptyInput"
