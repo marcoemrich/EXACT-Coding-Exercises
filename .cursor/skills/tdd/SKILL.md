@@ -1,6 +1,6 @@
 ---
+name: tdd
 description: Strict Test-Driven Development workflow (Red-Green-Refactor) with configurable human-in-the-loop checkpoints. Apply when the user explicitly asks to use TDD, do a TDD kata, or follow the Red-Green-Refactor discipline. Do NOT apply for general coding tasks where the user has not asked for TDD.
-alwaysApply: false
 ---
 
 # TDD Rules -- Hybrid (v6.6, cursor, exact-coding baseline)
