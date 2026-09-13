@@ -47,7 +47,7 @@ Leave all other tests as `it.todo()`.
 Before running the test, state your prediction:
 
 ```
-Red Phase - Compilation Error Prediction:
+🔴 Red Phase - Compilation Error Prediction:
 - Test: "should return 0 for empty input"
 - Expected: Compilation error
 - Reason: Function `calculate` doesn't exist yet
@@ -57,8 +57,8 @@ Red Phase - Compilation Error Prediction:
 ### Step 3: Run Test - Verify Compilation Error
 
 Run `npm test` and verify:
-- Compilation error as predicted, OR
-- Prediction wrong -> follow the Prediction Failure Protocol below
+- ✅ Compilation error as predicted, OR
+- ❌ Prediction wrong → follow the Prediction Failure Protocol below
 
 ### Step 4: Create Empty Function
 
@@ -75,7 +75,7 @@ export const calculate = (input: string): number => {
 Before running again, state your prediction:
 
 ```
-Red Phase - Runtime Error Prediction:
+🔴 Red Phase - Runtime Error Prediction:
 - Test: "should return 0 for empty input"
 - Expected: Runtime assertion error
 - Expected value: 0
@@ -88,8 +88,8 @@ Red Phase - Runtime Error Prediction:
 ### Step 6: Run Test - Verify Runtime Error
 
 Run `npm test` and verify:
-- Assertion error as predicted, OR
-- Prediction wrong -> follow the Prediction Failure Protocol below
+- ✅ Assertion error as predicted, OR
+- ❌ Prediction wrong → follow the Prediction Failure Protocol below
 
 ### Step 7: Report Completion
 
@@ -97,51 +97,36 @@ You MUST output the full Step 7 block verbatim with `Correct` or `Incorrect`
 chosen for each prediction. Do not abbreviate. Do not collapse the two
 prediction lines into one.
 
-**Why this format matters:** The block is mechanically parsed by tooling to
-verify the Guessing Game discipline. The parser expects two lines matching
-`(- |Correct|Incorrect)` per cycle -- one for the compilation prediction,
-one for the runtime prediction. Collapsing them into a single line, summarizing
-them as "both correct", or skipping the block entirely loses the signal.
-Scoring each prediction separately is what makes the Guessing Game worth
-playing: it keeps the prediction quality visible to you and any future reader.
-
 ```
-Red Phase Complete:
+🔴 Red Phase Complete:
 **Test Activated**: "should return 0 for empty input"
-**Compilation Prediction**: Cannot find name 'calculate' Correct
-**Runtime Prediction**: Expected 0, received undefined Correct
+**Compilation Prediction**: Cannot find name 'calculate' ✅ Correct
+**Runtime Prediction**: Expected 0, received undefined ✅ Correct
 **Result**: Test fails as expected with assertion error
 
 Proceeding to Green phase.
 ```
 
-### Step 8: Apply HITL Checkpoint
-
-Consult `.opencode/rules/human-in-the-loop.md`. If the current Autonomy Level includes a stop after Red phase,
-present the checkpoint template from that file and wait for explicit user
-approval before proceeding to Green. If the level does not stop after Red,
-proceed directly to Green phase.
-
 ## Important Guidelines
 
 ### DO
-- Activate exactly ONE test at a time
-- Make explicit predictions before running tests
-- Verify test fails for the right reason
-- Keep all other tests as `it.todo()`
+- ✅ Activate exactly ONE test at a time
+- ✅ Make explicit predictions before running tests
+- ✅ Verify test fails for the right reason
+- ✅ Keep all other tests as `it.todo()`
 
 ### DON'T
-- Activate multiple tests
-- Skip making predictions
-- Write implementation to make test pass
-- Continue if prediction fails without explanation
+- ❌ Activate multiple tests
+- ❌ Skip making predictions
+- ❌ Write implementation to make test pass
+- ❌ Continue if prediction fails without explanation
 
 ## Prediction Failure Protocol
 
 If your prediction was wrong:
 
 ```
-Prediction Failed:
+❌ Prediction Failed:
 - Predicted: [what you expected]
 - Actual: [what happened]
 - Discrepancy: [explanation]
@@ -149,15 +134,23 @@ Prediction Failed:
 Investigating the discrepancy before proceeding.
 ```
 
-Then apply the **Prediction Failure Recovery** procedure in `.opencode/rules/human-in-the-loop.md`. In every
-Autonomy Level except `autonomous`, this is a hard stop -- the human decides
-whether you continue or investigate first.
+Then apply the **Prediction Failure Recovery** procedure in
+`.opencode/rules/human-in-the-loop.md`. In every Autonomy Level except
+`autonomous`, this is a hard stop — the human decides whether you continue
+or investigate first.
+
+### Step 8: Apply HITL Checkpoint
+
+Consult `.opencode/rules/human-in-the-loop.md`. If the current Autonomy Level
+includes a stop after Red phase, present the checkpoint template from that
+file and wait for explicit user approval before proceeding to Green. If the
+level does not stop after Red, proceed directly to Green phase.
 
 ## Completion
 
-After Step 8 (HITL checkpoint), proceed to Green phase if approved or if the
-Autonomy Level does not require a stop:
+After Step 8 (HITL checkpoint), proceed to Green phase if approved or if
+the Autonomy Level does not require a stop:
 
 ```
-Red Phase Complete. Proceeding to Green phase.
+🔴 Red Phase Complete. Proceeding to Green phase.
 ```

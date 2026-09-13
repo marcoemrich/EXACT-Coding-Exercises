@@ -7,14 +7,6 @@ description: TDD Green Phase - Implement minimal code to make the failing test p
 
 You are now in the **Green Phase** of TDD. Follow these instructions to make the failing test pass with MINIMAL code.
 
-## Why minimality matters
-
-The Green Phase deliberately writes the smallest implementation that turns the active test green -- even hardcoded returns, even obviously-incomplete logic. This is not laziness or naivete:
-
-- It **exposes refactoring opportunities** in the next phase. When the implementation does exactly one thing, structural smells are visible. Over-implemented green code looks "already clean" and hides design problems.
-- It **prevents premature generalization**. The shape of the right abstraction emerges from the second and third test, not the first. Implementing for hypothetical future tests locks in a design before its constraints are known.
-- It **keeps the red-green-refactor cycle short**. Each cycle pays a cost in tokens and context; over-implementing in green collapses several future cycles into one large one and loses the per-test feedback loop.
-
 ## Your Mission
 
 1. Implement the **minimal code** necessary to make the failing test pass
@@ -71,21 +63,21 @@ export const calculate = (input: string): number => {
 ### Step 3: Run Tests
 
 Run `npm test` and verify:
-- Current test now passes
-- All previous tests still pass
+- Current test now passes ✅
+- All previous tests still pass ✅
 
 ### Step 4: Verify No Over-Implementation
 
 Check yourself:
-- Did I implement features for future tests? -> Remove them
-- Did I add logic not demanded by current test? -> Remove it
-- Did I optimize prematurely? -> Simplify
-- Did I refactor existing code? -> Revert, save for Refactor phase
+- ❓ Did I implement features for future tests? → Remove them
+- ❓ Did I add logic not demanded by current test? → Remove it
+- ❓ Did I optimize prematurely? → Simplify
+- ❓ Did I refactor existing code? → Revert, save for Refactor phase
 
 ### Step 5: Report Completion
 
 ```
-Green Phase Complete:
+🟢 Green Phase Complete:
 **Implementation**: [brief description of what was added]
 **Result**: All tests now pass ([X] passing)
 **Approach**: [explain why this is minimal]
@@ -117,24 +109,24 @@ return input.split(",").reduce((sum, n) => sum + parseInt(n), 0);
 ## Important Guidelines
 
 ### DO
-- Write minimal code to make test pass
-- Use hardcoded values when appropriate
-- Take baby steps
-- Verify all tests pass
+- ✅ Write minimal code to make test pass
+- ✅ Use hardcoded values when appropriate
+- ✅ Take baby steps
+- ✅ Verify all tests pass
 
 ### DON'T
-- Implement beyond what tests demand
-- Add features for future tests
-- Optimize prematurely
-- Refactor during Green phase
+- ❌ Implement beyond what tests demand
+- ❌ Add features for future tests
+- ❌ Optimize prematurely
+- ❌ Refactor during Green phase
 
 ## Psychological Resistance
 
 You will feel resistance:
-- **"This is too simple"** -> That's correct! Minimal is the way
-- **"Hardcoded values feel wrong"** -> They're exactly right for early tests
-- **"I should implement ahead"** -> Resist this strongly
-- **"This is inefficient"** -> Actually accelerates development
+- **"This is too simple"** → That's correct! Minimal is the way
+- **"Hardcoded values feel wrong"** → They're exactly right for early tests
+- **"I should implement ahead"** → Resist this strongly
+- **"This is inefficient"** → Actually accelerates development
 
 Trust the process. Simple steps compound into elegant solutions.
 
@@ -143,10 +135,10 @@ Trust the process. Simple steps compound into elegant solutions.
 After completing Green phase, proceed to Refactor phase:
 
 ```
-Green Phase Complete. Proceeding to Refactor phase.
+🟢 Green Phase Complete. Proceeding to Refactor phase.
 ```
 
-> **HITL note:** Green has no human checkpoint by default -- the default
+> **HITL note:** Green has no human checkpoint by default — the default
 > Autonomy Level (`full-hitl`) skips it because Green is the most mechanical
 > phase and stops here mostly produce "yes, continue" with no review value.
 > To enable a Green checkpoint, see `.opencode/rules/human-in-the-loop.md`.
