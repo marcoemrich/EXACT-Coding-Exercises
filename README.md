@@ -152,7 +152,7 @@ part of the **SOL / Predictive TDD** line, version **2026-09-13**.
 |---|---|---|---|---|
 | Claude Code | `main` | `sol/main` | `.claude/` | Ask for TDD or Predictive TDD |
 | GitHub Copilot (TypeScript) | `harness/copilot` | `sol/harness/copilot` | `.github/` | `/exact-coding`, or ask for EXACT Coding |
-| Cursor | `harness/cursor` | `sol/harness/cursor` | `.cursor/` | Ask for Predictive TDD |
+| Cursor | `harness/cursor` | `sol/harness/cursor` | `.cursor/` | `/exact-coding`, or ask for EXACT Coding |
 | OpenCode | `harness/opencode` | `sol/harness/opencode` | `.opencode/` | `/exact-coding` |
 | pi | `harness/pi` | `sol/harness/pi` | `.pi/` | `/skill:exact-coding`, or ask for EXACT Coding |
 
