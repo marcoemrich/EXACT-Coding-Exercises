@@ -151,10 +151,10 @@ part of the **SOL / Predictive TDD** line, version **2026-09-13**.
 | Agent | Opus / Hybrid branch | SOL / Predictive TDD branch | Config | Start SOL TDD with |
 |---|---|---|---|---|
 | Claude Code | `main` | `sol/main` | `.claude/` | Ask for TDD or Predictive TDD |
-| GitHub Copilot (TypeScript) | `harness/copilot` | `sol/harness/copilot` | `.github/` | `/tdd`, or ask for Predictive TDD |
+| GitHub Copilot (TypeScript) | `harness/copilot` | `sol/harness/copilot` | `.github/` | `/exact-coding`, or ask for EXACT Coding |
 | Cursor | `harness/cursor` | `sol/harness/cursor` | `.cursor/` | Ask for Predictive TDD |
-| OpenCode | `harness/opencode` | `sol/harness/opencode` | `.opencode/` | `/tdd` |
-| pi | `harness/pi` | `sol/harness/pi` | `.pi/` | `/skill:tdd`, or ask for Predictive TDD |
+| OpenCode | `harness/opencode` | `sol/harness/opencode` | `.opencode/` | `/exact-coding` |
+| pi | `harness/pi` | `sol/harness/pi` | `.pi/` | `/skill:exact-coding`, or ask for EXACT Coding |
 
 ```bash
 git checkout sol/main                 # Claude Code
