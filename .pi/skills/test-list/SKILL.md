@@ -71,11 +71,8 @@ Test List Created:
 3. [third test description]
 ...
 
-**Next Step**: Invoke `red` skill NOW, in this same turn, to activate the first test.
+**Next Step**: Invoke `red` skill to activate the first test.
 ```
-
-Do not treat this summary as the end of your turn -- it is a checkpoint
-inside one continuous run. Proceed straight into the Red phase.
 
 ### Step 6: Apply HITL Checkpoint
 
@@ -102,3 +99,11 @@ If the level does not stop after Test-List, proceed directly to Red.
 - Miss an entire operation described in the spec
 - Order randomly
 
+## Completion
+
+After Step 6 (HITL checkpoint), proceed to Red phase if approved or if the
+Autonomy Level does not require a stop:
+
+```
+Test List Phase Complete. Proceeding to Red phase with the first test.
+```

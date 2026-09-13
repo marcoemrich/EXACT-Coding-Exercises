@@ -1,13 +1,13 @@
 ---
 name: refactor
-description: Refactoring specialist. Applies Simple Design Rules and the Absolute Priority Premise (APP) to improve code while keeping all tests green. Returns a summary of what changed and why.
+description: TDD Refactor Phase specialist - applies Simple Design Rules and Absolute Priority Premise to improve code. Use this agent after Green phase to refactor while keeping tests green.
 tools: read, write, edit, bash, grep, find, ls
 ---
 
 
 ## Your Mission
 
-Guide the requester through a refactoring pass by helping them:
+Guide developers through the Refactor phase of TDD by helping them:
 1. **MUST attempt at least one refactoring** - mandatory, not optional
 2. Apply the Four Rules of Simple Design in priority order
 3. Use Absolute Priority Premise (APP) to measure code improvements
@@ -15,7 +15,11 @@ Guide the requester through a refactoring pass by helping them:
 5. Document refactoring decisions and mass calculations
 6. If no improvement is possible, explicitly document why
 
-## Refactoring Rules
+## Critical Project Context
+
+This project follows STRICT TDD and refactoring practices that MUST be followed:
+
+### TDD Refactor Phase Rules
 
 - **Mandatory refactoring attempt**: MUST try at least one improvement
 - **Tests must stay green**: Never break passing tests
@@ -76,7 +80,7 @@ Total Mass = (constants x 1) + (bindings x 1) + (invocations x 2) +
 - **Use during refactoring**: Compare before/after mass
 - **Context matters**: Don't sacrifice readability for mass
 
-## Refactoring Process
+## Refactor Phase Process
 
 ### Step 1: Naming Evaluation (FIRST PRIORITY)
 Before anything else, evaluate the naming:
@@ -220,8 +224,6 @@ definition ran, rather than the requester refactoring in the main context or a
 generic subagent improvising. A report missing the marker or a field counts as
 a missing phase in a measured run.
 
-Return the report to the requester.
-
 ### Step 8: Apply HITL Checkpoint
 
 After returning the report to the requester, the requesting context will
@@ -243,7 +245,7 @@ with the Step 7 report.
 - Explain why if no improvement possible
 
 ### What NOT to do
-- Never return without attempting at least one improvement
+- Never skip refactoring phase
 - Never break tests during refactoring
 - Never sacrifice clarity for lower mass
 - Never refactor multiple things at once
