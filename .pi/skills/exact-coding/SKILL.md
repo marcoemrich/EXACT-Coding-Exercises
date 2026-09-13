@@ -1,5 +1,5 @@
 ---
-name: tdd
+name: exact-coding
 description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
 ---
 
@@ -25,7 +25,7 @@ tools belong only to the selected stack profile.
 ## Sequence
 
 1. Create the complete ordered test list with every future behavior inactive.
-2. Apply the Test-List checkpoint from `.pi/skills/tdd/human-in-the-loop.md`.
+2. Apply the Test-List checkpoint from `.pi/skills/exact-coding/human-in-the-loop.md`.
 3. For exactly one behavior at a time, follow the Predictive TDD skill:
    - activate one behavior and reach behavioral Red,
    - state falsifiable predictions before deterministic checks and compare them
@@ -42,7 +42,7 @@ Confirm it and do not manufacture a failure or production change.
 
 ## Human-in-the-loop
 
-`.pi/skills/tdd/human-in-the-loop.md` is the single source of truth for checkpoints. Its default
+`.pi/skills/exact-coding/human-in-the-loop.md` is the single source of truth for checkpoints. Its default
 `full-hitl` level stops after Test List, Red, and Refactor, and whenever a
 prediction is wrong. Green has no default stop.
 

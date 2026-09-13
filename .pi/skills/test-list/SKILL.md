@@ -65,7 +65,7 @@ Test List Created:
 
 ### Step 6: Apply HITL Checkpoint
 
-Consult `.pi/skills/tdd/human-in-the-loop.md`. Apply the Test-List checkpoint for the active Autonomy
+Consult `.pi/skills/exact-coding/human-in-the-loop.md`. Apply the Test-List checkpoint for the active Autonomy
 Level and wait for explicit approval when required; otherwise continue to the
 first Predictive TDD cycle.
 
