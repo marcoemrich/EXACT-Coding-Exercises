@@ -1,8 +1,3 @@
----
-description: Human checkpoint policy for the requested Predictive TDD workflow.
-alwaysApply: false
----
-
 # Human-in-the-Loop (HITL)
 
 This file is the single source of truth for Predictive TDD checkpoints.
