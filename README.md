@@ -146,7 +146,7 @@ supersedes the other:
   Design.
 
 Each branch carries exactly one line and one agent configuration. This branch is
-part of the **SOL / Predictive TDD** line, version **2026-09-13**.
+part of the **SOL / Predictive TDD** line, version **2026-09-14**.
 
 | Agent | Opus / Hybrid branch | SOL / Predictive TDD branch | Config | Start SOL TDD with |
 |---|---|---|---|---|
@@ -220,6 +220,12 @@ Life and Claim Office passed internal and external verification. That evidence
 is for **GPT-5.6 SOL on pi**. The Claude Code, Copilot, Cursor, and OpenCode
 branches are semantic ports of the same files; they are not presented as
 additional cross-harness experiment results.
+
+### Credits
+
+The Guessing Game and Predictive TDD approach used here is inspired by
+[Ted M. Young's Predictive TDD and TDD Game](https://tdd.cards/) and
+[Jon Jagger's cyber-dojo](https://cyber-dojo.org/).
 
 ---
 
