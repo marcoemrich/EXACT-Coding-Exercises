@@ -73,7 +73,18 @@ Do not add behavior not required by the current failing test.
 
 ### REFACTOR
 
-1. With all tests green, make one behavior-preserving structural change.
+With all tests green, review production and test code against the Four Rules of Simple Design, in order:
+
+1. Passes the tests
+2. Reveals intention
+3. Contains no duplication, including duplicated knowledge
+4. Has the fewest elements
+
+Use domain-appropriate names and do not leak temporary implementation details into them. Linters and smell detectors are evidence, not substitutes for this review.
+
+For each improvement:
+
+1. Make exactly one behavior-preserving structural change.
 2. Stage the complete change:
 
    ```bash
@@ -93,7 +104,7 @@ Do not add behavior not required by the current failing test.
    git reset --hard HEAD
    ```
 
-If no structural improvement is needed, skip the refactoring commit and continue with RED.
+Review the Four Rules again after each successful refactoring. If no refactoring improves them, leave the code unchanged and continue with RED.
 
 ## Rules
 
