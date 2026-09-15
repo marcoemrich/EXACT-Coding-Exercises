@@ -1,14 +1,15 @@
 ---
 name: exact-coding
-description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
+description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, domain-responsibility review, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
 ---
 
 # EXACT Coding — SOL / Predictive TDD
 
 This is the consumer form of the SOL-originated EXACT Coding line. It runs in
 one shared context: Test List once, then one-test Red-Green-Refactor cycles.
-Refactoring uses the Four Rules of Simple Design inline; this line deliberately
-has no APP calculation, metric-driven end pass, or refactor subagent.
+Refactoring uses the Four Rules of Simple Design inline. Refactoring also applies a domain-responsibility review and a mandatory concrete boundary trial whenever it finds a credible semantic seam. This
+line deliberately has no APP calculation, metric-driven end pass, or refactor
+subagent.
 
 ## Preparation
 
@@ -24,7 +25,8 @@ tools belong only to the selected stack profile.
 
 ## Sequence
 
-1. Create the complete ordered test list with every future behavior inactive.
+1. Create the complete ordered test list with every future behavior inactive,
+   then predict and verify that the inactive list leaves the full suite green.
 2. Apply the Test-List checkpoint from `.github/skills/exact-coding/human-in-the-loop.md`.
 3. For exactly one behavior at a time, follow the Predictive TDD skill:
    - activate one behavior and reach behavioral Red,
@@ -32,13 +34,21 @@ tools belong only to the selected stack profile.
      explicitly with reality,
    - apply the Red checkpoint,
    - reach Green with the smallest production change,
-   - review and, where useful, refactor inline under the Four Rules,
+   - review and refactor inline under the Four Rules,
+   - perform the mandatory domain-boundary trial and retain or narrowly undo it based on semantic and test evidence,
    - apply the Refactor checkpoint.
 4. Continue until every listed behavior is executable and all applicable gates
    from the active stack profile pass.
 
 A test already satisfied by an earlier generalization is legitimate evidence.
 Confirm it and do not manufacture a failure or production change.
+
+## Method boundary
+
+This is Predictive TDD, not TCR. Do not create phase commits or use a hard reset
+as a phase mechanism. Preserve successful work in the working tree. If a
+refactoring trial fails a check or does not improve intent, undo only that trial
+before continuing.
 
 ## Human-in-the-loop
 
@@ -48,6 +58,6 @@ prediction is wrong. Green has no default stop.
 
 ## Provenance
 
-Exported from the promoted `exact-sol-v1.3-stack-profile-pi` workflow. The methodology was validated
+Exported from the promoted `exact-sol-v1.5-tcr-parity-domain-trial-pi` workflow. The methodology was validated
 on GPT-5.6 SOL with pi. Other harness trees are
 mechanical ports of the same files, not claims of cross-harness validation.
