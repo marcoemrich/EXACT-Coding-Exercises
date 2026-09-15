@@ -1,10 +1,10 @@
 # TypeScript + Vitest profile
 
-Load this profile together with the parent Predictive TDD skill when the project uses TypeScript and Vitest.
+Load this profile together with the parent EXACT Coding Predictive TDD skill when the project uses TypeScript and Vitest.
 
 ## Discover project commands first
 
-Prefer scripts already declared in `package.json`. Read that file once before the first cycle and use only the scripts it actually declares. Typical gates are:
+Read `package.json` before the first cycle and use the project's package manager and declared scripts. Typical gates are:
 
 ```bash
 pnpm test
@@ -12,9 +12,7 @@ pnpm run typecheck
 pnpm run lint
 ```
 
-Not every project declares all three. `pnpm test` is the one gate that always applies. Where a gate has no script but the tool is installed, invoke it directly (for example `pnpm exec tsc --noEmit` or `pnpm exec eslint src/`); where the tool is absent, skip the gate rather than inventing an invocation.
-
-Use the project's package manager rather than assuming one. For a focused test, use the narrowest supported Vitest invocation before running the complete suite.
+Not every project declares all three. Use the full test script as the complete-suite command. Where another gate has no script but its tool is installed, invoke it directly; where the tool is absent, skip it rather than inventing an invocation.
 
 Never hide dependency incompatibilities with `--force` or `--legacy-peer-deps`. Check declared peer ranges and select mutually supported versions. Record any deliberate downgrade or pin.
 
@@ -35,86 +33,36 @@ describe("behavior", () => {
 });
 ```
 
-Use the import extension and module conventions already established by the project.
-
 For the up-front Test List phase, create the complete file with inactive entries only:
 
 ```typescript
-import { describe, it, expect } from "vitest";
-import { functionName } from "./implementation.js";
+import { describe, it } from "vitest";
 
 describe("Feature Name", () => {
   it.todo("should [behavior] -- [expected value from spec]");
   it.todo("throws RangeError when [invalid condition from spec]");
   it.todo("should [next behavior] -- [expected value from spec]");
-  // ... ordered simple -> complex, covering ALL spec examples
 });
 ```
 
-Use `.spec.ts` for the test-file suffix and report `[filename].spec.ts` in the Test List summary. `RangeError` is a representative TypeScript observable error type, not a default contract: require it only when the specification establishes that error behavior or after explicitly stating why it is the most defensible reading.
+Use the import extension and module conventions already established by the project. Use `.spec.ts` unless the project establishes another suffix. `RangeError` is only an example; require an error type only when the specification establishes it or after explicitly stating the chosen observable contract.
 
-## Predictions with Vitest
+## Interpret RED correctly
 
-Before each run, predict separately when relevant:
+Inspect Vitest's actual result before comparing it with the prediction:
 
-1. module resolution or transform result
-2. runtime assertion result
-3. expected and received values
-4. test-file and test counts
-5. remaining todo count
+1. distinguish module resolution and transform failures from assertion failures
+2. inspect expected and received values
+3. record test-file and test counts
+4. distinguish failed, passed, skipped, and todo tests
 
-A missing implementation module may fail during import before Vitest discovers tests. Do not call that an assertion failure.
+A missing implementation module may fail before Vitest discovers tests. It is a valid RED only when it is the intended failure for the current baby step. Otherwise revert and choose a smaller or corrected step.
 
-When a new example is already satisfied by an earlier generalization, predict green, activate it, run Vitest, and record that no production change was necessary.
+When an activated example is already satisfied by an earlier generalization, follow the already-green exception in the parent skill: predict the passing result, run the suite, record that no production change is needed, and continue without manufacturing a failure.
 
-## TypeScript checks
+## TypeScript-oriented GREEN progression
 
-Run the configured TypeScript check after behavior reaches green and after refactoring. A common script is:
-
-```json
-{
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  }
-}
-```
-
-When no such script is declared but TypeScript is installed, run `pnpm exec tsc --noEmit` directly.
-
-Treat transpilation by the test runner and static type checking as separate signals: passing tests do not prove that the compiler accepts the project.
-
-Keep domain parameter names even during hardcoded Green steps. Do not rename a parameter to an underscore-prefixed technical name merely because the current minimal implementation does not use it.
-
-When a hardcoded Green leaves a required domain parameter temporarily unused, respect the project's actual lint configuration:
-
-- Prefer a narrow, documented suppression of the specific unused-parameter rule on that declaration.
-- Remove the suppression as soon as a later behavior causes the implementation to use the parameter.
-- Do not add meaningless calculations, branches, calls, or `void` expressions merely to satisfy the linter; they obscure intent and may conflict with other quality rules such as `sonarjs/void-use`.
-- Do not weaken the unused-parameter policy globally for a temporary TDD state.
-
-## ESLint and smell detection
-
-For strict TypeScript analysis, prefer flat configuration with type-aware rules. A strict baseline commonly combines:
-
-- core recommended correctness rules
-- TypeScript strict type-checked rules
-- TypeScript stylistic type-checked rules
-- focused smell-detection rules
-- test-specific rules for spec files
-
-A preset named `strict` does not necessarily enable rules such as magic-number detection, complexity limits, or project-specific smells. Enable desired policies explicitly.
-
-Allow concrete literals in test examples when they express specification input and output, while requiring named domain constants in production code where literals otherwise duplicate knowledge.
-
-Keep test-specific overrides scoped to spec files. Do not weaken production rules globally to accommodate tests.
-
-Typed lint rules require a TypeScript version supported by the parser and plugin. Verify peer dependency ranges before installation.
-
-Strict template-expression rules may reject direct interpolation of numeric values. Predict the lint result, run it, and use an explicit conversion when the project policy requires one.
-
-## TypeScript-oriented Green progression
-
-Let implementations emerge one active example at a time. Typical legal steps include:
+Let the implementation emerge one active example at a time. Typical small steps include:
 
 1. hardcoded return
 2. use of an input parameter
@@ -123,18 +71,34 @@ Let implementations emerge one active example at a time. Typical legal steps inc
 5. a general expression or recursive relation when forced by another example
 6. explicit boundary validation when required by the specification
 
-Do not jump to the final formula merely because TypeScript makes it easy to express. If a previous step naturally generalizes and a later test starts green, verify that fact instead of manufacturing a failure.
+Do not jump to the final formula merely because TypeScript makes it easy to express.
 
-## Full cycle gate
+Treat test-runner transpilation and static type checking as separate signals. Passing tests do not prove that the compiler accepts the project.
 
-Before closing a cycle, predict and then run every gate this project actually provides, in project-defined order:
+Keep domain parameter names during hardcoded GREEN steps. For temporarily unused parameters, prefer a narrow documented lint suppression and remove it when later behavior uses the parameter. Do not add meaningless calculations, branches, calls, or `void` expressions, and do not weaken lint policy globally.
+
+## TypeScript-oriented SRP review
+
+Apply the parent Predictive TDD skill's Single Responsibility Principle at TypeScript boundaries. Keep domain decisions separate from adapters such as JSON parsing and serialization, CLI or HTTP transport, filesystem access, and persistence. Prefer a cohesive function, class, or module whose name states one responsibility; extract a collaborator when separate concerns would change for separate reasons. Keep Vitest setup and fixtures in test code rather than production abstractions, and do not introduce interfaces or classes solely to imitate another language's design style.
+
+## ESLint and smell detection
+
+Configured lint and smell rules are evidence for the Four Rules review. Allow concrete literals in test examples when they express specification inputs and outputs. Prefer named domain constants in production code when literals duplicate knowledge.
+
+Keep test-specific overrides scoped to spec files. Do not weaken production rules globally to accommodate tests. Verify TypeScript, parser, and plugin compatibility before changing dependencies.
+
+## Predictive phase gate
+
+Before every deterministic check, state a falsifiable expectation and run the check immediately. Use the smallest relevant Vitest invocation during diagnosis and the complete suite for cycle closure:
 
 ```bash
-pnpm run lint      # or: pnpm exec eslint src/
 pnpm test
-pnpm run typecheck # or: pnpm exec tsc --noEmit
 ```
 
-Do not chain them while diagnosing a new or uncertain failure if chaining would hide later signals. Once each gate is understood, a chained final verification is acceptable.
+Replace `pnpm` with the project's package manager.
 
-Record exact counts from Vitest and distinguish failed, passed, skipped, and todo tests.
+- **RED:** continue only when the active behavior fails for the predicted reason; investigate a mismatch rather than changing production behavior.
+- **GREEN:** run the complete suite and configured type check; retain the change only when both pass.
+- **REFACTOR:** run the complete suite and applicable type, lint, and smell gates; retain a structural trial only when all pass and intent improves, otherwise narrowly undo that trial.
+
+Do not create method commits or use hard resets as phase transitions. Before completion, run every applicable project-defined gate in its established order. Do not chain uncertain checks while diagnosing a failure if chaining would hide later signals. Record exact Vitest counts and distinguish failed, passed, skipped, and todo tests.
