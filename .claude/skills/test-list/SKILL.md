@@ -9,7 +9,7 @@ You are now in the **Test List Phase** of TDD. Follow these instructions to crea
 
 ## Your Mission
 
-Create a test list using the active stack profile's inactive-test mechanism that covers **every rule and every example** from the specification:
+Create a test list using the project's inactive-test mechanism that covers **every rule and every example** from the specification:
 1. Read the specification (`prompt.md`) thoroughly -- every rule, every example, every clarifying question (?)
 2. Turn each example into at least one inactive test case
 3. Order tests from simplest to most complex
@@ -44,7 +44,7 @@ Arrange tests in increasing complexity:
 5. Multi-step scenarios (e.g., operations that reference earlier results)
 
 ### Step 4: Write Test File
-Create the test file using the inactive-test syntax and complete test-list template from the active stack profile. Keep every listed test inactive.
+Create the test file using the project's inactive-test syntax. Keep every listed test inactive.
 
 ### Step 5: Provide Summary
 
@@ -63,11 +63,13 @@ Test List Created:
 ...
 ```
 
-### Step 6: Apply HITL Checkpoint
+### Step 6: Verify the Inactive List and Apply the HITL Checkpoint
 
-Consult `.claude/skills/exact-coding/human-in-the-loop.md`. Apply the Test-List checkpoint for the active Autonomy
-Level and wait for explicit approval when required; otherwise continue to the
-first Predictive TDD cycle.
+Predict and run the full suite. Continue only when the inactive list leaves the
+suite green; correct the list without implementing behavior if it does not.
+Then consult `.claude/skills/exact-coding/human-in-the-loop.md`. Apply the Test-List checkpoint for the active
+Autonomy Level and wait for explicit approval when required; otherwise continue
+to the first Predictive TDD cycle.
 
 ## Important Guidelines
 
@@ -76,7 +78,7 @@ first Predictive TDD cycle.
 - Cover **every operation** described in the spec
 - Give **every clarifying question (?)** a corresponding test
 - Order tests **simple -> complex**
-- Use the active stack profile's inactive-test mechanism for all tests
+- Use the project's inactive-test mechanism for all tests
 - Include **expected values** in descriptions
 - State rejection and failure outcomes as explicit observable contracts
 - Name your chosen reading explicitly when the spec leaves a failure mechanism open

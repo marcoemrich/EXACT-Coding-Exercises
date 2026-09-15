@@ -1,10 +1,10 @@
 # Java + JUnit 5 + Maven profile
 
-Load this profile together with the parent Predictive TDD skill when the project uses Java, JUnit 5, and Maven.
+Load this profile together with the parent EXACT Coding Predictive TDD skill when the project uses Java, JUnit 5, and Maven.
 
 ## Discover project commands first
 
-Read `pom.xml` before the first cycle. Respect its Java release, dependencies, plugins, source layout, and existing test conventions. Use the Maven wrapper when the project provides one; otherwise use `mvn`.
+Read `pom.xml` before the first cycle. Respect its Java release, dependencies, plugins, source layout, and existing test conventions. Use the Maven wrapper when present; otherwise use `mvn`.
 
 Typical gates are:
 
@@ -13,13 +13,7 @@ mvn test
 mvn pmd:check
 ```
 
-Only run configured or available gates. Do not invent plugins or silently change the build merely to obtain a preferred check. For a focused test, use the narrowest Surefire invocation supported by the project, for example:
-
-```bash
-mvn -Dtest=FeatureTest#activeBehaviour test
-```
-
-Treat Java compilation and test execution as separate signals even when Maven performs both in one invocation. A failure in `testCompile` is not a behavioral assertion failure.
+Only run configured or available gates. Do not invent plugins or silently change the build to obtain a preferred check. Use `mvn test` as the full-suite command unless the project defines another command used by CI.
 
 ## Source and test layout
 
@@ -29,7 +23,7 @@ Follow the package and module layout already established by the project. In a co
 - tests live under `src/test/java/`
 - `<Feature>Test.java` mirrors the package of the class under test
 
-The default package is acceptable only when the exercise already uses it. Do not move existing code into packages as an unrelated cleanup.
+Use the default package only when the project already does. Do not move existing code into packages as unrelated cleanup.
 
 ## Test-list convention
 
@@ -56,29 +50,28 @@ class FeatureTest {
 }
 ```
 
-Use JUnit 5 annotations and assertions. Keep every future behavior disabled; do not use commented-out tests or rely on test-name filters as the test list.
+Use JUnit 5 annotations and assertions. Keep every future behavior disabled; do not use commented-out tests or test-name filters as the test list.
 
-## Predictions with Maven and JUnit
+## Interpret RED correctly
 
-Before each run, predict separately when relevant:
+Inspect Maven's actual result before comparing it with the prediction:
 
-1. production compilation result
-2. test compilation and symbol-resolution result
-3. JUnit discovery and execution result
-4. expected exception, assertion values, or failure message
-5. tests run, failed, errored, and skipped
+1. distinguish production compilation from `testCompile`
+2. distinguish symbol-resolution errors from JUnit assertion failures
+3. inspect expected exceptions, expected and actual values, and failure messages
+4. record tests run, failed, errored, and skipped
 
-A missing class or method commonly fails in `testCompile` with `cannot find symbol`; do not call that an assertion failure. Add only enough scaffold to reach behavioral Red. When an exception is the intended observable behavior, use `assertThrows` and predict its type.
+A missing class or method commonly fails in `testCompile` with `cannot find symbol`; do not call that an assertion failure. It is a valid RED only when it is the intended failure for the current baby step. Otherwise revert and choose a smaller or corrected step.
 
-When a new example is already satisfied by an earlier generalization, predict green, activate it, run the focused test, and record that no production change was necessary.
+When an exception is the specified observable behavior, use `assertThrows` and verify its type. When an activated example is already satisfied by an earlier generalization, follow the already-green exception in the parent skill: predict the passing result, run the suite, record that no production change is needed, and continue without manufacturing a failure.
 
-## Java-oriented Green progression
+## Java-oriented GREEN progression
 
-Let the implementation emerge one active example at a time. Typical legal steps include:
+Let the implementation emerge one active example at a time. Typical small steps include:
 
 1. a class and method signature sufficient to compile
-2. an intentionally wrong result or exception sufficient to reach behavioral Red
-3. a hardcoded return for the first Green
+2. an intentionally wrong result or exception sufficient to reach behavioral RED
+3. a hardcoded return for the first GREEN
 4. use of an input parameter
 5. a narrow conditional
 6. named domain constants or extracted methods when another example forces them
@@ -87,25 +80,32 @@ Let the implementation emerge one active example at a time. Typical legal steps 
 
 Do not jump to a final abstraction because Java makes scaffolding visible. Keep domain names even when a parameter is temporarily unused. Do not add meaningless reads or branches to appease static analysis.
 
+## Java-oriented SRP review
+
+Apply the parent Predictive TDD skill's Single Responsibility Principle at Java boundaries. Keep domain decisions separate from adapters such as argument or JSON parsing, console or HTTP transport, filesystem access, and persistence. Prefer a cohesive method or class whose name states one responsibility; extract a collaborator when separate concerns would change for separate reasons. Keep JUnit setup and fixtures in test code rather than production abstractions, and do not introduce an interface, class, or design pattern without a concrete responsibility in the current code.
+
 ## PMD and quality checks
 
-When PMD is configured, run the project's declared PMD goal and interpret its actual ruleset. A common check is:
+When PMD is configured, use the project's declared PMD goal, commonly:
 
 ```bash
 mvn pmd:check
 ```
 
-PMD findings are evidence for the Four Rules review, not permission to change observable behavior. Cognitive and cyclomatic complexity are measurements; inspect the configured thresholds before treating a report as a failing smell. Keep test-specific concessions scoped to tests, and do not weaken production rules globally for a temporary Green.
+PMD findings are evidence for the Four Rules review, not permission to change observable behavior. Inspect configured complexity thresholds before treating a report as a failing smell. Keep test-specific concessions scoped to tests and do not weaken production rules globally for a temporary GREEN.
 
-If Checkstyle, SpotBugs, formatter checks, or module-specific verification goals are configured instead of or alongside PMD, use those project-defined gates.
+Use configured Checkstyle, SpotBugs, formatter, or module-specific verification goals where applicable.
 
-## Full cycle gate
+## Predictive phase gate
 
-Before closing a cycle, predict and run the complete test suite plus every applicable project-defined quality gate. Prefer the project's established order. A typical Maven project uses:
+Before every deterministic check, state a falsifiable expectation and run the check immediately. Use the smallest relevant Maven invocation during diagnosis and the complete suite for cycle closure:
 
 ```bash
 mvn test
-mvn pmd:check
 ```
 
-Do not chain uncertain checks while diagnosing a mismatch. Once each signal is understood, a project-provided aggregate such as `mvn verify` is acceptable. Record Maven's exact test counts and distinguish failures, errors, and skipped tests.
+- **RED:** continue only when the active behavior fails for the predicted reason; investigate a mismatch rather than changing production behavior.
+- **GREEN:** retain the change only when the complete suite passes.
+- **REFACTOR:** run the complete suite and applicable quality gates; retain a structural trial only when all pass and intent improves, otherwise narrowly undo that trial.
+
+Do not create method commits or use hard resets as phase transitions. Before completion, run every applicable project-defined quality gate in the established order. Record Maven's exact test counts and distinguish failures, errors, and skipped tests.
