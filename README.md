@@ -146,7 +146,7 @@ supersedes the other:
   Design.
 
 Each branch carries exactly one line and one agent configuration. This branch is
-part of the **SOL / Predictive TDD** line, version **2026-09-14**.
+part of the **SOL / Predictive TDD** line, version **2026-09-15**.
 
 | Agent | Opus / Hybrid branch | SOL / Predictive TDD branch | Config | Start SOL TDD with |
 |---|---|---|---|---|
@@ -214,7 +214,7 @@ unless you ask for it. Provider credentials, routing, model selection, and
 permission policy are intentionally not shipped.
 
 This distribution is generated from
-`exact-sol-v1.3-stack-profile-pi` in the `agentic_coding_lab` repository. It was promoted
+`exact-sol-v1.5-tcr-parity-domain-trial-pi` in the `agentic_coding_lab` repository. It was promoted
 after `RQ-stack-profile-extraction-sol`: all 20 fresh validation runs on Game of
 Life and Claim Office passed internal and external verification. That evidence
 is for **GPT-5.6 SOL on pi**. The Claude Code, Copilot, Cursor, and OpenCode
