@@ -9,13 +9,11 @@ You are now in the **Test List Phase** of TDD. Follow these instructions to crea
 
 ## Your Mission
 
-Create a test list using `it.todo()` that covers **every rule and every example** from the specification:
+Create a test list using the project's inactive-test mechanism that covers **every rule and every example** from the specification:
 1. Read the specification (`prompt.md`) thoroughly -- every rule, every example, every clarifying question (?)
-2. Turn each example into at least one `it.todo()` test case
+2. Turn each example into at least one inactive test case
 3. Order tests from simplest to most complex
-4. Use `it.todo()` only -- NO executable tests yet
-
-## Context: $ARGUMENTS
+4. Keep every test inactive -- NO executable tests yet
 
 ## Process
 
@@ -25,6 +23,7 @@ questions (marked with ?) -- these disambiguate rules that may seem open to inte
 - What are all the operations the system must support?
 - What rules govern each operation?
 - Which examples in the spec illustrate these rules?
+- For rejection or failure cases, what is the observable error contract: a thrown error, an error result, a status, or another outcome? If an error is thrown, does the specification define its type and/or message?
 
 ### Step 2: Identify Test Cases from the Spec
 Walk through the specification section by section. For each rule and each example:
@@ -32,6 +31,9 @@ Walk through the specification section by section. For each rule and each exampl
 - Include the **expected values from the spec** in the test description
 - If a clarifying question (?) resolves an ambiguity, create a test for the clarified interpretation
 - If the spec uses an example-mapping format (rules, examples, questions), every listed example must have a corresponding test
+- Make every rejection or failure case explicit in observable terms, such as a thrown error of the profile's representative type, an error result, or an error status
+- Include an exact error type or message only when the specification establishes it
+- If the specification merely says `rejects`, `fails`, `invalid`, or equivalent without defining the observable contract, choose the most defensible reading of the specification, state that reading explicitly in the test description, and continue; do not silently invent an unstated contract
 
 ### Step 3: Order Tests (Simple -> Complex)
 Arrange tests in increasing complexity:
@@ -42,27 +44,29 @@ Arrange tests in increasing complexity:
 5. Multi-step scenarios (e.g., operations that reference earlier results)
 
 ### Step 4: Write Test File
-Create the test file with `it.todo()` entries:
+Create the test file using the project's inactive-test syntax. Keep every listed test inactive.
 
-```typescript
-import { describe, it, expect } from "vitest";
-import { functionName } from "./implementation.js";
+### Step 5: Cross-Check Independent Specification Dimensions
 
-describe("Feature Name", () => {
-  it.todo("should [behavior] -- [expected value from spec]");
-  it.todo("should [next behavior] -- [expected value from spec]");
-  // ... ordered simple -> complex, covering ALL spec examples
-});
-```
+Before declaring the list complete, review the specification and the inactive tests as a coverage map:
 
-### Step 5: Provide Summary
+- Identify independently specified dimensions such as operation, entity or variant, input category, policy attribute, state transition, and observable result.
+- For each explicit value named by the specification, ask whether every independently changeable rule that applies to it has a discriminating test. A test of one attribute does not establish another attribute of the same value.
+- Look especially for parallel catalogues, mappings, tables, or branches. Ask whether one side could omit an entry while every current test still passes.
+- Use a representative test where several values are governed by one uniform rule, but test each value separately when the specification assigns it independent data or when entries can drift independently.
+- Check each operation separately. Coverage through quote, parsing, or presentation does not establish policy creation, claim behavior, persistence, or another operation over the same entity.
+- For every uncovered cell, add an inactive test or record why an existing test discriminates that cell. Do not create a mechanical Cartesian product when dimensions cannot fail independently.
 
-After creating the test list, output:
+Use a falsifying counterfactual as the final check: if one explicitly specified entry or rule were removed or changed while neighboring behavior stayed correct, would an inactive test detect it once activated? If not, the list is not complete.
+
+### Step 6: Provide Summary
+
+After creating and cross-checking the test list, provide this summary:
 
 ```
 Test List Created:
 **Feature**: [feature name]
-**Test File**: [filename].spec.ts
+**Test File**: [test file path]
 **Tests**: [count]
 
 **Test Cases** (ordered simple -> complex):
@@ -71,15 +75,19 @@ Test List Created:
 3. [third test description]
 ...
 
-**Next Step**: Invoke `red` skill to activate the first test.
+**Coverage Cross-Check**:
+- [independent dimensions reviewed]
+- [parallel catalogues or operations checked for omissions]
+- [why representative tests are discriminating where exhaustive combinations are unnecessary]
 ```
 
-### Step 6: Apply HITL Checkpoint
+### Step 7: Verify the Inactive List and Apply the HITL Checkpoint
 
-Consult `.github/rules/human-in-the-loop.md`. If the current Autonomy Level includes a stop after Test-List
-(the default `full-hitl` does), present the checkpoint template from that file
-and wait for explicit user approval before proceeding to the first Red phase.
-If the level does not stop after Test-List, proceed directly to Red.
+Predict and run the full suite. Continue only when the inactive list leaves the
+suite green; correct the list without implementing behavior if it does not.
+Then consult `.github/skills/exact-coding/human-in-the-loop.md`. Apply the Test-List checkpoint for the active
+Autonomy Level and wait for explicit approval when required; otherwise continue
+to the first Predictive TDD cycle.
 
 ## Important Guidelines
 
@@ -88,21 +96,18 @@ If the level does not stop after Test-List, proceed directly to Red.
 - Cover **every operation** described in the spec
 - Give **every clarifying question (?)** a corresponding test
 - Order tests **simple -> complex**
-- Use `it.todo()` for all tests
+- Use the project's inactive-test mechanism for all tests
 - Include **expected values** in descriptions
+- State rejection and failure outcomes as explicit observable contracts
+- Name your chosen reading explicitly when the spec leaves a failure mechanism open
 - Keep tests **independent**
 - One behavior per test
+- Make the independent-dimensions cross-check visible in the summary
 
 ### DON'T
-- Write executable tests (use `it.todo()`)
+- Write executable tests yet
 - Think about implementation instead of behavior
+- Turn vague words such as `rejects` into an invented error contract without saying so
+- Leave a rejection test vague when its observable outcome is known
 - Miss an entire operation described in the spec
 - Order randomly
-
-## Completion
-
-After completing the test list, proceed to Red phase:
-
-```
-Test List Phase Complete. Proceeding to Red phase with the first test.
-```
