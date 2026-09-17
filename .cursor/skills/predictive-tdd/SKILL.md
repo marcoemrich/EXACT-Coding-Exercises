@@ -43,7 +43,7 @@ If loading or compilation prevents the assertion from running, add only enough s
 
 If the new test already passes, confirm that prediction, record that no production change was needed, and do not manufacture a failure.
 
-After comparing the prediction with reality, consult `.cursor/skills/exact-coding/human-in-the-loop.md` and apply the Red checkpoint for the active Autonomy Level.
+After comparing the prediction with reality, consult `.cursor/skills/exact-coding-shared/human-in-the-loop.md` and apply the Red checkpoint for the active Autonomy Level.
 
 ### 3. Reach Green minimally
 
@@ -112,7 +112,7 @@ Use the active stack profile only for language- and framework-specific applicati
 
 Make at most one refactoring at a time. Predict and run the smallest relevant check after each. If no refactoring improves the Four Rules, leave the code unchanged.
 
-**In this workflow the refactoring runs in this context.** After the review, consult `.cursor/skills/exact-coding/human-in-the-loop.md` and apply the Refactor checkpoint for the active Autonomy Level, including when no change improves the code.
+**The invoking EXACT Coding profile selects the Refactor execution context.** Apply the Four Rules and domain-boundary contract through that profile's inline or isolated mechanism. After the review, consult `.cursor/skills/exact-coding-shared/human-in-the-loop.md` and apply the Refactor checkpoint for the active Autonomy Level, including when no change improves the code.
 
 ### 5. Close once
 
@@ -125,7 +125,7 @@ Close with a compact record of the behavior, Red evidence, minimal Green change 
 When actual and predicted outcomes differ:
 
 1. State that the prediction was incorrect and preserve both outcomes.
-2. Stop feature implementation and consult `.cursor/skills/exact-coding/human-in-the-loop.md`. Unless the Autonomy Level is `autonomous`, report the discrepancy and wait for the human's decision.
+2. Stop feature implementation and consult `.cursor/skills/exact-coding-shared/human-in-the-loop.md`. Unless the Autonomy Level is `autonomous`, report the discrepancy and wait for the human's decision.
 3. Use the smallest deterministic check to explain whether the cause is existing behavior, test setup, command/environment, load/compile failure, quality tooling, coupling, or regression.
 4. Make a new evidence-based prediction and check it.
 5. Resume only after the discrepancy is understood.
