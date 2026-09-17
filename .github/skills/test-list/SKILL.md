@@ -85,7 +85,7 @@ Test List Created:
 
 Predict and run the full suite. Continue only when the inactive list leaves the
 suite green; correct the list without implementing behavior if it does not.
-Then consult `.github/skills/exact-coding/human-in-the-loop.md`. Apply the Test-List checkpoint for the active
+Then consult `.github/skills/exact-coding-shared/human-in-the-loop.md`. Apply the Test-List checkpoint for the active
 Autonomy Level and wait for explicit approval when required; otherwise continue
 to the first Predictive TDD cycle.
 
