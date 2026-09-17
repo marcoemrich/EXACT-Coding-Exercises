@@ -1,15 +1,13 @@
 ---
-name: exact-coding
+name: exact-coding-isolated-refactor
 description: Predictive Test-Driven Development with a complete up-front test list, falsifiable predictions before deterministic checks, one-test Red-Green-Refactor cycles, domain-responsibility review, and configurable human checkpoints. Invoke when the user explicitly asks for TDD or Predictive TDD. Do NOT invoke for ordinary coding tasks where TDD was not requested.
 ---
 
-# EXACT Coding — Predictive TDD v1
+# EXACT Coding — Predictive TDD v1 — Isolated Refactor
 
 This is the consumer form of the universal EXACT Coding Predictive-TDD line. It runs in
 one shared context: Test List once, then one-test Red-Green-Refactor cycles.
-Refactoring uses the Four Rules of Simple Design inline. Refactoring also applies a domain-responsibility review and a mandatory concrete boundary trial whenever it finds a credible semantic seam. This
-line deliberately has no APP calculation, metric-driven end pass, or refactor
-subagent.
+Refactoring uses the Four Rules of Simple Design in an isolated subagent. Refactoring also applies a domain-responsibility review and a mandatory concrete boundary trial whenever it finds a credible semantic seam. This profile deliberately has no APP calculation or metric-driven end pass.
 
 ## Preparation
 
@@ -34,7 +32,7 @@ tools belong only to the selected stack profile.
      explicitly with reality,
    - apply the Red checkpoint,
    - reach Green with the smallest production change,
-   - review and refactor inline under the Four Rules,
+   - after every Green, delegate the Four Rules review through the Agent tool with `subagent_type: refactor`; invoke it even when Green changed no production code,
    - perform the mandatory domain-boundary trial and retain or narrowly undo it based on semantic and test evidence,
    - apply the Refactor checkpoint.
 4. Continue until every listed behavior is executable and all applicable gates
@@ -49,6 +47,8 @@ This is Predictive TDD, not TCR. Do not create phase commits or use a hard reset
 as a phase mechanism. Preserve successful work in the working tree. If a
 refactoring trial fails a check or does not improve intent, undo only that trial
 before continuing.
+
+The subagent never manages checkpoints or waits for the user. The main context reads its report, verifies Green, and applies the shared Refactor checkpoint.
 
 ## Human-in-the-loop
 
