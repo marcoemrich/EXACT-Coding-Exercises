@@ -260,17 +260,29 @@ automatically.
 
 ### Stack profiles
 
-Workflow methodology and language/tooling are separate. TypeScript and Vitest
-syntax, inactive-test conventions, commands, compiler behavior, and lint advice
-live only in:
+Workflow methodology and language/tooling are separate. Test syntax, inactive-test
+conventions, commands, compiler behavior, and lint advice live only in the stack
+profiles. Every branch ships two:
 
 ```text
 <agent-config>/skills/predictive-tdd/stacks/typescript-vitest.md
+<agent-config>/skills/predictive-tdd/stacks/java-junit-maven.md
 ```
 
-The TDD orchestration selects and reads the matching profile before changing
-code. This makes another language a new stack profile rather than a duplicated
-workflow.
+| Profile | Reads | Test command | Quality gate | Inactive test |
+|---|---|---|---|---|
+| TypeScript + Vitest | `package.json` | the project's `test` script | type check, lint, smell rules | `it.todo()` |
+| Java + JUnit 5 + Maven | `pom.xml` | `mvn test` (wrapper if present) | `mvn pmd:check` | `@Disabled` |
+
+The TDD orchestration reads `package.json` or `pom.xml` first and selects the
+matching profile before changing code. It uses only gates the project actually
+declares — a profile never invents a plugin or rewrites the build to get a
+check it prefers.
+
+The exercises in this repository are TypeScript. The Java profile works in any
+Java/JUnit 5/Maven project you point the workflow at; `harness/copilot-java`
+carries a Java port of the exercises themselves. Adding another language means
+writing one more stack profile, not another copy of the workflow.
 
 ### Why this workflow: what we measured
 
