@@ -143,7 +143,7 @@ Design. The historical Opus/Hybrid branches remain available for reproduction,
 but are superseded as the maintained product line.
 
 Each PTDD branch carries exactly one agent configuration. This branch is part
-of **Predictive TDD v1**, distribution version **2026-09-19**.
+of **Predictive TDD v1**, distribution version **2026-09-20**.
 
 | Agent | Predictive TDD v1 branch | Config | Start EXACT Coding with |
 |---|---|---|---|
@@ -238,6 +238,30 @@ at a time). Ask for it by name when a piece of work is finished and you want
 more than the inline per-cycle refactor. It sits outside the loop on purpose —
 it costs noticeably more time and tokens, and Predictive TDD does not depend
 on it.
+
+### Manual phase control: `red`, `green`, `refactor`
+
+Invoking the workflow runs the whole loop and stops where your Autonomy Level
+says to. When you want to hold the wheel yourself — one phase per turn — invoke
+the phases by name instead: `/red`, `/green`, `/refactor` in Claude Code,
+Copilot and OpenCode, the same-named skills in Cursor and pi.
+
+| Skill | Runs | Stops |
+|---|---|---|
+| `red` | Activate one behavior, predict, reach behavioral Red | Before any production change |
+| `green` | Smallest production change that satisfies the active test | Before refactoring |
+| `refactor` | Four Rules review, domain-responsibility review, boundary trial | Before the next behavior |
+
+They carry no method of their own. Each points at its section of
+`skills/predictive-tdd/SKILL.md` and at the shared human-in-the-loop file, so
+you get the same rules the full loop applies — predictions, mismatch handling,
+the domain-boundary trial. What they add is that your invocation *is* the
+checkpoint: a phase never runs on into the next one, even at an Autonomy Level
+that would not have stopped there.
+
+Mix them with the full workflow as you like. The phases read and leave the
+ordinary working tree — no phase commits, no reset — so you can hand control
+back mid-feature.
 
 ### Optional: Example Mapping before the loop
 
