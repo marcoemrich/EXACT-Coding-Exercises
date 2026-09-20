@@ -1,4 +1,12 @@
+# TypeScript / Node
 node_modules
 dist
+
+# Java / Maven
+target
+.idea
+*.iml
+
+# Workshop material and tooling
 game_pdfs/
 .playwright-mcp
