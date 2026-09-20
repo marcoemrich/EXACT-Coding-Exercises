@@ -23,11 +23,35 @@ This hands-on workshop introduces EXACT Coding -- a pragmatic workflow for AI-as
 
 ## Setup
 
-There are two ways to set up the project: using the **Dev Container** (recommended) or a **local installation**.
+The repository ships without a project skeleton, so the same exercise branch
+works for every language. Pick your stack and run setup once after cloning:
+
+| Stack | Command | Requires |
+|---|---|---|
+| TypeScript + Vitest | `./setup.sh typescript-vitest` | Node.js 20 or higher |
+| Java + JUnit + Maven | `./setup.sh java-junit-maven` | JDK 17 or higher, Maven 3.9 or higher |
+
+Setup copies the skeleton from `templates/<stack>/` into the repository root,
+installs its dependencies and runs the example test. Stack-specific
+prerequisites, commands, conventions and expected output are documented in
+`templates/<stack>/SETUP.md`.
+
+Run setup **before** the workshop. It is the step most likely to run into a
+proxy, a missing toolchain or a slow network, and those are expensive to debug
+in the room.
+
+Setup refuses to run when a project is already present, so it will not
+overwrite work you have already done. To start over, use a fresh clone.
+
+There are two ways to run the exercises: in the **Dev Container** (recommended)
+or with a **local installation**.
 
 ### Option A: Dev Container (recommended)
 
-The repo includes a Dev Container configuration with Node.js, Claude Code, and a restrictive firewall pre-installed.
+The repo includes a Dev Container configuration with Node.js, Claude Code, and a
+restrictive firewall pre-installed. The image ships the Node.js toolchain, so it
+covers the TypeScript stack out of the box; for the Java stack use a local
+installation.
 
 #### Prerequisites
 
@@ -64,39 +88,30 @@ The container automatically mounts `~/.claude/` from your host, so your settings
 3. Or manually: `Ctrl+Shift+P` -> **"Dev Containers: Reopen in Container"**
 4. Wait for the container to build (first time takes a few minutes)
 
-After startup, run `npm install` in the terminal, then verify with the checks below.
+After startup, run `./setup.sh typescript-vitest` in the terminal, then verify
+with the checks below.
 
 ### Option B: Local Installation
 
 #### Prerequisites
 
-- Node.js (v20 or higher)
-- npm
+- The toolchain for your stack, from the table above
 - Claude Code (`npm install -g @anthropic-ai/claude-code`)
 
 #### Installation
 
 ```bash
-npm install
-```
-
-### Running Tests
-
-```bash
-npm test
-```
-
-### Watch Mode
-
-```bash
-npm run test:watch
+./setup.sh <stack>
 ```
 
 ## Verify Your Setup
 
 Run the following checks to make sure everything is working (both local and Dev Container).
 
-**1. Node.js installed?**
+**1. Stack toolchain installed?**
+
+Check the versions listed in `templates/<stack>/SETUP.md` under *Prerequisites*.
+For the TypeScript stack:
 
 ```bash
 node --version
@@ -112,26 +127,18 @@ claude -p "respond with: setup ok"
 
 If this hangs or returns an authentication error, your API key is not configured correctly. See the [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code) for setup instructions.
 
-**3. Dependencies installed and tests passing?**
+**3. Project set up and tests passing?**
 
-```bash
-npm install
-npm test
-```
+`./setup.sh` runs the example test as its last step, so a successful setup has
+already answered this. To check again later, run your stack's test command from
+`templates/<stack>/SETUP.md` -- `npm test` for TypeScript, `mvn test` for Java.
 
-Expected test output:
-
-```
- ✓ src/example.spec.ts (1 test)
-
- Test Files  1 passed (1)
-      Tests  1 passed (1)
-```
-
-(If you have already worked through exercises, you will see more files and tests
-than this — what matters is that everything passes.)
+The expected output for each stack is in that same file. Once you have worked
+through exercises you will see more files and tests than the example. What
+matters is that everything passes.
 
 If all checks pass, you're ready for the workshop!
+
 
 
 ## Agent Configuration
