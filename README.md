@@ -18,7 +18,7 @@ This hands-on workshop introduces EXACT Coding -- a pragmatic workflow for AI-as
 
 ### Contributors
 
-- Oliver Roth -- Java, JUnit and Maven port of the Copilot harness (`harness/copilot-java`)
+- Oliver Roth -- Java, JUnit and Maven port of the exercises (`templates/java-junit-maven/`)
 - Dennis Effing -- fixes to the OpenCode agent definitions and config
 
 ## Setup
