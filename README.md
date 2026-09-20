@@ -310,10 +310,12 @@ matching profile before changing code. It uses only gates the project actually
 declares — a profile never invents a plugin or rewrites the build to get a
 check it prefers.
 
-The exercises in this repository are TypeScript. The Java profile works in any
-Java/JUnit 5/Maven project you point the workflow at; `harness/copilot-java`
-carries a Java port of the exercises themselves. Adding another language means
-writing one more stack profile, not another copy of the workflow.
+The exercises in this repository are set up per stack: `./setup.sh
+typescript-vitest` or `./setup.sh java-junit-maven` installs the matching
+skeleton, and the profile follows from what it finds. The Java profile works
+just as well in any other Java/JUnit 5/Maven project you point the workflow at.
+Adding another language means one more stack profile and one more template, not
+another copy of the workflow.
 
 ### Why this workflow: what we measured
 
@@ -423,9 +425,8 @@ skills are not loaded.
 ### Copilot: CLI and VS Code
 
 The `harness/copilot` branch runs in both **Copilot CLI** and **VS Code agent
-mode** from the same `.github/` tree. `harness/copilot-java` is the same tree
-ported to Java, JUnit 5 and Maven. Skills live in `.github/skills/`. In the CLI
-and in VS Code alike the skills appear under `/`.
+mode** from the same `.github/` tree, in either stack. Skills live in
+`.github/skills/`. In the CLI and in VS Code alike the skills appear under `/`.
 
 ### Invocation and provenance
 
