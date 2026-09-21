@@ -1,0 +1,5 @@
+# Exact pins so every participant gets identical versions, the same guarantee
+# the TypeScript template gets from its committed package-lock.json.
+pytest==9.1.1
+ruff==0.16.8
+complexipy==8.0.1

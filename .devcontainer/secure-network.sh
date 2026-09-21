@@ -11,6 +11,8 @@ ALLOWED_SERVICES=(
     "github.com"
     "api.github.com"
     "registry.npmjs.org"
+    "pypi.org"
+    "files.pythonhosted.org"
     "api.anthropic.com"
     "api.portkey.ai"
     "marketplace.visualstudio.com"
