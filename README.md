@@ -161,12 +161,12 @@ Design. The historical Opus/Hybrid branches remain available for reproduction,
 but are superseded as the maintained product line.
 
 Each PTDD branch carries exactly one agent configuration. This branch is part
-of **Predictive TDD v1**, distribution version **2026-09-20**.
+of **Predictive TDD v1**, distribution version **2026-09-21**.
 
 | Agent | Predictive TDD v1 branch | Config | Start EXACT Coding with |
 |---|---|---|---|
 | Claude Code | `main` | `.claude/` | `/exact-coding`, or ask for EXACT Coding |
-| GitHub Copilot (TypeScript) | `harness/copilot` | `.github/` | `/exact-coding`, or ask for EXACT Coding |
+| GitHub Copilot | `harness/copilot` | `.github/` | `/exact-coding`, or ask for EXACT Coding |
 | Cursor | `harness/cursor` | `.cursor/` | `/exact-coding`, or ask for EXACT Coding |
 | OpenCode | `harness/opencode` | `.opencode/` | `/exact-coding` |
 | pi | `harness/pi` | `.pi/` | `/skill:exact-coding`, or ask for EXACT Coding |
@@ -304,29 +304,31 @@ automatically.
 
 Workflow methodology and language/tooling are separate. Test syntax, inactive-test
 conventions, commands, compiler behavior, and lint advice live only in the stack
-profiles. Every branch ships two:
+profiles. Every branch ships three:
 
 ```text
 <agent-config>/skills/predictive-tdd/stacks/typescript-vitest.md
 <agent-config>/skills/predictive-tdd/stacks/java-junit-maven.md
+<agent-config>/skills/predictive-tdd/stacks/python-pytest.md
 ```
 
 | Profile | Reads | Test command | Quality gate | Inactive test |
 |---|---|---|---|---|
 | TypeScript + Vitest | `package.json` | the project's `test` script | type check, lint, smell rules | `it.todo()` |
 | Java + JUnit 5 + Maven | `pom.xml` | `mvn test` (wrapper if present) | `mvn pmd:check` | `@Disabled` |
+| Python + pytest | `pyproject.toml` | `pytest` | `ruff check` | `@pytest.mark.skip` |
 
-The TDD orchestration reads `package.json` or `pom.xml` first and selects the
-matching profile before changing code. It uses only gates the project actually
-declares — a profile never invents a plugin or rewrites the build to get a
-check it prefers.
+The TDD orchestration reads the project's manifest first — `package.json`,
+`pom.xml` or `pyproject.toml` — and selects the matching profile before
+changing code. It uses only gates the project actually declares — a profile
+never invents a plugin or rewrites the build to get a check it prefers.
 
 The exercises in this repository are set up per stack: `./setup.sh
-typescript-vitest` or `./setup.sh java-junit-maven` installs the matching
-skeleton, and the profile follows from what it finds. The Java profile works
-just as well in any other Java/JUnit 5/Maven project you point the workflow at.
-Adding another language means one more stack profile and one more template, not
-another copy of the workflow.
+typescript-vitest`, `./setup.sh java-junit-maven` or `./setup.sh python-pytest`
+installs the matching skeleton, and the profile follows from what it finds.
+Each profile works just as well in any other project on that stack that you
+point the workflow at. Adding another language means one more stack profile and
+one more template, not another copy of the workflow.
 
 ### Why this workflow: what we measured
 
@@ -415,7 +417,12 @@ first, and it has held across every model and workflow we have measured it on.)*
 - The agents ran **unattended**. The shipped workflow stops for your approval by
   default, and many misses we saw are the kind a single clarifying question
   prevents.
-- Small, self-contained tasks, **TypeScript only**. No legacy code.
+- Small, self-contained tasks, no legacy code. The numbers above are the
+  **TypeScript** stack. We have measured the same workflow separately on
+  **Java**; those results are their own comparison and are not averaged in
+  here, because quality tools do not produce comparable numbers across
+  languages. The Python profile ships with the same method but is not yet
+  covered by measurements of its own.
 - Results are **per model**. Rankings between workflows have flipped between
   model versions before — including within this workflow line.
 
@@ -436,7 +443,7 @@ skills are not loaded.
 ### Copilot: CLI and VS Code
 
 The `harness/copilot` branch runs in both **Copilot CLI** and **VS Code agent
-mode** from the same `.github/` tree, in either stack. Skills live in
+mode** from the same `.github/` tree, in any of the shipped stacks. Skills live in
 `.github/skills/`. In the CLI and in VS Code alike the skills appear under `/`.
 
 ### Invocation and provenance
