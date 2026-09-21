@@ -24,7 +24,7 @@ if [ -z "$STACK" ] || [ ! -d "$TEMPLATES/$STACK" ]; then
   exit 64
 fi
 
-if [ -e package.json ] || [ -e pom.xml ]; then
+if [ -e package.json ] || [ -e pom.xml ] || [ -e pyproject.toml ]; then
   {
     echo "This directory already has a project set up."
     echo "Running setup again would overwrite your work. Use a fresh clone instead."
