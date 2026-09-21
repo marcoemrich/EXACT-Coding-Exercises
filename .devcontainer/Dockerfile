@@ -16,6 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   ca-certificates \
   gnupg \
   libcap2-bin \
+  python3 \
+  python3-venv \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js 24 from NodeSource
