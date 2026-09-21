@@ -1,6 +1,6 @@
 ---
 name: end-refactor
-description: Final metric-driven refactoring pass over the whole production tree, using ESLint smells, SonarJS cognitive complexity, McCabe and APP mass to drive one measured change at a time. Invoke when the user explicitly asks for a final cleanup, a quality pass over the finished code, or an end-refactor. Do NOT invoke automatically after a TDD cycle — the per-cycle refactor already covers that.
+description: Final metric-driven refactoring pass over the whole production tree, using the active stack profile's smell and cognitive-complexity tools plus McCabe and APP mass to drive one measured change at a time. Invoke when the user explicitly asks for a final cleanup, a quality pass over the finished code, or an end-refactor. Do NOT invoke automatically after a TDD cycle — the per-cycle refactor already covers that.
 ---
 
 > **This is an optional, manually invoked pass.** It is not part of the
@@ -19,7 +19,7 @@ This pass is built on a single hypothesis: **once the design has stabilised, mea
 
 Run a final, metric-driven refactoring pass over the whole production code:
 
-1. **Measure the current state** of the entire `src/` (all non-spec `.ts` files) with ESLint (smells + cognitive complexity)
+1. **Measure the current state** of the entire production tree with the smell and cognitive-complexity tools named by the active stack profile
 2. **Compute APP mass and McCabe cyclomatic complexity** for every function in every production file
 3. **Pick the worst offender** as the next refactoring target — this may live in any file
 4. **Apply ONE improvement** while keeping all tests green
@@ -30,9 +30,9 @@ Run a final, metric-driven refactoring pass over the whole production code:
 
 ## Refactoring Rules
 
-- **Scope is the whole `src/`**: every `.ts` file that is NOT a `*.spec.ts`. Multi-file katas (e.g. `cli.ts` + `domain.ts`) are refactored together.
+- **Scope is the whole production tree**: every production file of the active stack, excluding test files. Multi-file katas are refactored together.
 - **Iterate, don't one-shot**: keep applying one-change-per-step measurement loops until you genuinely cannot improve any metric without trading off another.
-- **Tests must stay green**: Never break passing tests. Run `npm test` after every single change.
+- **Tests must stay green**: Never break passing tests. Run the stack profile's full-suite command after every single change.
 - **Apply Simple Design Rules**: In priority order (1 → 2 → 3 → 4)
 - **Measure pre and post**: Smells, cognitive complexity, APP mass, McCabe — all four, every iteration
 - **One change at a time**: So the post-measurement attributes the delta to that change
@@ -119,22 +119,26 @@ A high McCabe score means many independent paths through one function — each p
 - **Polymorphism / lookup table** to replace `switch`/`if-else` chains
 - **Composition over conditionals** to replace conditional dispatch with function composition
 
-When the pre-measurement shows one function with a much higher McCabe than the rest — anywhere in `src/` — that function is your next refactoring target.
+When the pre-measurement shows one function with a much higher McCabe than the rest — anywhere in the production tree — that function is your next refactoring target.
 
 ## Refactoring Process
 
 ### Step 0: Whole-src Pre-Measurement (Smells + Cognitive Complexity)
 
-Run ESLint over the entire production tree:
+Read the active stack profile and run the smell and cognitive-complexity tools it names over the entire production tree, in the machine-readable form the profile documents. Which tools those are depends on the stack:
 
-```bash
-npx eslint src/ --format json
-```
+| Stack | Smells and cognitive complexity |
+|---|---|
+| TypeScript + Vitest | ESLint with the SonarJS plugin; cognitive complexity from `sonarjs/cognitive-complexity` |
+| Java + JUnit 5 + Maven | PMD with the project ruleset; cognitive complexity from its `CognitiveComplexity` rule |
+| Python + pytest | ruff for smells; cognitive complexity from complexipy, or whichever cognitive-complexity tool the project configures |
 
-Parse the JSON output across **all** non-spec files. Note:
-- **Smells**: rule ID, file, line, message for every reported violation except `sonarjs/cognitive-complexity`
-- **Cognitive complexity per function**: from `sonarjs/cognitive-complexity` messages — the score is in the message text. `eslint.config.js` sets the threshold to 0, so every branching function reports its score; these findings are measurements, not smells, and a function without one scores 0
-- **Other smells**: complexity, max-depth, max-lines-per-function, max-params, no-duplicate-string, no-collapsible-if, etc.
+Only run gates the project actually declares or has installed. Do not invent a tool, a plugin or a configuration to obtain a preferred measurement.
+
+Parse the output across **all** production files. Note:
+- **Smells**: rule ID, file, line, message for every reported violation except the cognitive-complexity rule itself
+- **Cognitive complexity per function**: the cognitive-complexity findings are measurements, not smells. Where the project's configuration makes every function report — a threshold of zero, or a tool that reports per function by default — a function with no finding scores zero
+- **Other smells**: complexity, nesting depth, function length, parameter count, duplicated literals, collapsible conditionals, and the rest of the configured selection
 
 Record this as the **PRE** baseline for this iteration.
 
@@ -143,6 +147,8 @@ Record this as the **PRE** baseline for this iteration.
 Now that ALL tests are passing, walk every function in every production file:
 
 ```
+The worked example below is TypeScript. Read the file names and syntax as illustration only — the procedure is the same on every stack.
+
 **Naming Evaluation** (file `src/cli.ts`):
 - Function: `process`
 - Purpose based on the complete test suite: "parses stdin JSON, dispatches to quote or claim, prints result"
@@ -179,7 +185,7 @@ Apply the calculation rule above to every function in every file. Extend the tab
 | src/domain.ts     | claim          | 64       | 9      | ← worst offender
 ```
 
-**Identify the worst-case function across the whole src/** — highest McCabe, ties broken by highest APP mass, ties broken by most ESLint smells touching that function. That function is the strongest candidate for this iteration.
+**Identify the worst-case function across the whole production tree** — highest McCabe, ties broken by highest APP mass, ties broken by most smells touching that function. That function is the strongest candidate for this iteration.
 
 Look for minimization angles:
 - Can early `return` flatten nested conditionals?
@@ -193,16 +199,12 @@ Look for minimization angles:
 Based on PRE-measurements (smells + cognitive + APP + McCabe + naming), pick the single change with the highest expected impact:
 
 - Make ONE improvement at a time
-- Run tests after the change (`npm test`)
+- Run tests after the change, with the stack profile's full-suite command
 - If tests fail, revert and try a different angle
 
 ### Step 5: Post-Measurement (Smells + Cognitive)
 
-Re-run ESLint over the whole `src/` and compare to PRE:
-
-```bash
-npx eslint src/ --format json
-```
+Re-run the same smell and cognitive-complexity tools over the whole production tree and compare to PRE — the identical invocation you used in Step 0, so the two measurements are comparable:
 
 Compute the deltas:
 - **Smell count**: PRE total → POST total (across all files)
@@ -218,7 +220,7 @@ Recompute APP mass and McCabe for the refactored function(s) — and for any cal
 **Iteration N — Refactoring Applied**: Replaced if-else chain in `claim` with handler lookup table
 
 **Pre/Post Deltas (function `claim`, file `src/domain.ts`)**:
-- ESLint smells (whole src/): 7 → 4 (removed sonarjs/no-nested-switch and max-lines-per-function)
+- Smells (whole production tree): 7 → 4 (removed the nested-switch and function-length findings)
 - Cognitive complexity (`claim`): 18 → 6
 - APP mass (`claim`): 64 → 38
 - McCabe cyclomatic (`claim`): 9 → 3
@@ -239,8 +241,8 @@ Trying alternative: inlining the conditional instead.
 **If No Further Improvement Possible — terminate the loop:**
 ```
 **Iteration N — No Further Improvement**:
-- ESLint smells (whole src/): 0
-- Max cognitive complexity across all functions: 3 (well below SonarJS threshold)
+- Smells (whole production tree): 0
+- Max cognitive complexity across all functions: 3 (well below the configured threshold)
 - Max APP mass: 22 (minimal for the behaviour expressed)
 - Max McCabe cyclomatic: 2
 - All function names accurately describe their purpose given the full test suite
@@ -275,12 +277,12 @@ Return a single summary to the requester:
 ## Important Guidelines
 
 ### What to DO
-- ✅ Operate over the whole production `src/`, not a single file
-- ✅ Run ESLint as the first action of every iteration (Step 0)
+- ✅ Operate over the whole production tree, not a single file
+- ✅ Run the stack's smell tool as the first action of every iteration (Step 0)
 - ✅ Compute APP mass AND McCabe for every function in every file (Steps 2–3)
 - ✅ Evaluate naming as a refactoring lever — you see the full test suite
-- ✅ Pick the worst-McCabe function (across the whole src/) as the iteration target
-- ✅ Run ESLint again after every change (Step 5)
+- ✅ Pick the worst-McCabe function (across the whole production tree) as the iteration target
+- ✅ Run the smell tool again after every change (Step 5)
 - ✅ Recompute APP and McCabe after every change (Step 6)
 - ✅ Document every PRE/POST delta for every iteration
 - ✅ Revert if any measurement got worse and try a different angle
@@ -289,7 +291,7 @@ Return a single summary to the requester:
 
 ### What NOT to do
 - ❌ Never refactor a single file in isolation — this pass exists to catch cross-file issues
-- ❌ Never return without running ESLint pre and post per iteration
+- ❌ Never return without running the smell tool pre and post per iteration
 - ❌ Never describe code without numbers — the whole point of this pass is that measurement replaces description
 - ❌ Never refactor multiple things at once in one iteration (deltas become unattributable)
 - ❌ Never break tests during refactoring
@@ -300,7 +302,7 @@ Return a single summary to the requester:
 
 Watch for these violations of the measurement discipline:
 
-- Skipping the ESLint call (Step 0 or Step 5) in any iteration
+- Skipping the smell-tool call (Step 0 or Step 5) in any iteration
 - Computing APP without McCabe or vice versa
 - Refactoring without showing a PRE → POST number
 - Justifying a kept change with prose when the POST measurement got worse
