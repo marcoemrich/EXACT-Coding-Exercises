@@ -30,6 +30,7 @@ works for every language. Pick your stack and run setup once after cloning:
 |---|---|---|
 | TypeScript + Vitest | `./setup.sh typescript-vitest` | Node.js 20 or higher |
 | Java + JUnit + Maven | `./setup.sh java-junit-maven` | JDK 17 or higher, Maven 3.9 or higher |
+| Python + pytest | `./setup.sh python-pytest` | Python 3.11 or higher, the `venv` module |
 
 Setup copies the skeleton from `templates/<stack>/` into the repository root,
 installs its dependencies and runs the example test. Stack-specific
@@ -49,9 +50,9 @@ or with a **local installation**.
 ### Option A: Dev Container (recommended)
 
 The repo includes a Dev Container configuration with Node.js, Claude Code, and a
-restrictive firewall pre-installed. The image ships the Node.js toolchain, so it
-covers the TypeScript stack out of the box; for the Java stack use a local
-installation.
+restrictive firewall pre-installed. The image ships the Node.js and Python
+toolchains, so it covers the TypeScript and Python stacks out of the box; for
+the Java stack use a local installation.
 
 #### Prerequisites
 
@@ -88,8 +89,8 @@ The container automatically mounts `~/.claude/` from your host, so your settings
 3. Or manually: `Ctrl+Shift+P` -> **"Dev Containers: Reopen in Container"**
 4. Wait for the container to build (first time takes a few minutes)
 
-After startup, run `./setup.sh typescript-vitest` in the terminal, then verify
-with the checks below.
+After startup, run `./setup.sh typescript-vitest` or `./setup.sh python-pytest`
+in the terminal, then verify with the checks below.
 
 ### Option B: Local Installation
 
@@ -118,6 +119,15 @@ node --version
 # Expected: v20 or higher (e.g. v24.9.0)
 ```
 
+For the Python stack:
+
+```bash
+python3 --version
+# Expected: 3.11 or higher (e.g. 3.12.7)
+python3 -m venv --help
+# Expected: usage output, not "ensurepip is not available"
+```
+
 **2. Claude Code installed and API key configured?**
 
 ```bash
@@ -131,7 +141,8 @@ If this hangs or returns an authentication error, your API key is not configured
 
 `./setup.sh` runs the example test as its last step, so a successful setup has
 already answered this. To check again later, run your stack's test command from
-`templates/<stack>/SETUP.md` -- `npm test` for TypeScript, `mvn test` for Java.
+`templates/<stack>/SETUP.md` -- `npm test` for TypeScript, `mvn test` for Java,
+`pytest` for Python.
 
 The expected output for each stack is in that same file. Once you have worked
 through exercises you will see more files and tests than the example. What

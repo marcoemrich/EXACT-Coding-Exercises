@@ -1,0 +1,33 @@
+[project]
+name = "exact-coding-exercises"
+version = "0.0.0"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+# Production code is imported by module name from src/, so a test reads
+# `from example import add` with no package prefix and no sys.path juggling.
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+src = ["src"]
+
+[tool.ruff.lint]
+# The measurements and smells for the end-refactor pass. C901 is the McCabe
+# carrier, PLR0912/0913/0915/1702 the complexity rules, PLR2004 magic numbers;
+# SIM, ARG, F, B and RET carry the dead-code and code-quality findings.
+select = ["C901", "PLR", "PLW", "SIM", "ARG", "F", "B", "RET", "RUF"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pylint]
+max-args = 4
+max-branches = 12
+max-statements = 30
+max-nested-blocks = 3
+
+[tool.ruff.lint.per-file-ignores]
+# Test examples state specification inputs and outputs literally; that is what
+# makes them readable. The same literals in production code are a smell.
+"tests/*" = ["PLR2004"]
